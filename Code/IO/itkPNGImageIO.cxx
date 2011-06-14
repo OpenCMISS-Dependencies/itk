@@ -211,7 +211,7 @@ void PNGImageIO::Read(void* buffer)
   // minimum of a byte per pixel
   if (colorType == PNG_COLOR_TYPE_GRAY && bitDepth < 8) 
     {
-    png_set_gray_1_2_4_to_8(png_ptr);
+    png_set_expand_gray_1_2_4_to_8(png_ptr);
     }
 
   // add alpha if any alpha found
@@ -346,7 +346,7 @@ void PNGImageIO::ReadImageInformation()
   // minimum of a byte per pixel
   if (colorType == PNG_COLOR_TYPE_GRAY && bitDepth < 8) 
     {
-    png_set_gray_1_2_4_to_8(png_ptr);
+    png_set_expand_gray_1_2_4_to_8(png_ptr);
     }
 
   // add alpha if any alpha found
