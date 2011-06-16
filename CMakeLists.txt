@@ -849,16 +849,12 @@ ENDIF(ITK_USE_SYSTEM_GDCM)
 CONFIGURE_FILE(${ITK_SOURCE_DIR}/UseITK.cmake.in
                ${ITK_BINARY_DIR}/UseITK.cmake COPYONLY IMMEDIATE)
 
-# Save library dependencies.
-EXPORT_LIBRARY_DEPENDENCIES(${ITK_BINARY_DIR}/ITKLibraryDepends.cmake)
-
 # Create the ITKConfig.cmake file containing the ITK configuration.
 INCLUDE (${ITK_SOURCE_DIR}/itkGenerateITKConfig.cmake)
 
 IF(NOT ITK_INSTALL_NO_DEVELOPMENT)
+	INSTALL(EXPORT itk-targets DESTINATION ${ITK_INSTALL_PACKAGE_DIR_CM24})
   INSTALL(FILES
-    ${ITK_BINARY_DIR}/ITKBuildSettings.cmake
-    ${ITK_BINARY_DIR}/ITKLibraryDepends.cmake
     ${ITK_BINARY_DIR}/UseITK.cmake
     DESTINATION ${ITK_INSTALL_PACKAGE_DIR_CM24}
     COMPONENT Development
