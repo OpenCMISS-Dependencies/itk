@@ -25,9 +25,6 @@ SET(ITK_VERSION_PATCH "@ITK_VERSION_PATCH@")
 # The location of the UseITK.cmake file.
 SET(ITK_USE_FILE "@ITK_USE_FILE@")
 
-# The build settings file.
-SET(ITK_BUILD_SETTINGS_FILE "@ITK_BUILD_SETTINGS_FILE@")
-
 # The library dependencies file.
 SET(ITK_LIBRARY_DEPENDS_FILE "@ITK_LIBRARY_DEPENDS_FILE@")
 
