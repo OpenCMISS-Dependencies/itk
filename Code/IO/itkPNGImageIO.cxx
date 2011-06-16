@@ -31,7 +31,7 @@ extern "C"
   void itkPNGWriteErrorFunction(png_structp png_ptr,
                                 png_const_charp itkNotUsed(error_msg))
     {
-    longjmp(png_ptr->jmpbuf, 1);
+    longjmp(png_jmpbuf(png_ptr), 1);
     }
 }
 
@@ -227,9 +227,10 @@ void PNGImageIO::Read(void* buffer)
 #endif
     }
 
-  if (info_ptr->valid & PNG_INFO_sBIT)
+  png_color_8p sig_bit;
+  if (png_get_sBIT(png_ptr, info_ptr, &sig_bit))
     {
-    png_set_shift(png_ptr, &(info_ptr->sig_bit));
+    png_set_shift(png_ptr, sig_bit);
     }
   // have libpng handle interlacing
   //int number_of_passes = png_set_interlace_handling(png_ptr);
@@ -496,7 +497,7 @@ void PNGImageIO::WriteSlice(const std::string& fileName, const void* buffer)
 #if !defined(_MSC_VER) || _MSC_VER != 1310
   png_set_error_fn(png_ptr, png_ptr,
                    itkPNGWriteErrorFunction, itkPNGWriteWarningFunction);
-  if (setjmp(png_ptr->jmpbuf))
+  if (setjmp(png_jmpbuf(png_ptr)))
     {
     fclose(fp);
     itkExceptionMacro("Error while writing Slice to file: "
