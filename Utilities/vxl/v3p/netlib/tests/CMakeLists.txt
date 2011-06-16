@@ -1,4 +1,4 @@
-IF(BUILD_TESTING)
+IF(ITK_BUILD_TESTING)
   # test
   ADD_EXECUTABLE( netlib_lbfgs_example lbfgs-example.c )
   ADD_TEST( netlib_test_lbfgs ${EXECUTABLE_OUTPUT_PATH}/netlib_lbfgs_example )
@@ -19,4 +19,4 @@ IF(BUILD_TESTING)
   ADD_EXECUTABLE( netlib_integral_test integral-test.c )
   ADD_TEST( netlib_test_integral ${EXECUTABLE_OUTPUT_PATH}/netlib_integral_test )
   TARGET_LINK_LIBRARIES(netlib_integral_test itkv3p_netlib)
-ENDIF(BUILD_TESTING)
+ENDIF(ITK_BUILD_TESTING)

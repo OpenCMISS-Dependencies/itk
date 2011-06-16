@@ -110,7 +110,7 @@ IF(SUN_COMPILER)
   SET_SOURCE_FILES_PROPERTIES(itkXMLFile.cxx PROPERTIES COMPILE_FLAGS -w)
 ENDIF(SUN_COMPILER)
 
-# itkTestDriver is built even when BUILD_TESTING is FALSE to:
+# itkTestDriver is built even when ITK_BUILD_TESTING is FALSE to:
 # + allow to run WrapITK tests without the other of the ITK tests
 # + be used by external code like contributions to the insight journal
 ADD_EXECUTABLE(itkTestDriver itkTestDriver.cxx) 

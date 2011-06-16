@@ -36,9 +36,9 @@ ELSE(ITK_BINARY_DIR)
   # Configure Dart testing support.
   INCLUDE(${CMAKE_ROOT}/Modules/Dart.cmake)
   MARK_AS_ADVANCED(TCL_TCLSH)
-  IF(BUILD_TESTING)
+  IF(ITK_BUILD_TESTING)
     ENABLE_TESTING()
-  ENDIF(BUILD_TESTING)
+  ENDIF(ITK_BUILD_TESTING)
 
   # Find the data directory.
   FIND_PATH(ITK_DATA_ROOT ITKData.readme ${ITKTesting_SOURCE_DIR}/Data $ENV{ITK_DATA_ROOT})

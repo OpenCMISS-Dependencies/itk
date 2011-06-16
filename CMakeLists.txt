@@ -70,7 +70,7 @@ INCLUDE(${CMAKE_ROOT}/Modules/Dart.cmake)
 FIND_PACKAGE(Tclsh)
 MARK_AS_ADVANCED(TCL_TCLSH DART_ROOT)
 ENABLE_TESTING()
-IF(BUILD_TESTING)
+IF(ITK_BUILD_TESTING)
   CONFIGURE_FILE(${ITK_SOURCE_DIR}/CMake/RemoveTemporaryFiles.cmake.in
     ${ITK_BINARY_DIR}/CMake/RemoveTemporaryFiles.cmake @ONLY IMMEDIATE)
   CONFIGURE_FILE(${ITK_SOURCE_DIR}/CMake/itkSampleBuildTest.cmake.in
@@ -87,7 +87,7 @@ IF(BUILD_TESTING)
                  COPYONLY IMMEDIATE)
   SET(BUILDNAME "${BUILDNAME}" CACHE STRING "Name of build on the dashboard")
   MARK_AS_ADVANCED(BUILDNAME)
-ENDIF(BUILD_TESTING)
+ENDIF(ITK_BUILD_TESTING)
 
 #-----------------------------------------------------------------------------
 # Output directories.
@@ -496,9 +496,9 @@ SUBDIRS(Utilities Code)
 
 SUBDIRS(Wrapping)
 
-IF (BUILD_TESTING)
+IF (ITK_BUILD_TESTING)
   SUBDIRS(Testing)
-ENDIF (BUILD_TESTING)
+ENDIF (ITK_BUILD_TESTING)
 
 IF(BUILD_EXAMPLES)
   SUBDIRS(Examples)

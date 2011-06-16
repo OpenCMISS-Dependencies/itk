@@ -4,7 +4,7 @@
 # several vxl-standard testing and build options to the project:
 #
 #  BUILD_SHARED_LIBS
-#  BUILD_TESTING
+#  ITK_BUILD_TESTING
 #  BUILD_EXAMPLES
 #  WARN_DEPRECATED
 #  WARN_DEPRECATED_ONCE
@@ -43,19 +43,19 @@ ENDIF( DART_ROOT)
 # using Dart.
 IF( NOT DART_ROOT )
   IF( WIN32 )
-    OPTION( BUILD_TESTING "Should the tests be built?" NO )
+    OPTION( ITK_BUILD_TESTING "Should the tests be built?" NO )
   ELSE( WIN32 )
-    OPTION( BUILD_TESTING "Should the tests be built?" YES )
+    OPTION( ITK_BUILD_TESTING "Should the tests be built?" YES )
   ENDIF( WIN32 )
 
-  IF( BUILD_TESTING )
+  IF( ITK_BUILD_TESTING )
     ENABLE_TESTING()
-  ENDIF( BUILD_TESTING )
+  ENDIF( ITK_BUILD_TESTING )
 ENDIF( NOT DART_ROOT )
-OPTION( BUILD_TESTING "Should the tests be built?" YES )
+OPTION( ITK_BUILD_TESTING "Should the tests be built?" YES )
 
 # By default, build examples when building tests.
-OPTION( BUILD_EXAMPLES "Should the examples be built?" ${BUILD_TESTING} )
+OPTION( BUILD_EXAMPLES "Should the examples be built?" ${ITK_BUILD_TESTING} )
 
 OPTION( WARN_DEPRECATED "Enable runtime warnings for deprecated functions?" YES )
 OPTION( WARN_DEPRECATED_ONCE "Only warn once per function (if runtime warnings are enabled)?" YES )

@@ -151,7 +151,7 @@ SET(FILTERING_EXAMPLES9 ${CXX_TEST_PATH}/FilteringExamples9)
 SET(BASELINE ${ITK_DATA_ROOT}/Baseline/Filtering)
 SET(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
 IF( NOT ITK_DISABLE_CXX_TESTING )
-IF(BUILD_TESTING)
+IF(ITK_BUILD_TESTING)
 ADD_TEST(BilateralImageFilterTest ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/BilateralImageFilter.png
             ${TEMP}/BilateralImageFilter.png
@@ -919,7 +919,7 @@ IF( USE_FFTWF )
 ELSE( USE_FFTWF )
   TARGET_LINK_LIBRARIES(FilteringExamples6 ITKIO ITKBasicFilters )
 ENDIF( USE_FFTWF )
-ENDIF(BUILD_TESTING)
+ENDIF(ITK_BUILD_TESTING)
 ENDIF( NOT ITK_DISABLE_CXX_TESTING )
 ADD_EXECUTABLE(DiffusionTensor3DReconstructionImageFilter DiffusionTensor3DReconstructionImageFilter.cxx)
 TARGET_LINK_LIBRARIES(DiffusionTensor3DReconstructionImageFilter ITKIO ITKBasicFilters )

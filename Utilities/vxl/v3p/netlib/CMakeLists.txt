@@ -23,9 +23,9 @@ PROJECT( netlib C )
 # End NOTE.
 #
 
-IF(BUILD_TESTING)
+IF(ITK_BUILD_TESTING)
   SUBDIRS(tests)
-ENDIF(BUILD_TESTING)
+ENDIF(ITK_BUILD_TESTING)
 
 # Allow sources in subdirectories to see the include files.
 INCLUDE_DIRECTORIES(${netlib_SOURCE_DIR})

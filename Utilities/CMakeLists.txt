@@ -114,7 +114,7 @@ SET(DICOMPARSER_STANDALONE 0)
 ADD_SUBDIRECTORY(DICOMParser)
 
 IF(ITK_DISABLE_CXX_TESTING)
-  SET(BUILD_TESTING OFF)
+  SET(ITK_BUILD_TESTING OFF)
 ENDIF(ITK_DISABLE_CXX_TESTING)
 
 #------------------------------------------------------------------------------
@@ -129,9 +129,9 @@ ADD_SUBDIRECTORY(netlib)
 
 #------------------------------------------------------------------------------
 # Build testing as needed
-IF (BUILD_TESTING)
+IF (ITK_BUILD_TESTING)
   ADD_SUBDIRECTORY(Dart)
-ENDIF (BUILD_TESTING)
+ENDIF (ITK_BUILD_TESTING)
 
 #-----------------------------------------------------------------------------
 # ITK build configuration options.

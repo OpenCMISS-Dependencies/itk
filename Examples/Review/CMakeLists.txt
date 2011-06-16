@@ -11,7 +11,7 @@ TARGET_LINK_LIBRARIES(ScalarSinglePhaseSparse2D ITKAlgorithms ITKIO ITKBasicFilt
 #SET(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
 #
 #IF( NOT ITK_DISABLE_CXX_TESTING )
-#  IF(BUILD_TESTING)
+#  IF(ITK_BUILD_TESTING)
 #
 #    ADD_TEST(MyFilter ${REVIEW_EXAMPLES}
 #      --compare ${BASELINE}/myTestOutputReference.png
@@ -22,6 +22,6 @@ TARGET_LINK_LIBRARIES(ScalarSinglePhaseSparse2D ITKAlgorithms ITKIO ITKBasicFilt
 #            myTestParameters 
 #    )
 #
-#  ENDIF(BUILD_TESTING)
+#  ENDIF(ITK_BUILD_TESTING)
 #ENDIF( NOT ITK_DISABLE_CXX_TESTING )
 

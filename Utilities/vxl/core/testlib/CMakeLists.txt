@@ -24,6 +24,6 @@ SET( testlib_sources
 ADD_LIBRARY( itktestlib ${testlib_sources} )
 TARGET_LINK_LIBRARIES( itktestlib itkvcl )
 
-IF( BUILD_TESTING )
+IF( ITK_BUILD_TESTING )
   SUBDIRS( tests )
-ENDIF( BUILD_TESTING )
+ENDIF( ITK_BUILD_TESTING )
