@@ -407,6 +407,12 @@ SET(ITK_DIR "${CMAKE_BINARY_DIR}" CACHE INTERNAL "ITK dir to be used by subproje
 # be particulary useful to distributed prebuilt ITK witk extended languages
 # support enable
 #
+
+# By default, do not warn when built on machines using only VS Express:
+# (We can't easily tell if we are using VS Express so just testing for MSVC)
+IF(MSVC_VERSION AND NOT DEFINED CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_NO_WARNINGS)
+	SET(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_NO_WARNINGS ON)
+ENDIF(MSVC_VERSION AND NOT DEFINED CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_NO_WARNINGS)
 INCLUDE(InstallRequiredSystemLibraries)
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Insight Toolkit")
 SET(CPACK_PACKAGE_VENDOR "ISC")
