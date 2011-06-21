@@ -402,6 +402,9 @@ ENDIF("${_PREFIX}" STREQUAL "${_BUILD}")
 # set ITK_DIR so it can be used by subprojects
 SET(ITK_DIR "${CMAKE_BINARY_DIR}" CACHE INTERNAL "ITK dir to be used by subprojects")
 
+# to distinguish between debug and release lib
+SET(CMAKE_DEBUG_POSTFIX "d")
+
 #-----------------------------------------------------------------------------
 # Set up CPack support, to be able to distribute ITK binary packages. It will
 # be particulary useful to distributed prebuilt ITK witk extended languages
