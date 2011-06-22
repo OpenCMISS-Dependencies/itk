@@ -5,7 +5,7 @@
 #
 #  BUILD_SHARED_LIBS
 #  ITK_BUILD_TESTING
-#  BUILD_EXAMPLES
+#  ITK_BUILD_EXAMPLES
 #  WARN_DEPRECATED
 #  WARN_DEPRECATED_ONCE
 #  WARN_DEPRECATED_ABORT
@@ -55,7 +55,7 @@ ENDIF( NOT DART_ROOT )
 OPTION( ITK_BUILD_TESTING "Should the tests be built?" YES )
 
 # By default, build examples when building tests.
-OPTION( BUILD_EXAMPLES "Should the examples be built?" ${ITK_BUILD_TESTING} )
+OPTION( ITK_BUILD_EXAMPLES "Should the examples be built?" ${ITK_BUILD_TESTING} )
 
 OPTION( WARN_DEPRECATED "Enable runtime warnings for deprecated functions?" YES )
 OPTION( WARN_DEPRECATED_ONCE "Only warn once per function (if runtime warnings are enabled)?" YES )

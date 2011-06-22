@@ -43,7 +43,7 @@ SET(VXL_CMAKE_DIR "@CMAKE_INSTALL_PREFIX@/share/vxl/cmake")
 # VXL Configuration options.
 SET(VXL_BUILD_SHARED_LIBS "@BUILD_SHARED_LIBS@")
 SET(VXL_BUILD_TESTS "@BUILD_TESTS@")
-SET(VXL_BUILD_EXAMPLES "@BUILD_EXAMPLES@")
+SET(VXL_BUILD_EXAMPLES "@ITK_BUILD_EXAMPLES@")
 
 # VXL has many parts that are optional, depending on selections made
 # when building.  The stanzas below give a consistent (though

@@ -465,7 +465,7 @@ IF(WIN32)
   ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 ENDIF(WIN32)
 
-OPTION(BUILD_EXAMPLES "Build the Examples directory." ON)
+OPTION(ITK_BUILD_EXAMPLES "Build the Examples directory." ON)
 
 OPTION(ITK_USE_SYSTEM_VXL "Use an outside build of VXL." OFF)
 MARK_AS_ADVANCED(ITK_USE_SYSTEM_VXL)
@@ -509,9 +509,9 @@ IF (ITK_BUILD_TESTING)
   SUBDIRS(Testing)
 ENDIF (ITK_BUILD_TESTING)
 
-IF(BUILD_EXAMPLES)
+IF(ITK_BUILD_EXAMPLES)
   SUBDIRS(Examples)
-ENDIF(BUILD_EXAMPLES)
+ENDIF(ITK_BUILD_EXAMPLES)
 
 #-----------------------------------------------------------------------------
 # ITK requires special compiler flags on some platforms.

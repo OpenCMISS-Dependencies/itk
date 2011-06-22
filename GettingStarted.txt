@@ -97,7 +97,7 @@ Insight/Documentation/InsightStart.pdf is highly recommended.
    Insight/Examples directory. Note that this code is heavily
    commented and works with the ITK Software Guide (found at
    http://www.itk.org/ItkSoftwareGuide.pdf).  (To build the examples,
-   make sure the CMake flag "BUILD_EXAMPLES" is on.) You may also wish
+   make sure the CMake flag "ITK_BUILD_EXAMPLES" is on.) You may also wish
    to peruse the many tests found in Insight/Testing/Code.
 
    If you would like to be more ambitious, a separate checkout of ITK
