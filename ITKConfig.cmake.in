@@ -4,6 +4,9 @@
 #
 # This file is configured by ITK and used by the UseITK.cmake module
 # to load ITK's settings for an external project.
+IF(NOT DEFINED _ITKCONFIG_CMAKE)
+SET(_ITKCONFIG_CMAKE TRUE)
+
 @ITK_CONFIG_CODE@
 
 # The ITK include file directories.
@@ -61,4 +64,6 @@ SET(ITK_USE_REGION_VALIDATION_IN_ITERATORS "@ITK_USE_REGION_VALIDATION_IN_ITERAT
 # same for gdcm
 SET(ITK_VXL_DIR "@ITK_VXL_DIR@")
 SET(ITK_GDCM_DIR "@ITK_GDCM_DIR@")
+
+ENDIF(NOT DEFINED _ITKCONFIG_CMAKE)
 
