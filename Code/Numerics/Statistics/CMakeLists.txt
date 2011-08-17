@@ -1,4 +1,9 @@
 # Sources for ITKStatistics library
+IF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+	SET_SOURCE_FILES_PROPERTIES(itkDenseFrequencyContainer.cxx
+		PROPERTIES COMPILE_FLAGS "-fPIC")
+ENDIF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+
 ADD_LIBRARY(ITKStatistics 
   itkNormalVariateGenerator.cxx
   itkDenseFrequencyContainer.cxx
