@@ -93,6 +93,13 @@ IF(NETLIB_FOUND)
 
   AUX_SOURCE_DIRECTORY(Templates vnl_algo_sources)
 
+  IF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+	  SET_SOURCE_FILES_PROPERTIES( Templates/vnl_svd+double-.cxx
+		  Templates/vnl_determinant+double-.cxx
+		  Templates/vnl_qr+double-.cxx
+		  PROPERTIES COMPILE_FLAGS "-fPIC" )
+  ENDIF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+
   ADD_LIBRARY( itkvnl_algo ${vnl_algo_sources})
   TARGET_LINK_LIBRARIES( itkvnl_algo ${NETLIB_LIBRARIES} itkvnl itkv3p_lsqr )
   IF(ITK_LIBRARY_PROPERTIES)

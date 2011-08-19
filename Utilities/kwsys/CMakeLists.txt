@@ -615,6 +615,11 @@ IF(KWSYS_DO_NOT_CLEAN_PUTENV)
     COMPILE_FLAGS -DKWSYS_DO_NOT_CLEAN_PUTENV=1)
 ENDIF(KWSYS_DO_NOT_CLEAN_PUTENV)
 
+IF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+	SET_SOURCE_FILES_PROPERTIES( SystemTools.cxx
+		PROPERTIES COMPILE_FLAGS "-fPIC" )
+ENDIF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+
 #-----------------------------------------------------------------------------
 # Choose a directory for the generated headers.
 IF(NOT KWSYS_HEADER_ROOT)
@@ -866,6 +871,11 @@ ENDFOREACH(h)
 #-----------------------------------------------------------------------------
 # Add the library with the configured name and list of sources.
 IF(KWSYS_C_SRCS OR KWSYS_CXX_SRCS)
+  IF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+	  SET_SOURCE_FILES_PROPERTIES(Directory.cxx SystemTools.cxx
+		  DynamicLoader.cxx RegularExpression.cxx
+		  PROPERTIES COMPILE_FLAGS "-fPIC" )
+  ENDIF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
   ADD_LIBRARY(${KWSYS_NAMESPACE} ${KWSYS_LIBRARY_TYPE}
     ${KWSYS_C_SRCS} ${KWSYS_CXX_SRCS})
   KWSYS_SET_PROPERTY(TARGET ${KWSYS_NAMESPACE} PROPERTY LABELS ${KWSYS_LABELS_LIB})

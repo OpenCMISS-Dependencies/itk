@@ -238,6 +238,22 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
   SET_SOURCE_FILES_PROPERTIES(Templates/vnl_vector_fixed+vnl_rational.3-.cxx PROPERTIES COMPILE_FLAGS -O0)
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
+IF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+	SET_SOURCE_FILES_PROPERTIES( Templates/vnl_vector+double-.cxx
+		Templates/vnl_matrix+double-.cxx
+		Templates/vnl_matrix+long-.cxx
+		Templates/vnl_c_vector+double-.cxx
+		Templates/vnl_c_vector+long-.cxx
+		Templates/vnl_fortran_copy+double-.cxx
+		Templates/vnl_matlab_print+double-.cxx
+		Templates/vnl_diag_matrix+double-.cxx
+		Templates/vnl_vector+long-.cxx
+		vnl_matlab_print_scalar.cxx
+		vnl_matlab_print_format.cxx
+		vnl_math.cxx
+		PROPERTIES COMPILE_FLAGS "-fPIC" )
+ENDIF( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+
 ADD_LIBRARY(itkvnl ${vnl_sources})
 TARGET_LINK_LIBRARIES( itkvnl itkvcl )
 

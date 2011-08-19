@@ -404,6 +404,13 @@ IF(CMAKE_COMPILER_IS_GNUCC)
      blas/dlamch.c
      PROPERTIES COMPILE_FLAGS "-fno-gcse -ffloat-store"
     )
+  IF(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
+	  SET_SOURCE_FILES_PROPERTIES( blas/slamch.c blas/dlamch.c
+		  linpack/dqrdc.c linpack/dqrsl.c blas/drotg.c
+		  linpack/dsvdc.c lapack/double/dlartg.c lapack/single/slartg.c
+		  v3p_netlib_init.c blas/dnrm2.c
+		  PROPERTIES COMPILE_FLAGS "-fPIC" )
+  ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64" )
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 IF(CMAKE_C_COMPILER MATCHES "icc")
