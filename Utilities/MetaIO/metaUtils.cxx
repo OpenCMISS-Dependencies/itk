@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <cstddef>
 
 #include <sys/stat.h>
 #include <fcntl.h>
