@@ -835,14 +835,8 @@ CONFIGURE_FILE(${ITK_SOURCE_DIR}/UseITK.cmake.in
 # Create the ITKConfig.cmake file containing the ITK configuration.
 INCLUDE (${ITK_SOURCE_DIR}/itkGenerateITKConfig.cmake)
 
-message(STATUS ":::${ITK_INSTALL_PACKAGE_DIR_CM24}")
 IF(NOT ITK_INSTALL_NO_DEVELOPMENT)
   INSTALL(EXPORT itk-config DESTINATION ${ITK_INSTALL_PACKAGE_DIR_CM24})
-  #INSTALL(FILES
-  #  ${ITK_BINARY_DIR}/UseITK.cmake
-  #  DESTINATION ${ITK_INSTALL_PACKAGE_DIR_CM24}
-  #  COMPONENT Development
-  #  )
 ENDIF(NOT ITK_INSTALL_NO_DEVELOPMENT)
 
 #-----------------------------------------------------------------------------
