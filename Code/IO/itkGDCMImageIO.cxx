@@ -1079,8 +1079,8 @@ void GDCMImageIO::InternalReadImageInformation(std::ifstream& file)
 
   const gdcm::PixelFormat &pixeltype = image.GetPixelFormat();
 
-  m_RescaleIntercept = image.GetIntercept(0);
-  m_RescaleSlope = image.GetSlope(0);
+  m_RescaleIntercept = image.GetIntercept();
+  m_RescaleSlope = image.GetSlope();
   gdcm::Rescaler r;
   r.SetIntercept( m_RescaleIntercept );
   r.SetSlope( m_RescaleSlope );
@@ -2135,8 +2135,8 @@ void GDCMImageIO::Write(const void* buffer)
     ir.SetSlope( m_RescaleSlope );
     ir.SetPixelFormat( pixeltype );
     ir.SetMinMaxForPixelType( outpixeltype.GetMin(), outpixeltype.GetMax() );
-    image.SetIntercept( 0, m_RescaleIntercept );
-    image.SetSlope( 0, m_RescaleSlope );
+    image.SetIntercept( m_RescaleIntercept );
+    image.SetSlope( m_RescaleSlope );
     char* copy = new char[len];
     ir.InverseRescale(copy,(char*)buffer,numberOfBytes );
     pixeldata.SetByteValue( copy, len);

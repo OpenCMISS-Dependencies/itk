@@ -1866,7 +1866,7 @@ bool TIFFImageIO::CanFindTIFFTag( unsigned int t )
     }
 
   ttag_t tag = t; // 32bits integer
-  const TIFFFieldInfo *fld = TIFFFieldWithTag( m_InternalImage->m_Image, tag );
+  const TIFFField *fld = TIFFFieldWithTag( m_InternalImage->m_Image, tag );
   if( fld == NULL )
     {
     return false;
@@ -1884,7 +1884,8 @@ void *TIFFImageIO::ReadRawByteFromTag( unsigned int t, short &value_count )
     }
   ttag_t tag = t;
   void *raw_data = NULL;
-  const TIFFFieldInfo *fld = TIFFFieldWithTag( m_InternalImage->m_Image, tag );
+  //const TIFFFieldInfo *fld = TIFFFieldWithTag( m_InternalImage->m_Image, tag );
+  const TIFFField *fld = TIFFFieldWithTag( m_InternalImage->m_Image, tag );
   if( fld == NULL )
     {
     itkExceptionMacro( << "fld is NULL" );
@@ -1892,7 +1893,8 @@ void *TIFFImageIO::ReadRawByteFromTag( unsigned int t, short &value_count )
     }
   else
     {
-    if( fld->field_passcount )
+    //if( fld->field_passcount )
+    if( TIFFFieldPassCount(fld) )
       {
       if( TIFFGetField( m_InternalImage->m_Image, tag, &value_count, &raw_data ) != 1 )
         {
@@ -1901,7 +1903,8 @@ void *TIFFImageIO::ReadRawByteFromTag( unsigned int t, short &value_count )
         }
       else
         {
-        if( fld->field_type != TIFF_BYTE )
+        //if( fld->field_type != TIFF_BYTE )
+        if( TIFFFieldDataType(fld) != TIFF_BYTE )
           {
           itkExceptionMacro( << "Tag is not of type TIFF_BYTE" );
           return NULL;

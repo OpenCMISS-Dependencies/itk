@@ -114,7 +114,7 @@ ENDIF(SUN_COMPILER)
 # + allow to run WrapITK tests without the other of the ITK tests
 # + be used by external code like contributions to the insight journal
 ADD_EXECUTABLE(itkTestDriver itkTestDriver.cxx) 
-TARGET_LINK_LIBRARIES(itkTestDriver ITKIO)
+TARGET_LINK_LIBRARIES(itkTestDriver ITKIO itkjpeg8)
 IF(NOT ITK_INSTALL_NO_DEVELOPMENT)
 	INSTALL(TARGETS itkTestDriver EXPORT itk-targets
     RUNTIME DESTINATION ${ITK_INSTALL_BIN_DIR_CM24} COMPONENT Development)
