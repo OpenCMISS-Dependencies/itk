@@ -1,4 +1,4 @@
-PROJECT(GDCM)
+PROJECT(GDCM VERSION 1.2.4)
 
 #-----------------------------------------------------------------------------
 # GDCM version number, usefull for packaging and doxygen doc:
@@ -40,7 +40,7 @@ SET(GDCM_DEBUG 0)
 
 #-----------------------------------------------------------------------------
 # Test if compiler defines the pseudo-macro __FUNCTION__
-IF("GDCM_COMPILER_HAS_FUNCTION" MATCHES "^GDCM_COMPILER_HAS_FUNCTION$")
+IF(GDCM_COMPILER_HAS_FUNCTION MATCHES "^GDCM_COMPILER_HAS_FUNCTION$")
   MESSAGE(STATUS "Checking support for __FUNCTION__ in compiler")
   TRY_COMPILE(GDCM_COMPILER_HAS_FUNCTION
               ${GDCM_BINARY_DIR}/CMakeTmp/Function
@@ -61,7 +61,7 @@ IF("GDCM_COMPILER_HAS_FUNCTION" MATCHES "^GDCM_COMPILER_HAS_FUNCTION$")
       "failed with the following output:\n"
       "${OUTPUT}\n" APPEND)
   ENDIF(GDCM_COMPILER_HAS_FUNCTION)
-ENDIF("GDCM_COMPILER_HAS_FUNCTION" MATCHES "^GDCM_COMPILER_HAS_FUNCTION$")
+ENDIF()
 
 #-----------------------------------------------------------------------------
 # Build directory on which many applications depend
@@ -112,7 +112,7 @@ ENDIF(UNIX)
 # Test if os defines a length for sockaddr
 # only doing the test when we have sys/socket
 IF( ${CMAKE_HAVE_SYS_SOCKET_H} )
-  IF("HAVE_SA_LEN" MATCHES "^HAVE_SA_LEN$")
+  IF(HAVE_SA_LEN MATCHES "^HAVE_SA_LEN$")
     STRING(ASCII 35 POUND)
     FILE(WRITE ${GDCM_BINARY_DIR}/CMakeTmp/gdcmTestHAVESALEN.c
       "${POUND}include <sys/types.h>\n"
@@ -138,7 +138,7 @@ IF( ${CMAKE_HAVE_SYS_SOCKET_H} )
         "failed with the following output:\n"
         "${OUTPUT}\n" APPEND)
     ENDIF(HAVE_SA_LEN)
-  ENDIF("HAVE_SA_LEN" MATCHES "^HAVE_SA_LEN$")
+  ENDIF()
 ENDIF( ${CMAKE_HAVE_SYS_SOCKET_H} )
 
 #-----------------------------------------------------------------------------

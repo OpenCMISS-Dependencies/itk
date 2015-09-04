@@ -30,7 +30,7 @@ SET(ITK_USE_FILE "@ITK_USE_FILE@")
 
 # The include import library targets.
 GET_FILENAME_COMPONENT( SELF_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH )
-INCLUDE( ${SELF_DIR}/itk-targets.cmake )
+INCLUDE( ${SELF_DIR}/itk-config.cmake )
 
 # Whether ITK was built with shared libraries.
 SET(ITK_BUILD_SHARED "@BUILD_SHARED_LIBS@")

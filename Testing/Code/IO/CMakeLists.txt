@@ -27,7 +27,7 @@ SET(IMAGE_COPY "${EXECUTABLE_OUTPUT_PATH}/ImageCopy" CACHE INTERNAL "ImageCopy p
 # Install the executables if we have a destination for them.
 #
 IF(ITK_INSTALL_BIN_DIR_CM24)
-	INSTALL(TARGETS ImageCompare ImageCompareCommand ImageCopy EXPORT itk-targets
+	INSTALL(TARGETS ImageCompare ImageCompareCommand ImageCopy EXPORT itk-config
     RUNTIME DESTINATION ${ITK_INSTALL_BIN_DIR_CM24} COMPONENT Development)
 ENDIF(ITK_INSTALL_BIN_DIR_CM24)
 
