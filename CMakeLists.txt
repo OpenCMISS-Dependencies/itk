@@ -1,13 +1,9 @@
 # This is the root ITK CMakeLists file.
-CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
-IF(COMMAND CMAKE_POLICY)
-  CMAKE_POLICY(SET CMP0003 NEW)
-ENDIF(COMMAND CMAKE_POLICY)
+cmake_minimum_required(VERSION 3.0)
 
-
-PROJECT(ITK)
-INCLUDE_REGULAR_EXPRESSION("^([Nn]rrd|itk|vtk|vnl|vcl|vxl|v3p|f2c|netlib|ce|itpack|DICOM|meta|png|dbh|tif|jpeg|zlib|gdcm).*$")
-SOURCE_GROUP("XML Files" REGULAR_EXPRESSION "[.]xml$")
+project(ITK VERSION 3.20.0 LANGUAGES C CXX)
+include_regular_expression("^([Nn]rrd|itk|vtk|vnl|vcl|vxl|v3p|f2c|netlib|ce|itpack|DICOM|meta|png|dbh|tif|jpeg|zlib|gdcm).*$")
+source_group("XML Files" REGULAR_EXPRESSION "[.]xml$")
 
 # On Visual Studio 8 MS deprecated C. This removes all 1.276E1265 security
 # warnings
@@ -93,11 +89,10 @@ ENDIF(ITK_BUILD_TESTING)
 # Output directories.
 IF(NOT LIBRARY_OUTPUT_PATH)
   SET (LIBRARY_OUTPUT_PATH ${ITK_BINARY_DIR}/bin CACHE INTERNAL "Single output directory for building all libraries.")
-ENDIF(NOT LIBRARY_OUTPUT_PATH)
+ENDIF()
 IF(NOT EXECUTABLE_OUTPUT_PATH)
   SET (EXECUTABLE_OUTPUT_PATH ${ITK_BINARY_DIR}/bin CACHE INTERNAL "Single output directory for building all executables.")
-ENDIF(NOT EXECUTABLE_OUTPUT_PATH)
-MARK_AS_ADVANCED(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
+ENDIF()
 
 SET(ITK_LIBRARY_PATH "${LIBRARY_OUTPUT_PATH}")
 SET(ITK_EXECUTABLE_PATH "${EXECUTABLE_OUTPUT_PATH}")

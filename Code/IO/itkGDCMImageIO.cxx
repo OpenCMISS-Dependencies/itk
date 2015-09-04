@@ -34,7 +34,7 @@
 #include <itksys/SystemTools.hxx>
 #include <itksys/Base64.h>
 
-#if GDCM_MAJOR_VERSION < 2
+#if GDCM_VERSION_MAJOR < 2
 #include "gdcmValEntry.h" //internal of gdcm
 #include "gdcmBinEntry.h" //internal of gdcm
 #include "gdcmFileHelper.h"
