@@ -820,15 +820,15 @@ IF(ITK_USE_SYSTEM_GDCM)
   FIND_PACKAGE(GDCM-ABI REQUIRED CONFIG)
   IF(GDCM-ABI_FOUND)
     SET(ITK_GDCM_LIBRARIES gdcm)
-  ELSE(GDCM_FOUND)
+  ELSE()
     MESSAGE(FATAL_ERROR "Must set GDCM_DIR for ITK_USE_SYSTEM_GDCM.")
-  ENDIF(GDCM_FOUND)
-ELSE(ITK_USE_SYSTEM_GDCM)
+  ENDIF()
+ELSE()
   SET(ITK_GDCM_LIBRARIES itkgdcm)
   SET(GDCM_INCLUDE_DIR
     ${ITK_SOURCE_DIR}/Utilities/gdcm/src
     )
-ENDIF(ITK_USE_SYSTEM_GDCM)
+ENDIF()
 
 #-----------------------------------------------------------------------------
 # Help other projects use ITK.

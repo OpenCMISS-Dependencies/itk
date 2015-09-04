@@ -7,7 +7,7 @@
 #
 
 MACRO(CHECK_BIG_BITFIELD VARIABLE LOCAL_TEST_DIR)
- IF("HAVE_${VARIABLE}" MATCHES "^HAVE_${VARIABLE}$")
+ IF(HAVE_${VARIABLE} MATCHES "^HAVE_${VARIABLE}$")
   MESSAGE(STATUS "Checking to see if this platform supports large bit-fields (>32 bits)")
   TRY_RUN(DUMMY ${VARIABLE}
     ${CMAKE_BINARY_DIR}
@@ -24,6 +24,6 @@ MACRO(CHECK_BIG_BITFIELD VARIABLE LOCAL_TEST_DIR)
     FILE(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
       "Checking to see if this platform supports large bit-fields (>32 bits) failed with "
       "the following output:\n${OUTPUT}\n\n")
-  ENDIF(${VARIABLE})
-  ENDIF("HAVE_${VARIABLE}" MATCHES "^HAVE_${VARIABLE}$")
+  ENDIF()
+ ENDIF()
 ENDMACRO(CHECK_BIG_BITFIELD)

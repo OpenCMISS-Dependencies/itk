@@ -5,7 +5,7 @@
 #
 
 MACRO(CHECK_CPP_DIRECTIVE_EXISTS DIRECTIVE VARIABLE)
- IF("HAVE_${VARIABLE}" MATCHES "^HAVE_${VARIABLE}$")
+ IF(HAVE_${VARIABLE} MATCHES "^HAVE_${VARIABLE}$")
   MESSAGE(STATUS "Checking to see if this platform has the ${DIRECTIVE} C-Preprocessor directive")
   SET(DIRECTIVE ${DIRECTIVE})
   CONFIGURE_FILE(${ITK_SOURCE_DIR}/CMake/CheckCPPDirectiveExists.cxx.in 
@@ -25,6 +25,6 @@ MACRO(CHECK_CPP_DIRECTIVE_EXISTS DIRECTIVE VARIABLE)
     FILE(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
       "Checking to see if this platform supports has the ${DIRECTIVE} C-Preprocessor directive with "
       "the following output:\n${OUTPUT}\n\n")
-  ENDIF(${VARIABLE})
-  ENDIF("HAVE_${VARIABLE}" MATCHES "^HAVE_${VARIABLE}$")
+  ENDIF()
+ ENDIF()
 ENDMACRO(CHECK_CPP_DIRECTIVE_EXISTS)
