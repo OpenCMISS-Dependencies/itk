@@ -851,6 +851,12 @@ IF(NOT ITK_INSTALL_NO_DEVELOPMENT)
   INSTALL(TARGETS itk
     EXPORT itk-config
     INCLUDES DESTINATION include/InsightToolkit)
+  include(CMakePackageConfigHelpers)
+  WRITE_BASIC_PACKAGE_VERSION_FILE(${CMAKE_CURRENT_BINARY_DIR}/itk-config-version.cmake
+        COMPATIBILITY AnyNewerVersion)
+  install(FILES 
+    ${CMAKE_CURRENT_BINARY_DIR}/itk-config-version.cmake
+    DESTINATION ${ITK_INSTALL_PACKAGE_DIR_CM24})
 ENDIF(NOT ITK_INSTALL_NO_DEVELOPMENT)
 
 #-----------------------------------------------------------------------------
