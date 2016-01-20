@@ -145,13 +145,14 @@ SET(ITK_INCLUDE_RELATIVE_DIRS ${ITK_INCLUDE_RELATIVE_DIRS}
   SpatialObject
   Utilities/MetaIO
   Utilities/NrrdIO
-  Utilities/DICOMParser
-  Utilities/expat
-  Utilities/nifti/niftilib
-  Utilities/nifti/znzlib
+  Utilities/expat 
   Utilities/itkExtHdrs
   Utilities
 )
+# removed those dirs as they are not populated by anything
+#Utilities/DICOMParser
+#Utilities/nifti/niftilib
+#Utilities/nifti/znzlib
 
 IF(NOT ITK_USE_SYSTEM_VXL)
   SET(ITK_INCLUDE_RELATIVE_DIRS ${ITK_INCLUDE_RELATIVE_DIRS}

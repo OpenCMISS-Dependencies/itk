@@ -23,6 +23,10 @@ SET( testlib_sources
 
 ADD_LIBRARY( itktestlib ${testlib_sources} )
 TARGET_LINK_LIBRARIES( itktestlib itkvcl )
+install(TARGETS itktestlib
+    EXPORT itk-config
+    DESTINATION lib
+)
 
 IF( ITK_BUILD_TESTING )
   SUBDIRS( tests )

@@ -835,29 +835,8 @@ CONFIGURE_FILE(${ITK_SOURCE_DIR}/UseITK.cmake.in
 # Create the ITKConfig.cmake file containing the ITK configuration.
 INCLUDE (${ITK_SOURCE_DIR}/itkGenerateITKConfig.cmake)
 
-IF(NOT ITK_INSTALL_NO_DEVELOPMENT)
-  INSTALL(EXPORT itk-config DESTINATION ${ITK_INSTALL_PACKAGE_DIR_CM24})
-  SET(_TARGET_LIST itksys itkjpeg8 itkjpeg12 itkjpeg16 itkopenjpeg ITKMetaIO ITKNrrdIO ITKEXPAT
-    ITKznz ITKniftiio ITKDICOMParser itkvcl itkv3p_netlib itkv3p_lsqr itktestlib itkvnl itkvnl_algo
-    itkNetlibSlatec itkgdcm itkvnl_inst ITKCommon ITKNumerics ITKBasicFilters ITKStatistics 
-    ITKAlgorithms ITKSpatialObject ITKIO ITKFEM ITKIOReview ITKTransformIOReview ITKIOMINC2 ITKQuadEdgeMesh)
-  ADD_LIBRARY(itk INTERFACE)
-  FOREACH(_TARGET ${_TARGET_LIST})
-    IF(TARGET ${_TARGET})
-      LIST(APPEND _ACTIVE_TARGETS ${_TARGET})
-    ENDIF()
-  ENDFOREACH()
-  TARGET_LINK_LIBRARIES(itk INTERFACE ${_ACTIVE_TARGETS})
-  INSTALL(TARGETS itk
-    EXPORT itk-config
-    INCLUDES DESTINATION include/InsightToolkit)
-  include(CMakePackageConfigHelpers)
-  WRITE_BASIC_PACKAGE_VERSION_FILE(${CMAKE_CURRENT_BINARY_DIR}/itk-config-version.cmake
-        COMPATIBILITY AnyNewerVersion)
-  install(FILES 
-    ${CMAKE_CURRENT_BINARY_DIR}/itk-config-version.cmake
-    DESTINATION ${ITK_INSTALL_PACKAGE_DIR_CM24})
-ENDIF(NOT ITK_INSTALL_NO_DEVELOPMENT)
+# dont even bother.
+subdirs(WildTurkey)
 
 #-----------------------------------------------------------------------------
 # Add compiler flags ITK needs to work on this platform.  This must be
