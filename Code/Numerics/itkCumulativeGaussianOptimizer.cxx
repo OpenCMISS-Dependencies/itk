@@ -396,7 +396,9 @@ CumulativeGaussianOptimizer
   os << indent << "Verbose = " << m_Verbose << std::endl;
   os << indent << "Fit Error = " << m_FitError << std::endl;
 
+#if !defined(_MSC_VER) || _MSC_VER < 1800
   os << indent << "StopConditionDescription: " << m_StopConditionDescription << std::endl;
+#endif
   if(m_FinalSampledArray)
     {
     os << indent << "Final Sampled Array = " << m_FinalSampledArray << std::endl;

@@ -21,7 +21,7 @@ int main() { return 0; }
 
 #ifdef VCL_HAS_EXPORT
 
-export
+VCL_TEMPLATE_EXPORT
 template <class T, int N>
 struct plither
 {

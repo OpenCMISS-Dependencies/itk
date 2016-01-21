@@ -12,7 +12,7 @@
 //   10/4/2001 Ian Scott (Manchester) Converted perceps header to doxygen
 // \endverbatim
 
-#include <vcl_compiler.h> // for "export" keyword
+#include <vcl_compiler.h> // for "VCL_TEMPLATE_EXPORT" keyword
 
 //: Holds prime factor information
 // Helper class used by the vnl_fft_xd<> FFT routines
@@ -21,7 +21,7 @@
 //   $N = 2^P 3^Q 5^R$
 // split N into its primefactors (2, 3, 5)
 
-export template <class T>
+VCL_TEMPLATE_EXPORT template <class T>
 struct vnl_fft_prime_factors
 {
 private:
