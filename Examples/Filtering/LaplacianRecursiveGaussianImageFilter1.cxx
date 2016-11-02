@@ -1,38 +1,30 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: LaplacianRecursiveGaussianImageFilter1.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-04-06 00:19:18 $
-  Version:   $Revision: 1.14 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
-//    OUTPUTS: {LaplacianRecursiveGaussianImageFilteroutput3.mha}
-//    3
+//    INPUTS:  {BrainProtonDensitySlice.png}
+//    ARGUMENTS:    LaplacianRecursiveGaussianImageFilterOutput3.mha 3
 //    OUTPUTS: {LaplacianRecursiveGaussianImageFilterOutput3.png}
 //  Software Guide : EndCommandLineArgs
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
-//    OUTPUTS: {LaplacianRecursiveGaussianImageFilteroutput5.mha}
-//    5
+//    INPUTS:  {BrainProtonDensitySlice.png}
+//    ARGUMENTS:    LaplacianRecursiveGaussianImageFilterOutput5.mha 5
 //    OUTPUTS: {LaplacianRecursiveGaussianImageFilterOutput5.png}
 //  Software Guide : EndCommandLineArgs
 
@@ -44,7 +36,7 @@
 //
 //  \index{itk::RecursiveGaussianImageFilter}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 #include "itkImage.h"
@@ -58,7 +50,7 @@
 //
 //  \index{itk::RecursiveGaussianImageFilter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkRecursiveGaussianImageFilter.h"
@@ -68,19 +60,19 @@
 
 int main( int argc, char * argv[] )
 {
-  if( argc < 4 ) 
-    { 
+  if( argc < 4 )
+    {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "  inputImageFile  outputImageFile  sigma [RescaledOutputImageFile] " << std::endl;
     return EXIT_FAILURE;
     }
 
-  
+
   //  Software Guide : BeginLatex
   //
   //  Types should be selected on the desired input and output pixel types.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef    float    InputPixelType;
@@ -92,7 +84,7 @@ int main( int argc, char * argv[] )
   //
   //  The input and output image types are instantiated using the pixel types.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Image< InputPixelType,  2 >   InputImageType;
@@ -110,7 +102,7 @@ int main( int argc, char * argv[] )
   //
   //  \index{itk::RecursiveGaussianImageFilter!Instantiation}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RecursiveGaussianImageFilter<
@@ -137,7 +129,7 @@ int main( int argc, char * argv[] )
   //  \index{itk::RecursiveGaussianImageFilter!New()}
   //  \index{itk::RecursiveGaussianImageFilter!Pointer}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   FilterType::Pointer filterX1 = FilterType::New();
@@ -155,7 +147,7 @@ int main( int argc, char * argv[] )
   //
   //  \index{RecursiveGaussianImageFilter!SetDirection()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filterX1->SetDirection( 0 );   // 0 --> X direction
@@ -180,7 +172,7 @@ int main( int argc, char * argv[] )
   //
   //  \index{RecursiveGaussianImageFilter!SetOrder()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filterX1->SetOrder( FilterType::ZeroOrder );
@@ -203,7 +195,7 @@ int main( int argc, char * argv[] )
   //  \end{equation}
   //
   //  In applications that use the Gaussian as a solution of the diffusion
-  //  equation it is desirable to use a normalization that preserve the
+  //  equation it is desirable to use a normalization that preserves the
   //  integral of the signal. This last approach can be seen as a conservation
   //  of mass principle. This is represented by the following equation.
   //
@@ -214,13 +206,13 @@ int main( int argc, char * argv[] )
   //  The \doxygen{RecursiveGaussianImageFilter} has a boolean flag that allows
   //  users to select between these two normalization options. Selection is
   //  done with the method \code{SetNormalizeAcrossScale()}. Enable this flag
-  //  to analyzing an image across scale-space.  In the current example, this
+  //  when analyzing an image across scale-space.  In the current example, this
   //  setting has no impact because we are actually renormalizing the output to
   //  the dynamic range of the reader, so we simply disable the flag.
   //
   //  \index{RecursiveGaussianImageFilter!SetNormalizeAcrossScale()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   const bool normalizeAcrossScale = false;
@@ -243,7 +235,7 @@ int main( int argc, char * argv[] )
   //  this capability is less interesting, though, since we only want to smooth
   //  the image in all directions.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filterX1->SetInput( reader->GetOutput() );
@@ -265,7 +257,7 @@ int main( int argc, char * argv[] )
   //  \index{itk::RecursiveGaussianImageFilter!SetSigma()}
   //  \index{SetSigma()!itk::RecursiveGaussianImageFilter}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   const double sigma = atof( argv[3] );
 
@@ -284,12 +276,12 @@ int main( int argc, char * argv[] )
   //
   //  \index{itk::AddImageFilter!Instantiation}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::AddImageFilter< 
-                OutputImageType, 
-                OutputImageType, 
+  typedef itk::AddImageFilter<
+                OutputImageType,
+                OutputImageType,
                 OutputImageType > AddFilterType;
 
   AddFilterType::Pointer addFilter = AddFilterType::New();
@@ -304,19 +296,19 @@ int main( int argc, char * argv[] )
   //  The filters are triggered by invoking \code{Update()} on the Add filter
   //  at the end of the pipeline.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   try
     {
     addFilter->Update();
     }
-  catch( itk::ExceptionObject & err ) 
-    { 
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
+  catch( itk::ExceptionObject & err )
+    {
+    std::cout << "ExceptionObject caught !" << std::endl;
+    std::cout << err << std::endl;
     return EXIT_FAILURE;
-    } 
+    }
   // Software Guide : EndCodeSnippet
 
 
@@ -325,7 +317,7 @@ int main( int argc, char * argv[] )
   //  The resulting image could be saved to a file using the
   //  \doxygen{ImageFileWriter} class.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef  float WritePixelType;
@@ -345,35 +337,30 @@ int main( int argc, char * argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   // \begin{figure}
   // \center
-  // \includegraphics[width=0.44\textwidth]{LaplacianRecursiveGaussianImageFilterOutput3.eps}
-  // \includegraphics[width=0.44\textwidth]{LaplacianRecursiveGaussianImageFilterOutput5.eps}
+  // \includegraphics[width=0.44\textwidth]{LaplacianRecursiveGaussianImageFilterOutput3}
+  // \includegraphics[width=0.44\textwidth]{LaplacianRecursiveGaussianImageFilterOutput5}
   // \itkcaption[Output of the LaplacianRecursiveGaussianImageFilter.]{Effect of the
   // LaplacianRecursiveGaussianImageFilter on a slice from a MRI proton density image
   // of the brain.}
   // \label{fig:LaplacianRecursiveGaussianImageFilterInputOutput}
   // \end{figure}
   //
-  //  Figure~\ref{fig:LaplacianRecursiveGaussianImageFilterInputOutput} illustrates the
-  //  effect of this filter on a MRI proton density image of the brain using
-  //  $\sigma$ values of $3$ (left) and $5$ (right).  The figure shows how the
-  //  attenuation of noise can be regulated by selecting the appropriate
-  //  standard deviation.  This type of scale-tunable filter is suitable for
-  //  performing scale-space analysis.
-  //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   // Rescale float outputs to png for inclusion in the Software guide
-  // 
-  if (argc > 4) 
+  //
+  if (argc > 4)
     {
-    typedef unsigned char    CharPixelType; 
-    typedef itk::Image<CharPixelType, 2>    CharImageType;
-    typedef itk::RescaleIntensityImageFilter< OutputImageType, CharImageType> 
+    typedef unsigned char                CharPixelType;
+    typedef itk::Image<CharPixelType, 2> CharImageType;
+
+    typedef itk::RescaleIntensityImageFilter< OutputImageType, CharImageType>
                                                             RescaleFilterType;
+
     RescaleFilterType::Pointer rescale = RescaleFilterType::New();
     rescale->SetInput( addFilter->GetOutput() );
     rescale->SetOutputMinimum(   0 );
@@ -384,8 +371,7 @@ int main( int argc, char * argv[] )
     charWriter->SetInput( rescale->GetOutput() );
     charWriter->Update();
     }
-     
-  
+
+
   return EXIT_SUCCESS;
 }
-

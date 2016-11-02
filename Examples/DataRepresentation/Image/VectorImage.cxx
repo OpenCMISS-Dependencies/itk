@@ -1,22 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: VectorImage.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:11:44 $
-  Version:   $Revision: 1.13 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 // Software Guide : BeginLatex
 //
@@ -39,19 +37,18 @@
 //
 // The first step is to include the header file of the Vector class.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkVector.h"
 // Software Guide : EndCodeSnippet
-
 
 #include "itkImage.h"
 
 int main(int, char *[])
 {
   // Software Guide : BeginLatex
-  // 
+  //
   // The Vector class is templated over the type used to represent
   // the coordinate in space and over the dimension of the space.  In this example,
   // we want the vector dimension to match the image dimension, but this is by
@@ -62,7 +59,7 @@ int main(int, char *[])
   // \index{itk::Vector!itk::Image}
   // \index{itk::Image!Vector pixel}
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Vector< float, 3 >       PixelType;
@@ -73,21 +70,13 @@ int main(int, char *[])
   ImageType::Pointer image = ImageType::New();
 
   // The image region should be initialized
-  ImageType::IndexType start;
-  ImageType::SizeType  size;
-
-  size[0]  = 200;  // size along X
-  size[1]  = 200;  // size along Y
-  size[2]  = 200;  // size along Z
-
-  start[0] =   0;  // first index on X
-  start[1] =   0;  // first index on Y
-  start[2] =   0;  // first index on Z
+  const ImageType::IndexType start = {{0,0,0}}; //First index at {X,Y,Z}
+  const ImageType::SizeType  size = {{200,200,200}}; //Size of {X,Y,Z}
 
   ImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( start );
-  
+
   // Pixel data is allocated
   image->SetRegions( region );
   image->Allocate();
@@ -103,12 +92,7 @@ int main(int, char *[])
   // vector value.
   image->FillBuffer( initialValue );
 
-  ImageType::IndexType pixelIndex;
- 
-  pixelIndex[0] = 27;   // x position
-  pixelIndex[1] = 29;   // y position
-  pixelIndex[2] = 37;   // z position
-
+  const ImageType::IndexType pixelIndex = {{27,29,37}}; //Position {X,Y,Z}
 
   // Software Guide : BeginLatex
   //
@@ -116,38 +100,36 @@ int main(int, char *[])
   // \doxygen{FixedArray} class. This makes it possible to access the
   // Vector's components using index notation.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   ImageType::PixelType   pixelValue;
-
   pixelValue[0] =  1.345;   // x component
   pixelValue[1] =  6.841;   // y component
   pixelValue[2] =  3.295;   // x component
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
   // We can now store this vector in one of the image pixels by defining an
   // index and invoking the \code{SetPixel()} method.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   image->SetPixel(   pixelIndex,   pixelValue  );
   // Software Guide : EndCodeSnippet
 
-
-  // The GetPixel method can also be used to read Vectors 
+  // The GetPixel method can also be used to read Vectors
   // pixels from the image
   ImageType::PixelType value = image->GetPixel( pixelIndex );
 
+  std::cout << value << std::endl;
 
   // Lets repeat that both \code{SetPixel()} and \code{GetPixel()} are
   // inefficient and should only be used for debugging purposes or for
   // implementing interactions with a graphical user interface such as
   // querying pixel value by clicking with the mouse.
 
-  return 0;
+  return EXIT_SUCCESS;
 }

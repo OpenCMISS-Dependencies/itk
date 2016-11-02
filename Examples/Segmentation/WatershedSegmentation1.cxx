@@ -1,46 +1,40 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: WatershedSegmentation1.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:44:43 $
-  Version:   $Revision: 1.25 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#ifdef _MSC_VER
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//  INPUTS: {VisibleWomanEyeSlice.png}
-//  OUTPUTS: {WatershedSegmentation1Output1.png}
-//  2 10 0 0.05 1
+//    INPUTS:  {VisibleWomanEyeSlice.png}
+//    OUTPUTS: {WatershedSegmentation1Output1.png}
+//    ARGUMENTS:    2 10 0 0.05 1
 //  Software Guide : EndCommandLineArgs
 //  Software Guide : BeginCommandLineArgs
-//  INPUTS: {VisibleWomanEyeSlice.png}
-//  OUTPUTS: {WatershedSegmentation1Output2.png}
-//  2 10 0.001 0.15 0
+//    INPUTS:  {VisibleWomanEyeSlice.png}
+//    OUTPUTS: {WatershedSegmentation1Output2.png}
+//    ARGUMENTS:    2 10 0.001 0.15 0
 //  Software Guide : EndCommandLineArgs
 
 // Software Guide : BeginLatex
 //
 // The following example illustrates how to preprocess and segment images
 // using the \doxygen{WatershedImageFilter}. Note that the care with which
-// the data is preprocessed will greatly affect the quality of your result.
+// the data are preprocessed will greatly affect the quality of your result.
 // Typically, the best results are obtained by preprocessing the original
 // image with an edge-preserving diffusion filter, such as one of the
-// anisotropic diffusion filters, or with the bilateral image filter.  As
+// anisotropic diffusion filters, or the bilateral image filter.  As
 // noted in Section~\ref{sec:AboutWatersheds}, the height function used as
 // input should be created such that higher positive values correspond to
 // object boundaries.  A suitable height function for many applications can
@@ -51,10 +45,10 @@
 // \doxygen{VectorGradientMagnitudeImageFilter} is used to generate the
 // height function.  We begin by including all preprocessing filter header
 // files and the header file for the WatershedImageFilter.  We
-// use the vector versions of these filters because the input data is a color
+// use the vector versions of these filters because the input dataset is a color
 // image.
 //
-// 
+//
 // Software Guide : EndLatex
 #include <iostream>
 
@@ -67,7 +61,6 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkVectorCastImageFilter.h"
-#include "itkUnaryFunctorImageFilter.h"
 #include "itkScalarToRGBPixelFunctor.h"
 
 int main( int argc, char *argv[] )
@@ -77,27 +70,27 @@ int main( int argc, char *argv[] )
     std::cerr << "Missing Parameters " << std::endl;
     std::cerr << "Usage: " << argv[0];
     std::cerr << " inputImage outputImage conductanceTerm diffusionIterations lowerThreshold outputScaleLevel gradientMode " << std::endl;
-    return 1;
+    return EXIT_FAILURE;
     }
-  
+
   // Software Guide : BeginLatex
   //
   // We now declare the image and pixel types to use for instantiation of the
   // filters.  All of these filters expect real-valued pixel types in order to
-  // work properly.  The preprocessing stages are done directly on the
-  // vector-valued data and the segmentation is done using floating point
+  // work properly.  The preprocessing stages are applied directly to the
+  // vector-valued data and the segmentation uses floating point
   // scalar data.  Images are converted from RGB pixel type to
   // numerical vector type using \doxygen{VectorCastImageFilter}.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RGBPixel<unsigned char>   RGBPixelType;
-  typedef itk::Image<RGBPixelType, 2>    RGBImageType;
-  typedef itk::Vector<float, 3>          VectorPixelType;
-  typedef itk::Image<VectorPixelType, 2> VectorImageType;
-  typedef itk::Image<unsigned long, 2>   LabeledImageType;
-  typedef itk::Image<float, 2>           ScalarImageType;
+  typedef itk::RGBPixel< unsigned char >       RGBPixelType;
+  typedef itk::Image< RGBPixelType, 2 >        RGBImageType;
+  typedef itk::Vector< float, 3 >              VectorPixelType;
+  typedef itk::Image< VectorPixelType, 2 >     VectorImageType;
+  typedef itk::Image< itk::IdentifierType, 2 > LabeledImageType;
+  typedef itk::Image< float, 2 >               ScalarImageType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -108,23 +101,25 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader<RGBImageType> FileReaderType;
-  typedef itk::VectorCastImageFilter<RGBImageType, VectorImageType> 
-    CastFilterType;
-  typedef itk::VectorGradientAnisotropicDiffusionImageFilter<VectorImageType,
-    VectorImageType>  DiffusionFilterType;
-  typedef itk::VectorGradientMagnitudeImageFilter<VectorImageType>
-    GradientMagnitudeFilterType; 
-  typedef itk::WatershedImageFilter<ScalarImageType> WatershedFilterType;
+  typedef itk::ImageFileReader< RGBImageType >   FileReaderType;
+  typedef itk::VectorCastImageFilter< RGBImageType, VectorImageType >
+                                                 CastFilterType;
+  typedef itk::VectorGradientAnisotropicDiffusionImageFilter<
+                        VectorImageType, VectorImageType >
+                                                 DiffusionFilterType;
+  typedef itk::VectorGradientMagnitudeImageFilter< VectorImageType >
+                                                 GradientMagnitudeFilterType;
+  typedef itk::WatershedImageFilter< ScalarImageType >
+                                                 WatershedFilterType;
   // Software Guide : EndCodeSnippet
 
   typedef itk::ImageFileWriter<RGBImageType> FileWriterType;
 
   FileReaderType::Pointer reader = FileReaderType::New();
   reader->SetFileName(argv[1]);
-  
+
   CastFilterType::Pointer caster = CastFilterType::New();
-  
+
   // Software Guide : BeginLatex
   //
   // Next we instantiate the filters and set their parameters.  The first
@@ -138,7 +133,7 @@ int main( int argc, char *argv[] )
   // the ITK anisotropic diffusion filters.
   //
   // Software Guide : EndLatex
-  
+
   // Software Guide : BeginCodeSnippet
   DiffusionFilterType::Pointer diffusion = DiffusionFilterType::New();
   diffusion->SetNumberOfIterations( atoi(argv[4]) );
@@ -149,13 +144,13 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginLatex
   //
   // The ITK gradient magnitude filter for vector-valued images can optionally
-  // take several parameters.  Here we allow only enabling or disabling 
+  // take several parameters.  Here we allow only enabling or disabling
   // of principal component analysis.
   //
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  GradientMagnitudeFilterType::Pointer 
+  GradientMagnitudeFilterType::Pointer
     gradient = GradientMagnitudeFilterType::New();
   gradient->SetUsePrincipleComponents(atoi(argv[7]));
   // Software Guide : EndCodeSnippet
@@ -187,7 +182,7 @@ int main( int argc, char *argv[] )
   // \subdoxygen{Functor}{ScalarToRGBPixelFunctor} class is a special
   // function object designed to hash a scalar value into an
   // \doxygen{RGBPixel}. Plugging this functor into the
-  // \doxygen{UnaryFunctorImageFilter} creates an image filter for that
+  // \doxygen{UnaryFunctorImageFilter} creates an image filter which
   // converts scalar images to RGB images.
   //
   // Software Guide : EndLatex
@@ -200,7 +195,7 @@ int main( int argc, char *argv[] )
   ColorMapFilterType::Pointer colormapper = ColorMapFilterType::New();
   // Software Guide : EndCodeSnippet
 
-  
+
   FileWriterType::Pointer writer = FileWriterType::New();
   writer->SetFileName(argv[2]);
 
@@ -220,25 +215,26 @@ int main( int argc, char *argv[] )
   writer->SetInput(colormapper->GetOutput());
   // Software Guide : EndCodeSnippet
 
-  try 
+  try
     {
     writer->Update();
     }
   catch (itk::ExceptionObject &e)
     {
     std::cerr << e << std::endl;
+    return EXIT_FAILURE;
     }
-    
-  return 0;
+
+  return EXIT_SUCCESS;
 }
 
 //
 // Software Guide : BeginLatex
 //
 // \begin{figure} \center
-// \includegraphics[width=0.32\textwidth]{VisibleWomanEyeSlice.eps}
-// \includegraphics[width=0.32\textwidth]{WatershedSegmentation1Output1.eps}
-// \includegraphics[width=0.32\textwidth]{WatershedSegmentation1Output2.eps}
+// \includegraphics[width=0.32\textwidth]{VisibleWomanEyeSlice}
+// \includegraphics[width=0.32\textwidth]{WatershedSegmentation1Output1}
+// \includegraphics[width=0.32\textwidth]{WatershedSegmentation1Output2}
 // \itkcaption[Watershed segmentation output]{Segmented section of Visible Human
 // female head and neck cryosection data.  At left is the original image.  The
 // image in the middle was generated with parameters: conductance = 2.0,
@@ -274,5 +270,5 @@ int main( int argc, char *argv[] )
 // significant than the number of pixels in the image.  A very large, but very
 // flat input take less time to segment than a very small, but very detailed
 // input.
-// 
+//
 // Software Guide : EndLatex

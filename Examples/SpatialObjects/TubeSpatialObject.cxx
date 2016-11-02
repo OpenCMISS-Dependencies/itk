@@ -1,22 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: TubeSpatialObject.cxx,v $
-  Language:  C++
-  Date:      $Date: 2005-03-24 16:45:19 $
-  Version:   $Revision: 1.14 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 // Software Guide : BeginLatex
 //
@@ -27,11 +25,10 @@
 // some normals and other properties. Let's start by including the
 // appropriate header file.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkTubeSpatialObject.h"
-#include "itkTubeSpatialObjectPoint.h"
 // Software Guide : EndCodeSnippet
 
 int main( int , char *[] )
@@ -43,7 +40,7 @@ int main( int , char *[] )
 //
 // First we define some type definitions and we create the tube.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
   unsigned int i;
 
@@ -60,35 +57,35 @@ int main( int , char *[] )
 //
 // We create a point list and we set:
 // \begin{enumerate}
-// \item The position of each point in the local coordinate system using the 
+// \item The position of each point in the local coordinate system using the
 // \code{SetPosition()} method.
 // \item The radius of the tube at this position using \code{SetRadius()}.
-// \item The two normals at the tube is set using \code{SetNormal1()} and 
+// \item The two normals at the tube is set using \code{SetNormal1()} and
 // \code{SetNormal2()}.
 // \item The color of the point is set to red in our case.
-// \end{enumerate}  
+// \end{enumerate}
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   TubeType::PointListType list;
-  for( i=0; i<5; i++)
+  for (i=0; i<5; ++i)
     {
     TubePointType p;
     p.SetPosition(i,i+1,i+2);
     p.SetRadius(1);
     VectorType normal1;
     VectorType normal2;
-    for(unsigned int j=0;j<3;j++)
+    for (unsigned int j=0; j<3; ++j)
       {
       normal1[j]=j;
       normal2[j]=j*2;
       }
-    
+
     p.SetNormal1(normal1);
     p.SetNormal2(normal2);
     p.SetColor(1,0,0,1);
-  
+
     list.push_back(p);
     }
 // Software Guide : EndCodeSnippet
@@ -99,7 +96,7 @@ int main( int , char *[] )
 // set its identification number with \code{SetId()} and, at the end, we add
 // the list of points previously created.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   tube->GetProperty()->SetName("Tube1");
@@ -112,7 +109,7 @@ int main( int , char *[] )
 // The \code{GetPoints()} method return a reference to the internal list of
 // points of the object.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   TubeType::PointListType pointList = tube->GetPoints();
@@ -125,7 +122,7 @@ int main( int , char *[] )
 // The \code{ComputeTangentAndNormals()} function computes the normals and
 // the tangent for each point using finite differences.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
   tube->ComputeTangentAndNormals();
 // Software Guide : EndCodeSnippet
@@ -139,7 +136,7 @@ int main( int , char *[] )
 // \doxygen{CovariantVector} and \code{GetTangent()} returns a
 // \doxygen{Vector}.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   TubeType::PointListType::const_iterator it = tube->GetPoints().begin();
@@ -159,5 +156,5 @@ int main( int , char *[] )
     }
 // Software Guide : EndCodeSnippet
 
-  return 0;
+  return EXIT_SUCCESS;
 }

@@ -1,23 +1,21 @@
 /*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: NeighborhoodIterators5.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-16 23:38:28 $
-  Version:   $Revision: 1.16 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-#include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
@@ -35,7 +33,7 @@
 // size, and an end index.  Slices simplify the implementation of certain
 // neighborhood calculations.  They also provide a mechanism for taking inner
 // products with subregions of neighborhoods.
-// 
+//
 // Suppose, for example, that we want to take partial derivatives in the $y$
 // direction of a neighborhood, but offset those derivatives by one pixel
 // position along the positive $x$ direction.  For a $3\times3$, 2D
@@ -67,16 +65,16 @@ int main( int argc, char ** argv )
     std::cerr << argv[0]
               << " inputImageFile outputImageFile sigma"
               << std::endl;
-    return -1;
+    return EXIT_FAILURE;
     }
 
   typedef float                             PixelType;
   typedef itk::Image< PixelType, 2 >        ImageType;
   typedef itk::ImageFileReader< ImageType > ReaderType;
- 
+
   typedef itk::ConstNeighborhoodIterator< ImageType > NeighborhoodIteratorType;
   typedef itk::ImageRegionIterator< ImageType>        IteratorType;
-  
+
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
@@ -85,20 +83,20 @@ int main( int argc, char ** argv )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
-    return -1;
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
 
   ImageType::Pointer output = ImageType::New();
   output->SetRegions(reader->GetOutput()->GetRequestedRegion());
   output->Allocate();
-  
+
   itk::NeighborhoodInnerProduct<ImageType> innerProduct;
-   
+
   typedef itk::NeighborhoodAlgorithm
     ::ImageBoundaryFacesCalculator< ImageType > FaceCalculatorType;
-  
+
   FaceCalculatorType faceCalculator;
   FaceCalculatorType::FaceListType faceList;
   FaceCalculatorType::FaceListType::iterator fit;
@@ -141,7 +139,7 @@ int main( int argc, char ** argv )
 // the square \code{radius} instead of the radius of the operator.  The
 // inner product is taken using a slice along the axial direction corresponding
 // to the current iteration.  Note the use of \code{GetSlice()} to return the
-// proper slice from the iterator itself.  \code{GetSlice()} can only be used 
+// proper slice from the iterator itself.  \code{GetSlice()} can only be used
 // to return the slice along the complete extent of the axial direction of a
 // neighborhood.
 //
@@ -150,7 +148,7 @@ int main( int argc, char ** argv )
 // Software Guide : BeginCodeSnippet
   ImageType::Pointer input = reader->GetOutput();
   faceList = faceCalculator(input, output->GetRequestedRegion(), radius);
-   
+
   for (unsigned int i = 0; i < ImageType::ImageDimension; ++i)
     {
     for ( fit=faceList.begin(); fit != faceList.end(); ++fit )
@@ -162,7 +160,7 @@ int main( int argc, char ** argv )
         out.Set( innerProduct(it.GetSlice(i), it, gaussianOperator) );
         }
       }
-    
+
     // Swap the input and output buffers
     if (i != ImageType::ImageDimension - 1)
       {
@@ -173,7 +171,7 @@ int main( int argc, char ** argv )
     }
 // Software Guide : EndCodeSnippet
 
-  
+
 // Software Guide : BeginLatex
 //
 // This technique produces exactly the same results as the previous example.  A
@@ -189,16 +187,16 @@ int main( int argc, char ** argv )
   typedef unsigned char                          WritePixelType;
   typedef itk::Image< WritePixelType, 2 >        WriteImageType;
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
-  
+
   typedef itk::RescaleIntensityImageFilter< ImageType,
     WriteImageType > RescaleFilterType;
-  
+
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
-  
+
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
   rescaler->SetInput(output);
-  
+
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
   writer->SetInput( rescaler->GetOutput() );
@@ -208,10 +206,10 @@ int main( int argc, char ** argv )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl;
-    std::cout << err << std::endl;
-    return -1;
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
 
-  return 0;
+  return EXIT_SUCCESS;
 }

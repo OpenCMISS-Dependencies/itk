@@ -1,47 +1,42 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: NeighborhoodConnectedImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:44:42 $
-  Version:   $Revision: 1.29 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 // Software Guide : BeginLatex
 //
 // The following example illustrates the use of the
 // \doxygen{NeighborhoodConnectedImageFilter}.  This filter is a close variant
 // of the \doxygen{ConnectedThresholdImageFilter}. On one hand, the
-// ConnectedThresholdImageFilter accepts a pixel in the region if its intensity
-// is in the interval defined by two user-provided threshold values.  The
-// NeighborhoodConnectedImageFilter, on the other hand, will only accept a
-// pixel if \textbf{all} its neighbors have intensities that fit in the
-// interval. The size of the neighborhood to be considered around each pixel is
-// defined by a user-provided integer radius. 
+// \code{ConnectedThresholdImageFilter} considers only the value of the pixel
+// itself when determining whether it belongs to the region: if its value is
+// within the interval [lowerThreshold,upperThreshold] it is included,
+// otherwise it is excluded.  \code{NeighborhoodConnectedImageFilter},
+// on the other hand, considers a user-defined neighborhood surrounding the
+// pixel, requiring that the intensity of \textbf{each} neighbor be within
+// the interval for it to be included.
 //
 // The reason for considering the neighborhood intensities instead of only the
 // current pixel intensity is that small structures are less likely to be
 // accepted in the region. The operation of this filter is equivalent to
-// applying the ConnectedThresholdImageFilter followed by mathematical
+// applying \code{ConnectedThresholdImageFilter} followed by mathematical
 // morphology erosion using a structuring element of the same shape as
-// the neighborhood provided to the NeighborhoodConnectedImageFilter.
+// the neighborhood provided to the \code{NeighborhoodConnectedImageFilter}.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
@@ -58,35 +53,36 @@
 //  The \doxygen{CurvatureFlowImageFilter} is used here to smooth the image
 //  while preserving edges.
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkCurvatureFlowImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 int main( int argc, char *argv[] )
 {
+
   if( argc < 7 )
     {
-    std::cerr << "Missing Parameters " << std::endl;
-    std::cerr << "Usage: " << argv[0];
-    std::cerr << " inputImage  outputImage seedX seedY lowerThreshold upperThreshold" << std::endl;
-    return 1;
+    std::cerr << "Missing Parameters." << std::endl;
+    std::cerr << "Usage: " << argv[0]
+              << " inputImage outputImage"
+              << " seedX seedY"
+              << " lowerThreshold upperThreshold" << std::endl;
+    return EXIT_FAILURE;
     }
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  We now define the image type using a particular pixel type and image
   //  dimension. In this case the \code{float} type is used for the pixels due
-  //  to the requirements of the smoothing filter. 
+  //  to the requirements of the smoothing filter.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef   float           InternalPixelType;
@@ -101,7 +97,7 @@ int main( int argc, char *argv[] )
   typedef itk::CastImageFilter< InternalImageType, OutputImageType >
     CastingFilterType;
   CastingFilterType::Pointer caster = CastingFilterType::New();
-                        
+
 
   // We instantiate reader and writer types
   //
@@ -116,37 +112,37 @@ int main( int argc, char *argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  The smoothing filter type is instantiated using the image type as
   //  a template parameter.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   itk::CurvatureFlowImageFilter<InternalImageType, InternalImageType>
+  typedef itk::CurvatureFlowImageFilter<InternalImageType, InternalImageType>
     CurvatureFlowImageFilterType;
   // Software Guide : EndCodeSnippet
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  Then, the filter is created by invoking the \code{New()} method and
   //  assigning the result to a \doxygen{SmartPointer}.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  CurvatureFlowImageFilterType::Pointer smoothing = 
+  CurvatureFlowImageFilterType::Pointer smoothing =
                          CurvatureFlowImageFilterType::New();
   // Software Guide : EndCodeSnippet
 
 
   //  Software Guide : BeginLatex
-  //  
-  //  We now declare the type of the region growing filter. In this case it is
-  //  the NeighborhoodConnectedImageFilter. 
   //
-  //  Software Guide : EndLatex 
+  //  We now declare the type of the region growing filter. In this case it is
+  //  the NeighborhoodConnectedImageFilter.
+  //
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::NeighborhoodConnectedImageFilter<InternalImageType,
@@ -154,25 +150,26 @@ int main( int argc, char *argv[] )
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
-  //  
-  //  One filter of this class is constructed using the \code{New()} method. 
   //
-  //  Software Guide : EndLatex 
+  //  One filter of this class is constructed using the \code{New()} method.
+  //
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  ConnectedFilterType::Pointer neighborhoodConnected = ConnectedFilterType::New();
+  ConnectedFilterType::Pointer neighborhoodConnected
+                                                 = ConnectedFilterType::New();
   // Software Guide : EndCodeSnippet
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  Now it is time to create a simple, linear data processing pipeline. A
   //  file reader is added at the beginning of the pipeline and a cast
   //  filter and writer are added at the end. The cast filter is required
   //  to convert \code{float} pixel types to integer types since only a
   //  few image file formats support \code{float} types.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   smoothing->SetInput( reader->GetOutput() );
@@ -184,12 +181,12 @@ int main( int argc, char *argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  The CurvatureFlowImageFilter requires a couple of parameters to
-  //  be defined. The following are typical values for $2D$ images. However
+  //  \code{CurvatureFlowImageFilter} requires a couple of parameters.
+  //  The following are typical values for $2D$ images. However,
   //  they may have to be adjusted depending on the amount of noise present in
   //  the input image.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   smoothing->SetNumberOfIterations( 5 );
@@ -199,7 +196,7 @@ int main( int argc, char *argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  The NeighborhoodConnectedImageFilter requires that two main parameters
+  //  \code{NeighborhoodConnectedImageFilter} requires that two main parameters
   //  are specified. They are the lower and upper thresholds of the interval
   //  in which intensity values must fall to be included in the
   //  region. Setting these two values too close will not allow enough
@@ -209,18 +206,18 @@ int main( int argc, char *argv[] )
   //  \index{itk::NeighborhoodConnectedImageFilter!SetLower()}
   //  \index{itk::NeighborhoodConnectedImageFilter!SetUppder()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   const InternalPixelType lowerThreshold = atof( argv[5] );
   const InternalPixelType upperThreshold = atof( argv[6] );
 
   // Software Guide : BeginCodeSnippet
-  neighborhoodConnected->SetLower(  lowerThreshold  );
-  neighborhoodConnected->SetUpper(  upperThreshold  );
+  neighborhoodConnected->SetLower( lowerThreshold );
+  neighborhoodConnected->SetUpper( upperThreshold );
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  Here, we add the crucial parameter that defines the neighborhood size
   //  used to determine whether a pixel lies in the region. The larger the
   //  neighborhood, the more stable this filter will be against noise in the
@@ -228,13 +225,13 @@ int main( int argc, char *argv[] )
   //  select a filter of radius $2$ along each dimension. This results in a
   //  neighborhood of $5 \times 5$ pixels.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  InternalImageType::SizeType   radius;
+  InternalImageType::SizeType radius;
 
-  radius[0] = 2;   // two pixels along X 
-  radius[1] = 2;   // two pixels along Y 
+  radius[0] = 2;   // two pixels along X
+  radius[1] = 2;   // two pixels along Y
 
   neighborhoodConnected->SetRadius( radius );
   // Software Guide : EndCodeSnippet
@@ -242,17 +239,17 @@ int main( int argc, char *argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  As in the ConnectedThresholdImageFilter we must now provide the
-  //  intensity value to be used for the output pixels accepted in the region
-  //  and at least one seed point to define the initial region.
+  //  As in the \code{ConnectedThresholdImageFilter} example, we must
+  //  provide the intensity value to be used for the output pixels accepted
+  //  in the region and at least one seed point to define the starting point.
   //
   //  \index{itk::NeighborhoodConnectedImageFilter!SetSeed()}
   //  \index{itk::NeighborhoodConnectedImageFilter!SetReplaceValue()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
-  InternalImageType::IndexType  index;
-  
+  InternalImageType::IndexType index;
+
   index[0] = atoi( argv[3] );
   index[1] = atoi( argv[4] );
 
@@ -262,14 +259,14 @@ int main( int argc, char *argv[] )
   neighborhoodConnected->SetReplaceValue( 255 );
   // Software Guide : EndCodeSnippet
 
-  
+
   //  Software Guide : BeginLatex
-  //  
-  //  The invocation of the \code{Update()} method on the writer triggers the
+  //
+  //  Invocation of the \code{Update()} method on the writer triggers the
   //  execution of the pipeline.  It is usually wise to put update calls in a
   //  \code{try/catch} block in case errors occur and exceptions are thrown.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   try
@@ -303,26 +300,26 @@ int main( int argc, char *argv[] )
   //  \end{center}
   //
   // \begin{figure} \center
-  // \includegraphics[width=0.24\textwidth]{BrainProtonDensitySlice.eps}
-  // \includegraphics[width=0.24\textwidth]{NeighborhoodConnectedImageFilterOutput1.eps}
-  // \includegraphics[width=0.24\textwidth]{NeighborhoodConnectedImageFilterOutput2.eps}
-  // \includegraphics[width=0.24\textwidth]{NeighborhoodConnectedImageFilterOutput3.eps}
+  // \includegraphics[width=0.24\textwidth]{BrainProtonDensitySlice}
+  // \includegraphics[width=0.24\textwidth]{NeighborhoodConnectedImageFilterOutput1}
+  // \includegraphics[width=0.24\textwidth]{NeighborhoodConnectedImageFilterOutput2}
+  // \includegraphics[width=0.24\textwidth]{NeighborhoodConnectedImageFilterOutput3}
   // \itkcaption[NeighborhoodConnected segmentation results ]{Segmentation results
   // of the NeighborhoodConnectedImageFilter for various seed points.}
   // \label{fig:NeighborhoodConnectedImageFilterOutput}
   // \end{figure}
   //
-  //  As with the ConnectedThresholdImageFilter, several seeds could
-  //  be provided to the filter by using the \code{AddSeed()} method.
-  //  Compare the output of Figure
-  //  \ref{fig:NeighborhoodConnectedImageFilterOutput} with those of Figure
-  //  \ref{fig:ConnectedThresholdOutput} produced by the
-  //  ConnectedThresholdImageFilter. You may want to play with the
-  //  value of the neighborhood radius and see how it affect the smoothness of
-  //  the segmented object borders, the size of the segmented region and how
-  //  much that costs in computing time. 
+  //  As with the \code{ConnectedThresholdImageFilter} example, several seeds could
+  //  be provided to the filter by repetedly calling the \code{AddSeed()} method
+  //  with different indices.  Compare Figures
+  //  \ref{fig:NeighborhoodConnectedImageFilterOutput} and
+  //  \ref{fig:ConnectedThresholdOutput}, demonstrating the outputs of
+  //  \code{NeighborhoodConnectedThresholdImageFilter} and \code{ConnectedThresholdImageFilter},
+  //  respectively.  It is instructive to adjust the neighborhood radii and observe its
+  //  effect on the smoothness of segmented object borders, size of the segmented region, and
+  //  computing time.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
-  return 0;
+  return EXIT_SUCCESS;
 }

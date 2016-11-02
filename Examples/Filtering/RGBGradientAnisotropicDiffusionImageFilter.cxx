@@ -1,44 +1,38 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: RGBGradientAnisotropicDiffusionImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2005-08-31 13:55:22 $
-  Version:   $Revision: 1.27 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//  INPUTS: {VisibleWomanHeadSlice.png}
+//  INPUTS:  {VisibleWomanHeadSlice.png}
 //  OUTPUTS: {RGBGradientAnisotropicDiffusionImageFilterOutput.png}
-//  20 0.125
+//  ARGUMENTS:    20 0.125
 //  Software Guide : EndCommandLineArgs
 
 //  Software Guide : BeginLatex
 //
-//  The vector anisotropic diffusion approach can equally well be applied to
-//  color images. As in the vector case, each RGB component is diffused
+//  The vector anisotropic diffusion approach applies to color images equally
+//  well. As in the vector case, each RGB component is diffused
 //  independently. The following example illustrates the use of the Vector
 //  curvature anisotropic diffusion filter on an image with
 //  \doxygen{RGBPixel} type.
 //
 //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!RGB Images}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 //  Software Guide : BeginLatex
@@ -47,7 +41,7 @@
 //
 //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkVectorGradientAnisotropicDiffusionImageFilter.h"
@@ -58,7 +52,7 @@
 //
 //  Also the headers for \code{Image} and \code{RGBPixel} type are required.
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkRGBPixel.h"
@@ -75,7 +69,7 @@
 //  to a file. The \doxygen{VectorCastImageFilter} is used to achieve this
 //  goal.
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkImageFileReader.h"
@@ -86,24 +80,24 @@
 
 int main( int argc, char * argv[] )
 {
-  if( argc < 5 ) 
-    { 
+  if( argc < 5 )
+    {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "  inputRGBImageFile  outputRGBImageFile ";
     std::cerr << "numberOfIterations  timeStep  " << std::endl;
     return EXIT_FAILURE;
     }
 
-  
+
   //  Software Guide : BeginLatex
   //
   //  The image type is defined using the pixel type and the dimension.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   itk::RGBPixel< float >     InputPixelType;
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
+  typedef itk::RGBPixel< float >          InputPixelType;
+  typedef itk::Image< InputPixelType, 2 > InputImageType;
   // Software Guide : EndCodeSnippet
 
 
@@ -116,7 +110,7 @@ int main( int argc, char * argv[] )
   //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!New()}
   //  \index{itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter!Pointer}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::VectorGradientAnisotropicDiffusionImageFilter<
@@ -130,7 +124,7 @@ int main( int argc, char * argv[] )
   //  The input image can be obtained from the output of another
   //  filter. Here, an image reader is used as source.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageFileReader< InputImageType >  ReaderType;
@@ -146,7 +140,7 @@ int main( int argc, char * argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  This filter requires two parameters, the number of iterations to be
+  //  This filter requires two parameters: the number of iterations to be
   //  performed and the time step used in the computation of the level set
   //  evolution. These parameters are set using the methods
   //  \code{SetNumberOfIterations()} and \code{SetTimeStep()} respectively.
@@ -158,7 +152,7 @@ int main( int argc, char * argv[] )
   //  \index{SetTimeStep()!itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
   //  \index{SetNumberOfIterations()!itk::Vector\-Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filter->SetNumberOfIterations( numberOfIterations );
@@ -176,12 +170,12 @@ int main( int argc, char * argv[] )
   //  \index{itk::VectorCastImageFilter!New()}
   //  \index{itk::VectorCastImageFilter!Pointer}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RGBPixel< unsigned char >   WritePixelType;
   typedef itk::Image< WritePixelType, 2 >  WriteImageType;
-  typedef itk::VectorCastImageFilter< 
+  typedef itk::VectorCastImageFilter<
                 InputImageType, WriteImageType >  CasterType;
   CasterType::Pointer caster = CasterType::New();
   // Software Guide : EndCodeSnippet
@@ -192,7 +186,7 @@ int main( int argc, char * argv[] )
   //  Finally, the writer type can be instantiated. One writer is created and
   //  connected to the output of the cast filter.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   // Software Guide : BeginCodeSnippet
@@ -206,10 +200,10 @@ int main( int argc, char * argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   // \begin{figure} \center
-  // \includegraphics[width=0.44\textwidth]{VisibleWomanHeadSlice.eps}
-  // \includegraphics[width=0.44\textwidth]{RGBGradientAnisotropicDiffusionImageFilterOutput.eps}
+  // \includegraphics[width=0.44\textwidth]{VisibleWomanHeadSlice}
+  // \includegraphics[width=0.44\textwidth]{RGBGradientAnisotropicDiffusionImageFilterOutput}
   // \itkcaption[VectorGradientAnisotropicDiffusionImageFilter on RGB] {Effect of
   // the VectorGradientAnisotropicDiffusionImageFilter on a RGB image from a
   // cryogenic section of the Visible Woman data set.}
@@ -222,10 +216,9 @@ int main( int argc, char * argv[] )
   //  section of the Visible Woman data set.  In this example the filter was
   //  run with a time step of $0.125$, and $20$ iterations.  The input image
   //  has $570 \times 670$ pixels and the processing took $4$ minutes on a
-  //  Pentium 4 2Ghz.
+  //  Pentium 4 2GHz.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   return EXIT_SUCCESS;
 }
-

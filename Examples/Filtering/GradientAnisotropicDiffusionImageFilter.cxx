@@ -1,41 +1,36 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: GradientAnisotropicDiffusionImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2005-08-27 01:45:54 $
-  Version:   $Revision: 1.26 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
+//    INPUTS:  {BrainProtonDensitySlice.png}
 //    OUTPUTS: {GradientAnisotropicDiffusionImageFilterOutput.png}
-//    5 0.25 3
+//    ARGUMENTS:    15 0.1 3
 //  Software Guide : EndCommandLineArgs
 //  Software Guide : BeginLatex
+//
 //  The \doxygen{GradientAnisotropicDiffusionImageFilter}  implements an
 //  $N$-dimensional version of the classic Perona-Malik anisotropic diffusion
-//  equation for scalar-valued images \cite{Perona1990}.  
+//  equation for scalar-valued images \cite{Perona1990}.
 //
 //  The conductance term for this implementation is chosen as a function of the
 //  gradient magnitude of the image at each point, reducing the strength of
 //  diffusion at edge pixels.
-// 
+//
 //  \begin{equation}
 //  C(\mathbf{x}) = e^{-(\frac{\parallel \nabla U(\mathbf{x}) \parallel}{K})^2}
 //  \end{equation}
@@ -46,7 +41,7 @@
 //
 //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 #include "itkImage.h"
@@ -60,7 +55,7 @@
 //
 //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkGradientAnisotropicDiffusionImageFilter.h"
@@ -69,22 +64,22 @@
 
 int main( int argc, char * argv[] )
 {
-  if( argc < 6 ) 
-    { 
+  if( argc < 6 )
+    {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "  inputImageFile  outputImageFile ";
     std::cerr << "numberOfIterations  timeStep  conductance" << std::endl;
     return EXIT_FAILURE;
     }
 
-  
+
   //  Software Guide : BeginLatex
   //
   //  Types should be selected based on the pixel types required for the
   //  input and output images.  The image types are defined using the pixel
   //  type and the dimension.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef    float    InputPixelType;
@@ -108,7 +103,7 @@ int main( int argc, char * argv[] )
   //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!New()}
   //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!Pointer}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::GradientAnisotropicDiffusionImageFilter<
@@ -126,7 +121,7 @@ int main( int argc, char * argv[] )
   //  The input image can be obtained from the output of another filter. Here,
   //  an image reader is used as source.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
@@ -142,12 +137,12 @@ int main( int argc, char * argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  This filter requires three parameters, the number of iterations to be
+  //  This filter requires three parameters: the number of iterations to be
   //  performed, the time step and the conductance parameter used in the
   //  computation of the level set evolution. These parameters are set using
   //  the methods \code{SetNumberOfIterations()}, \code{SetTimeStep()} and
   //  \code{SetConductanceParameter()} respectively.  The filter can be
-  //  executed by invoking Update().
+  //  executed by invoking \code{Update()}.
   //
   //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!Update()}
   //  \index{itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter!SetTimeStep()}
@@ -156,13 +151,13 @@ int main( int argc, char * argv[] )
   //  \index{SetTimeStep()!itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
   //  \index{SetNumberOfIterations()!itk::Gradient\-Anisotropic\-Diffusion\-Image\-Filter}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filter->SetNumberOfIterations( numberOfIterations );
   filter->SetTimeStep( timeStep );
   filter->SetConductanceParameter( conductance );
-  
+
   filter->Update();
   // Software Guide : EndCodeSnippet
 
@@ -174,15 +169,15 @@ int main( int argc, char * argv[] )
   //  iterations result in further smoothing and will increase the computing
   //  time linearly.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   //
   //  The output of the filter is rescaled here and then sent to a writer.
   //
-  typedef unsigned char WritePixelType;
-  typedef itk::Image< WritePixelType, 2 > WriteImageType;
-  typedef itk::RescaleIntensityImageFilter< 
+  typedef unsigned char                          WritePixelType;
+  typedef itk::Image< WritePixelType, 2 >        WriteImageType;
+  typedef itk::RescaleIntensityImageFilter<
                OutputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
@@ -193,7 +188,7 @@ int main( int argc, char * argv[] )
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
- 
+
 
   rescaler->SetInput( filter->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
@@ -201,10 +196,10 @@ int main( int argc, char * argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   // \begin{figure} \center
-  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice.eps}
-  // \includegraphics[width=0.44\textwidth]{GradientAnisotropicDiffusionImageFilterOutput.eps}
+  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
+  // \includegraphics[width=0.44\textwidth]{GradientAnisotropicDiffusionImageFilterOutput}
   // \itkcaption[GradientAnisotropicDiffusionImageFilter output]{Effect of the
   // GradientAnisotropicDiffusionImageFilter on a slice from a MRI Proton
   // Density image  of the brain.}
@@ -214,7 +209,7 @@ int main( int argc, char * argv[] )
   //  Figure \ref{fig:GradientAnisotropicDiffusionImageFilterInputOutput}
   //  illustrates the effect of this filter on a MRI proton density image of
   //  the brain. In this example the filter was run with a time step of $0.25$,
-  //  and $5$ iterations.  The figure shows how homogeneous regions are 
+  //  and $5$ iterations.  The figure shows how homogeneous regions are
   // smoothed and edges are preserved.
   //
   //  \relatedClasses
@@ -224,9 +219,8 @@ int main( int argc, char * argv[] )
   //  \item \doxygen{CurvatureFlowImageFilter}
   //  \end{itemize}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   return EXIT_SUCCESS;
 }
-

@@ -1,34 +1,28 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: RGBImageSeriesReadWrite.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 20:36:51 $
-  Version:   $Revision: 1.11 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
 //  RGB images are commonly used for representing data acquired from cryogenic
 //  sections, optical microscopy and endoscopy. This example illustrates how to
 //  read RGB color images from a set of files containing individual 2D slices
-//  in order to compose a 3D color dataset. Then save it into a single 3D file,
-//  and finally save it again as a set of 2D slices with other names.
+//  in order to compose a 3D color dataset. Then we will save it into a single
+//  3D file, and finally save it again as a set of 2D slices with other names.
 //
 //  This requires the following headers as shown.
 //
@@ -36,12 +30,11 @@
 //  \index{RGB!writing Image}
 //  \index{RGB!reading Image}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkRGBPixel.h"
 #include "itkImage.h"
-#include "itkImageFileWriter.h"
 #include "itkImageSeriesReader.h"
 #include "itkImageSeriesWriter.h"
 #include "itkNumericSeriesFileNames.h"
@@ -68,7 +61,7 @@ int main( int argc, char ** argv )
   //
   //  \index{itk::RGBPixel!Instantiation}
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RGBPixel< unsigned char >        PixelType;
@@ -85,7 +78,7 @@ int main( int argc, char ** argv )
   // \index{itk::ImageSeriesReader!RGB Image}
   // \index{itk::ImageFileWriter!RGB Image}
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageSeriesReader< ImageType >  SeriesReaderType;
@@ -107,13 +100,13 @@ int main( int argc, char ** argv )
   // the slices to be read. Later on in this example we will reuse this object in
   // order to generate the filenames of the slices to be written.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::NumericSeriesFileNames    NameGeneratorType;
 
   NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
-   
+
   nameGenerator->SetStartIndex( first );
   nameGenerator->SetEndIndex( last );
   nameGenerator->SetIncrementIndex( 1 );
@@ -126,7 +119,7 @@ int main( int argc, char ** argv )
   //  The ImageIO object that actually performs the read process
   //  is now connected to the ImageSeriesReader.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   seriesReader->SetImageIO( itk::PNGImageIO::New() );
@@ -137,7 +130,7 @@ int main( int argc, char ** argv )
   //  The filenames of the input slices are taken from the names generator and
   //  passed to the series reader.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   seriesReader->SetFileNames( nameGenerator->GetFileNames()  );
@@ -149,7 +142,7 @@ int main( int argc, char ** argv )
   // we connect the output of the series reader to the input of the volumetric
   // writer.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   writer->SetFileName( outputFilename );
@@ -160,14 +153,14 @@ int main( int argc, char ** argv )
   //  Software Guide : BeginLatex
   //
   //  Finally, execution of the pipeline can be triggered by invoking the
-  //  Update() method in the volumetric writer. This, of course, is done from
-  //  inside a try/catch block.
+  //  \code{Update()} method in the volumetric writer. This, of course, is done
+  //  from inside a try/catch block.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   try
-    { 
+    {
     writer->Update();
     }
   catch( itk::ExceptionObject & excp )
@@ -186,7 +179,7 @@ int main( int argc, char ** argv )
   // are 2D images.  Additionally, the output of the series reader is connected
   // as input to the series writer.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Image< PixelType, 2 >     Image2DType;
@@ -200,12 +193,12 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginLatex
   //
-  // We now reuse the filenames generator in order to produce the list of
+  // We now reuse the filename generator in order to produce the list of
   // filenames for the output series. In this case we just need to modify the
-  // format of the filenames generator. Then, we pass the list of output
+  // format of the filename generator. Then, we pass the list of output
   // filenames to the series writer.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   nameGenerator->SetSeriesFormat( "output%03d.png" );
@@ -218,11 +211,11 @@ int main( int argc, char ** argv )
   // Finally we trigger the execution of the series writer from inside a
   // try/catch block.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   try
-    { 
+    {
     seriesWriter->Update();
     }
   catch( itk::ExceptionObject & excp )
@@ -235,11 +228,11 @@ int main( int argc, char ** argv )
   //  Software Guide : BeginLatex
   //
   //  You may have noticed that apart from the declaration of the
-  //  \code{PixelType} there is nothing in this code that is specific for RGB
+  //  \code{PixelType} there is nothing in this code that is specific to RGB
   //  images. All the actions required to support color images are implemented
   //  internally in the \doxygen{ImageIO} objects.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   return EXIT_SUCCESS;
 }

@@ -1,24 +1,23 @@
 /*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: ImageRegionIteratorWithIndex.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-16 23:38:19 $
-  Version:   $Revision: 1.26 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
 //  Software Guide : BeginCommandLineArgs
-//     INPUTS: {VisibleWomanEyeSlice.png} 
+//     INPUTS:  {VisibleWomanEyeSlice.png}
 //     OUTPUTS: {ImageRegionIteratorWithIndexOutput.png}
 //  Software Guide : EndCommandLineArgs
 
@@ -63,7 +62,7 @@ int main( int argc, char *argv[] )
     std::cerr << argv[0]
               << " inputImageFile outputImageFile"
               << std::endl;
-    return -1;
+    return EXIT_FAILURE;
     }
 
   // Software Guide : BeginLatex
@@ -77,13 +76,13 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 2;
-  
+
   typedef itk::RGBPixel< unsigned char >        RGBPixelType;
   typedef itk::Image< RGBPixelType, Dimension > ImageType;
-  
+
   typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
   // Software Guide : EndCodeSnippet
-  
+
   typedef itk::ImageFileReader< ImageType > ReaderType;
   typedef itk::ImageFileWriter< ImageType > WriterType;
 
@@ -97,9 +96,9 @@ int main( int argc, char *argv[] )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
-    return -1;
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
 
   // Software Guide : BeginLatex
@@ -160,9 +159,9 @@ int main( int argc, char *argv[] )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
-    return -1;   
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
 }
 
   // Software Guide : BeginLatex
@@ -173,8 +172,8 @@ int main( int argc, char *argv[] )
   // image has been mirrored across its $x$-axis in the output.
   //
   // \begin{figure} \center
-  // \includegraphics[width=0.44\textwidth]{VisibleWomanEyeSlice.eps}
-  // \includegraphics[width=0.44\textwidth]{ImageRegionIteratorWithIndexOutput.eps}
+  // \includegraphics[width=0.44\textwidth]{VisibleWomanEyeSlice}
+  // \includegraphics[width=0.44\textwidth]{ImageRegionIteratorWithIndexOutput}
   // \itkcaption[Using the ImageRegionIteratorWithIndex]{Results of using
   // ImageRegionIteratorWithIndex to mirror an image across an axis. The original
   // image is shown at left.  The mirrored output is shown at right.}
@@ -184,6 +183,6 @@ int main( int argc, char *argv[] )
   // \index{itk::ImageRegionIteratorWithIndex!example of using|)}
   //
   // Software Guide : EndLatex
-  
-  return 0;
+
+  return EXIT_SUCCESS;
 }

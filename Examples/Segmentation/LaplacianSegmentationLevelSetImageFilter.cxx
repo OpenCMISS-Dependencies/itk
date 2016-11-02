@@ -1,27 +1,26 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: LaplacianSegmentationLevelSetImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:44:42 $
-  Version:   $Revision: 1.28 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}, {ThresholdSegmentationLevelSetImageFilterVentricle.png}
+//    INPUTS:  {BrainProtonDensitySlice.png}
+//    INPUTS:  {ThresholdSegmentationLevelSetImageFilterVentricle.png}
 //    OUTPUTS: {LaplacianSegmentationLevelSetImageFilterVentricle.png}
-//    10 2.0 1 127.5 15
+//    ARGUMENTS:    10 2.0 1 127.5 15
 //  Software Guide : EndCommandLineArgs
 
 // Software Guide : BeginLatex
@@ -60,7 +59,7 @@
 // anisotropic diffusion filter.
 //
 // \begin{figure} \center
-// \includegraphics[width=0.9\textwidth]{LaplacianSegmentationLevelSetImageFilterCollaborationDiagram1.eps}
+// \includegraphics[width=0.9\textwidth]{LaplacianSegmentationLevelSetImageFilterCollaborationDiagram1}
 // \itkcaption[LaplacianSegmentationLevelSetImageFilter collaboration
 // diagram]{An image processing pipeline using
 // LaplacianSegmentationLevelSetImageFilter for segmentation.}
@@ -69,7 +68,7 @@
 //
 // Let's start by including the appropriate header files.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 #include "itkImage.h"
 
@@ -96,15 +95,15 @@ int main( int argc, char *argv[] )
     std::cerr << " PropagationWeight";
     std::cerr << " InitialModelIsovalue";
     std::cerr << " MaximumIterations" << std::endl;
-    return 1;
+    return EXIT_FAILURE;
     }
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  We define the image type using a particular pixel type and
   //  dimension. In this case we will use 2D \code{float} images.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef   float           InternalPixelType;
@@ -114,12 +113,12 @@ int main( int argc, char *argv[] )
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
-  typedef itk::BinaryThresholdImageFilter< 
-                        InternalImageType, 
+  typedef itk::BinaryThresholdImageFilter<
+                        InternalImageType,
                         OutputImageType    >       ThresholdingFilterType;
 
   ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();
-                        
+
   thresholder->SetUpperThreshold( 10.0 );
   thresholder->SetLowerThreshold( 0.0 );
 
@@ -154,24 +153,24 @@ int main( int argc, char *argv[] )
   diffusion->SetTimeStep(0.125);
   diffusion->SetConductanceParameter( atof(argv[5]) );
   // Software Guide : EndCodeSnippet
-  
+
   //  Software Guide : BeginLatex
-  //  
+  //
   //  The following lines define and instantiate a
   //  LaplacianSegmentationLevelSetImageFilter.
   //
-  //  Software Guide : EndLatex 
-  
+  //  Software Guide : EndLatex
+
   // Software Guide : BeginCodeSnippet
-  typedef itk::LaplacianSegmentationLevelSetImageFilter< InternalImageType, 
-               InternalImageType > LaplacianSegmentationLevelSetImageFilterType;
-  LaplacianSegmentationLevelSetImageFilterType::Pointer laplacianSegmentation =
-                LaplacianSegmentationLevelSetImageFilterType::New();
+  typedef itk::LaplacianSegmentationLevelSetImageFilter< InternalImageType,
+            InternalImageType > LaplacianSegmentationLevelSetImageFilterType;
+  LaplacianSegmentationLevelSetImageFilterType::Pointer laplacianSegmentation
+            = LaplacianSegmentationLevelSetImageFilterType::New();
   // Software Guide : EndCodeSnippet
 
-  
+
   //  Software Guide : BeginLatex
-  //  
+  //
   // As with the other ITK level set segmentation filters, the terms of the
   // LaplacianSegmentationLevelSetImageFilter level set equation can be
   // weighted by scalars.  For this application we will modify the relative
@@ -181,26 +180,26 @@ int main( int argc, char *argv[] )
   //  \index{itk::Laplacian\-Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
   //  \index{itk::Segmentation\-Level\-Set\-Image\-Filter!SetPropagationScaling()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   //  Software Guide : BeginCodeSnippet
   laplacianSegmentation->SetCurvatureScaling( 1.0 );
   laplacianSegmentation->SetPropagationScaling( ::atof(argv[6]) );
   //  Software Guide : EndCodeSnippet
-  
+
   //  Software Guide : BeginLatex
   //
   //  The maximum number of iterations is set from the command line.  It may
   //  not be desirable in some applications to run the filter to
   //  convergence.  Only a few iterations may be required.
-  //  
+  //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   laplacianSegmentation->SetMaximumRMSError( 0.002 );
   laplacianSegmentation->SetNumberOfIterations( ::atoi(argv[8]) );
   // Software Guide : EndCodeSnippet
-  
+
   // Software Guide : BeginLatex
   //
   // Finally, it is very important to specify the isovalue of the surface in
@@ -208,18 +207,18 @@ int main( int argc, char *argv[] )
   // isosurface is found midway between the foreground and background values.
   //
   // Software Guide : EndLatex
-  
+
   // Software Guide : BeginCodeSnippet
   laplacianSegmentation->SetIsoSurfaceValue( ::atof(argv[7]) );
   // Software Guide : EndCodeSnippet
-  
+
   //  Software Guide : BeginLatex
-  //  
+  //
   //  The filters are now connected in a pipeline indicated in
   //  Figure~\ref{fig:LaplacianSegmentationLevelSetImageFilterDiagram}.
   //
-  //  Software Guide : EndLatex 
-  
+  //  Software Guide : EndLatex
+
   // Software Guide : BeginCodeSnippet
   diffusion->SetInput( reader1->GetOutput() );
   laplacianSegmentation->SetInput( reader2->GetOutput() );
@@ -229,12 +228,12 @@ int main( int argc, char *argv[] )
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  Invoking the \code{Update()} method on the writer triggers the
   //  execution of the pipeline.  As usual, the call is placed in a
   //  \code{try/catch} block to handle any exceptions that may be thrown.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   try
@@ -245,10 +244,11 @@ int main( int argc, char *argv[] )
     {
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
+    return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
 
-  // Print out some useful information 
+  // Print out some useful information
   std::cout << std::endl;
   std::cout << "Max. no. iterations: " << laplacianSegmentation->GetNumberOfIterations() << std::endl;
   std::cout << "Max. RMS error: " << laplacianSegmentation->GetMaximumRMSError() << std::endl;
@@ -262,7 +262,7 @@ int main( int argc, char *argv[] )
   speedWriter->SetInput( laplacianSegmentation->GetSpeedImage() );
   speedWriter->SetFileName( "speedImage.mha" );
   speedWriter->Update();
-  
+
   //  Software Guide : BeginLatex
   //
   //  We can use this filter to make some subtle refinements to the ventricle
@@ -280,9 +280,9 @@ int main( int argc, char *argv[] )
   //  right-hand side of the mask has been removed.
   //
   //  \begin{figure}
-  //  \includegraphics[width=0.32\textwidth]{BrainProtonDensitySlice.eps}
-  //  \includegraphics[width=0.32\textwidth]{ThresholdSegmentationLevelSetImageFilterVentricle.eps}
-  //  \includegraphics[width=0.32\textwidth]{LaplacianSegmentationLevelSetImageFilterVentricle.eps}
+  //  \includegraphics[width=0.32\textwidth]{BrainProtonDensitySlice}
+  //  \includegraphics[width=0.32\textwidth]{ThresholdSegmentationLevelSetImageFilterVentricle}
+  //  \includegraphics[width=0.32\textwidth]{LaplacianSegmentationLevelSetImageFilterVentricle}
   //  \itkcaption[Segmentation results of LaplacianLevelSetImageFilter]{Results of
   //  applying LaplacianSegmentationLevelSetImageFilter to a prior ventricle
   //  segmentation.  Shown from left to right are the original image, the
@@ -292,7 +292,7 @@ int main( int argc, char *argv[] )
   //  \label{fig:LaplacianSegmentationLevelSetImageFilter}
   //  \end{figure}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
-  return 0;
+  return EXIT_SUCCESS;
 }

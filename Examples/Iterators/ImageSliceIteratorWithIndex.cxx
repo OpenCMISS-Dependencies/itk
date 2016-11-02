@@ -1,22 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: ImageSliceIteratorWithIndex.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-16 23:38:22 $
-  Version:   $Revision: 1.24 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 // Software Guide : BeginLatex
 //
@@ -24,20 +22,20 @@
 //
 // The \doxygen{ImageSliceIteratorWithIndex} class is an extension of
 // \doxygen{ImageLinearIteratorWithIndex} from iteration along lines to
-// iteration along both lines \emph{and planes} in an image.  
+// iteration along both lines \emph{and planes} in an image.
 // A \emph{slice} is a 2D
 // plane spanned by two vectors pointing along orthogonal coordinate axes.  The
 // slice orientation of the slice iterator is defined by specifying its two
 // spanning axes.
-// 
+//
 // \begin{itemize}
 // \index{itk::Image\-Slice\-Iterator\-With\-Index!SetFirstDirection()}
-// \item \textbf{\code{SetFirstDirection()}} 
+// \item \textbf{\code{SetFirstDirection()}}
 // Specifies the first coordinate axis
 // direction of the slice plane.
 //
 // \index{itk::Image\-Slice\-Iterator\-With\-Index!SetSecondDirection()}
-// \item \textbf{\code{SetSecondDirection()}} 
+// \item \textbf{\code{SetSecondDirection()}}
 // Specifies the second coordinate axis
 // direction of the slice plane.
 // \end{itemize}
@@ -45,7 +43,7 @@
 // Several new methods control movement from slice to slice.
 //
 // \begin{itemize}
-// 
+//
 // \index{itk::Image\-Slice\-Iterator\-With\-Index!NextSlice()}
 // \item \textbf{\code{NextSlice()}} Moves the iterator to the beginning pixel
 // location of the next slice in the image.  The origin of the next slice is
@@ -62,13 +60,13 @@
 //
 // \index{itk::Image\-Slice\-Iterator\-With\-Index!IsAtReverseEndOfSlice()}
 // \item \textbf{\code{IsAtReverseEndOfSlice()}} Returns true if the iterator
-// points to \emph{one position before} the beginning pixel of the current 
+// points to \emph{one position before} the beginning pixel of the current
 // slice.
 //
 // \index{itk::Image\-Slice\-Iterator\-With\-Index!IsAtEndOfSlice()}
 // \item \textbf{\code{IsAtEndOfSlice()}} Returns true if the iterator points
 // to \emph{one position past} the last valid pixel of the current slice.
-// 
+//
 // \end{itemize}
 //
 // The slice iterator moves line by line using \code{NextLine()} and
@@ -98,7 +96,7 @@
 // Software Guide : EndLatex
 
 #include "itkImage.h"
-#include "vnl/vnl_math.h"
+#include "itkMath.h"
 
 // Software Guide : BeginCodeSnippet
 #include "itkImageSliceConstIteratorWithIndex.h"
@@ -117,9 +115,9 @@ int main( int argc, char *argv[] )
     std::cerr << argv[0]
               << " inputImageFile outputImageFile projectionDirection"
               << std::endl;
-    return -1;
+    return EXIT_FAILURE;
     }
-  
+
   // Software Guide : BeginLatex
   //
   // The pixel type is defined as \code{unsigned short}.  For this application,
@@ -132,19 +130,20 @@ int main( int argc, char *argv[] )
   typedef unsigned short              PixelType;
   typedef itk::Image< PixelType, 2 >  ImageType2D;
   typedef itk::Image< PixelType, 3 >  ImageType3D;
-  // Software Guide : EndCodeSnippet  
+  // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
   //
   //  A slice iterator type is defined to walk the input image.
   //
   // Software Guide : EndLatex
-  
+
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageLinearIteratorWithIndex< ImageType2D > LinearIteratorType;
-  typedef itk::ImageSliceConstIteratorWithIndex< ImageType3D >  SliceIteratorType;
+  typedef itk::ImageSliceConstIteratorWithIndex< ImageType3D
+                                                          > SliceIteratorType;
   // Software Guide : EndCodeSnippet
-  
+
   typedef itk::ImageFileReader< ImageType3D > ReaderType;
   typedef itk::ImageFileWriter< ImageType2D > WriterType;
 
@@ -158,11 +157,11 @@ int main( int argc, char *argv[] )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
-    return -1;
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
-  
+
   // Software Guide : BeginLatex
   //
   // The projection direction is read from the command line. The projection image
@@ -173,7 +172,7 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  unsigned int projectionDirection = 
+  unsigned int projectionDirection =
     static_cast<unsigned int>( ::atoi( argv[3] ) );
 
   unsigned int i, j;
@@ -204,7 +203,7 @@ int main( int argc, char *argv[] )
   ImageType2D::RegionType region;
   ImageType2D::RegionType::SizeType size;
   ImageType2D::RegionType::IndexType index;
-  
+
   ImageType3D::RegionType requestedRegion = inputImage->GetRequestedRegion();
 
   index[ direction[0] ]    = requestedRegion.GetIndex()[ direction[0] ];
@@ -232,12 +231,13 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  SliceIteratorType  inputIt(  inputImage,  inputImage->GetRequestedRegion() );
-  LinearIteratorType outputIt( outputImage, outputImage->GetRequestedRegion() );
+  SliceIteratorType  inputIt(  inputImage, inputImage->GetRequestedRegion() );
+  LinearIteratorType outputIt( outputImage,
+                                          outputImage->GetRequestedRegion() );
 
   inputIt.SetFirstDirection(  direction[1] );
   inputIt.SetSecondDirection( direction[0] );
-  
+
   outputIt.SetDirection( 1 - direction[0] );
   // Software Guide : EndCodeSnippet
 
@@ -267,14 +267,14 @@ int main( int argc, char *argv[] )
 
   inputIt.GoToBegin();
   outputIt.GoToBegin();
-  
+
   while( !inputIt.IsAtEnd() )
     {
     while ( !inputIt.IsAtEndOfSlice() )
       {
       while ( !inputIt.IsAtEndOfLine() )
         {
-        outputIt.Set( vnl_math_max( outputIt.Get(), inputIt.Get() ));
+        outputIt.Set( std::max( outputIt.Get(), inputIt.Get() ));
         ++inputIt;
         ++outputIt;
         }
@@ -296,9 +296,9 @@ int main( int argc, char *argv[] )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
-    return -1;   
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
 
   // Software Guide : BeginLatex
@@ -310,16 +310,16 @@ int main( int argc, char *argv[] )
   //
   // \begin{figure}
   // \centering
-  // \includegraphics[width=0.4\textwidth]{ImageSliceIteratorWithIndexOutput.eps}
+  // \includegraphics[width=0.4\textwidth]{ImageSliceIteratorWithIndexOutput}
   // \itkcaption[Maximum intensity projection using ImageSliceIteratorWithIndex]{The
   // maximum intensity projection through three slices of a volume.}
   // \protect\label{fig:ImageSliceIteratorWithIndexOutput}
   // \end{figure}
-  // 
-  //  
+  //
+  //
   // \index{itk::Image\-Slice\-Iterator\-With\-Index!example of using|)}
   //
   // Software Guide : EndLatex
 
-  return 0;
+  return EXIT_SUCCESS;
 }

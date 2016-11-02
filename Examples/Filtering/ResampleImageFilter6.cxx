@@ -1,26 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: ResampleImageFilter6.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-02-20 19:23:32 $
-  Version:   $Revision: 1.14 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
@@ -28,7 +22,7 @@
 //
 //  \index{itk::VectorResampleImageFilter!Image internal transform}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 #include "itkImage.h"
@@ -49,9 +43,9 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   unsigned char  PixelComponentType;
-  typedef   itk::RGBPixel< PixelComponentType > PixelType;
+  const unsigned int                          Dimension = 2;
+  typedef unsigned char                       PixelComponentType;
+  typedef itk::RGBPixel< PixelComponentType > PixelType;
 
   typedef itk::Image< PixelType,  Dimension >   ImageType;
 
@@ -71,7 +65,7 @@ int main( int argc, char * argv[] )
 
   FilterType::Pointer filter = FilterType::New();
 
-  typedef itk::VectorLinearInterpolateImageFunction< 
+  typedef itk::VectorLinearInterpolateImageFunction<
                        ImageType, double >  InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
@@ -86,7 +80,10 @@ int main( int argc, char * argv[] )
 
 
   // Software Guide : BeginCodeSnippet
-  filter->SetDefaultPixelValue( 50 );
+  PixelType defaultValue;
+  defaultValue.Fill(50);
+
+  filter->SetDefaultPixelValue( defaultValue );
   // Software Guide : EndCodeSnippet
 
 
@@ -106,13 +103,12 @@ int main( int argc, char * argv[] )
   filter->SetOutputOrigin( origin );
   // Software Guide : EndCodeSnippet
 
-  
+
   // Software Guide : BeginCodeSnippet
   ImageType::DirectionType direction;
   direction.SetIdentity();
   filter->SetOutputDirection( direction );
   // Software Guide : EndCodeSnippet
-
 
 
   ImageType::SizeType   size;
@@ -126,7 +122,6 @@ int main( int argc, char * argv[] )
   writer->SetInput( filter->GetOutput() );
 
 
-  
   try
     {
     writer->Update();
@@ -140,4 +135,3 @@ int main( int argc, char * argv[] )
   return EXIT_SUCCESS;
 
 }
-

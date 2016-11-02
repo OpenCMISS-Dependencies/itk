@@ -1,31 +1,25 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: IsolatedConnectedImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:44:42 $
-  Version:   $Revision: 1.30 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//  INPUTS: {BrainProtonDensitySlice.png}
-//  OUTPUTS: {IsolatedConnectedImageFilterOutput1.png}
-//  61 140 150 63 43
+//    INPUTS:  {BrainProtonDensitySlice.png}
+//    OUTPUTS: {IsolatedConnectedImageFilterOutput1.png}
+//    ARGUMENTS:    61 140 150 63 43
 //  Software Guide : EndCommandLineArgs
 
 // Software Guide : BeginLatex
@@ -42,15 +36,15 @@
 // This example closely follows the previous ones. Only the relevant pieces
 // of code are highlighted here.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 //  Software Guide : BeginLatex
-//  
+//
 //  The header of the IsolatedConnectedImageFilter is included below.
 //
 //  \index{itk::Isolated\-Connected\-Image\-Filter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkIsolatedConnectedImageFilter.h"
@@ -72,16 +66,16 @@ int main( int argc, char *argv[] )
     std::cerr << "Usage: " << argv[0];
     std::cerr << " inputImage  outputImage seedX1 seedY1";
     std::cerr << " lowerThreshold seedX2 seedY2" << std::endl;
-    return 1;
+    return EXIT_FAILURE;
     }
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  We define the image type using a pixel type and a particular
   //  dimension.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef   float           InternalPixelType;
@@ -94,9 +88,9 @@ int main( int argc, char *argv[] )
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter< InternalImageType, OutputImageType >
                                                    CastingFilterType;
-  
+
   CastingFilterType::Pointer caster = CastingFilterType::New();
-                        
+
 
   // We instantiate reader and writer types
   //
@@ -112,27 +106,27 @@ int main( int argc, char *argv[] )
 
   typedef itk::CurvatureFlowImageFilter< InternalImageType, InternalImageType >
     CurvatureFlowImageFilterType;
-  CurvatureFlowImageFilterType::Pointer smoothing = 
+  CurvatureFlowImageFilterType::Pointer smoothing =
                          CurvatureFlowImageFilterType::New();
 
 
   //  Software Guide : BeginLatex
-  //  
-  //  The IsolatedConnectedImageFilter is instantiated in the lines below.
   //
-  //  Software Guide : EndLatex 
+  //  The \code{IsolatedConnectedImageFilter} is instantiated in the lines below.
+  //
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::IsolatedConnectedImageFilter<InternalImageType, InternalImageType>
-    ConnectedFilterType;
+  typedef itk::IsolatedConnectedImageFilter<InternalImageType,
+                                       InternalImageType> ConnectedFilterType;
   // Software Guide : EndCodeSnippet
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  One filter of this class is constructed using the \code{New()} method.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   ConnectedFilterType::Pointer isolatedConnected = ConnectedFilterType::New();
@@ -140,10 +134,10 @@ int main( int argc, char *argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  Now it is time to connect the pipeline.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   smoothing->SetInput( reader->GetOutput() );
@@ -159,34 +153,34 @@ int main( int argc, char *argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  The IsolatedConnectedImageFilter expects the user to specify a
+  //  The \code{IsolatedConnectedImageFilter} expects the user to specify a
   //  threshold and two seeds. In this example, we take all of them from the
   //  command line arguments.
   //
   //  \index{itk::Isolated\-Connected\-Image\-Filter!SetLower()}
-  //  \index{itk::Isolated\-Connected\-Image\-Filter!SetSeed1()}
-  //  \index{itk::Isolated\-Connected\-Image\-Filter!SetSeed2()}
+  //  \index{itk::Isolated\-Connected\-Image\-Filter!AddSeed1()}
+  //  \index{itk::Isolated\-Connected\-Image\-Filter!AddSeed2()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   InternalImageType::IndexType  indexSeed1;
-  
+
   indexSeed1[0] = atoi( argv[3] );
   indexSeed1[1] = atoi( argv[4] );
 
   const InternalPixelType lowerThreshold = atof( argv[5] );
 
   InternalImageType::IndexType  indexSeed2;
-  
+
   indexSeed2[0] = atoi( argv[6] );
   indexSeed2[1] = atoi( argv[7] );
 
 
   // Software Guide : BeginCodeSnippet
   isolatedConnected->SetLower(  lowerThreshold  );
-  isolatedConnected->SetSeed1( indexSeed1 );
-  isolatedConnected->SetSeed2( indexSeed2 );
+  isolatedConnected->AddSeed1( indexSeed1 );
+  isolatedConnected->AddSeed2( indexSeed2 );
   // Software Guide : EndCodeSnippet
 
 
@@ -198,20 +192,20 @@ int main( int argc, char *argv[] )
   //
   //  \index{itk::Isolated\-Connected\-Image\-Filter!SetReplaceValue()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   // Software Guide : BeginCodeSnippet
   isolatedConnected->SetReplaceValue( 255 );
   // Software Guide : EndCodeSnippet
 
-  
+
   //  Software Guide : BeginLatex
-  //  
+  //
   //  The invocation of the \code{Update()} method on the writer triggers the
   //  execution of the pipeline.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   try
@@ -227,20 +221,20 @@ int main( int argc, char *argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  The intensity value allowing us to separate both regions can be
-  //  recovered with the method \code{GetIsolatedValue()}
+  //  recovered with the method \code{GetIsolatedValue()}.
   //
   //  \index{itk::Isolated\-Connected\-Image\-Filter!GetIsolatedValue()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   std::cout << "Isolated Value Found = ";
   std::cout << isolatedConnected->GetIsolatedValue()  << std::endl;
   // Software Guide : EndCodeSnippet
 
-  
+
   //  Software Guide : BeginLatex
   //
   //  Let's now run this example using the image
@@ -249,7 +243,7 @@ int main( int argc, char *argv[] )
   //  structures by providing seed pairs in the appropriate locations and
   //  defining values for the lower threshold. It is important to keep in
   //  mind in this and the previous examples that the segmentation is being
-  //  performed in the smoothed version of the image. The selection of
+  //  performed using the smoothed version of the image. The selection of
   //  threshold values should therefore be performed in the smoothed image
   //  since the distribution of intensities could be quite different from
   //  that of the input image.  As a reminder of this fact, Figure
@@ -269,7 +263,7 @@ int main( int argc, char *argv[] )
   //  \begin{center}
   //  \begin{tabular}{|l|c|c|c|c|}
   //  \hline
-  //  Adjacent Structures & Seed1 & Seed2 & Lower & Isolated value found       \\ \hline 
+  //  Adjacent Structures & Seed1 & Seed2 & Lower & Isolated value found       \\ \hline
   //  Gray matter vs White matter & $(61,140)$ & $(63,43)$ & $150$ & $183.31$  \\ \hline
   //  \end{tabular}
   //  \end{center}
@@ -280,17 +274,17 @@ int main( int argc, char *argv[] )
   //  \end{table}
   //
   // \begin{figure} \center
-  // \includegraphics[width=0.32\textwidth]{BrainProtonDensitySlice.eps}
-  // \includegraphics[width=0.32\textwidth]{IsolatedConnectedImageFilterOutput0.eps}
-  // \includegraphics[width=0.32\textwidth]{IsolatedConnectedImageFilterOutput1.eps}
+  // \includegraphics[width=0.32\textwidth]{BrainProtonDensitySlice}
+  // \includegraphics[width=0.32\textwidth]{IsolatedConnectedImageFilterOutput0}
+  // \includegraphics[width=0.32\textwidth]{IsolatedConnectedImageFilterOutput1}
   // \itkcaption[IsolatedConnected segmentation results]{Segmentation results of
   // the IsolatedConnectedImageFilter.}
   // \label{fig:IsolatedConnectedImageFilterOutput}
   // \end{figure}
   //
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
-  return 0;
+  return EXIT_SUCCESS;
 }

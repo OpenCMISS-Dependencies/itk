@@ -1,22 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: PolyLineParametricPath1.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:11:49 $
-  Version:   $Revision: 1.5 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 // Software Guide : BeginLatex
 //
@@ -25,11 +23,11 @@
 // output of an image segmentation algorithm in 2D.  The
 // \code{PolyLineParametricPath} however could also be used for representing
 // any open or close curve in N-Dimensions as a linear piece-wise approximation.
-// 
+//
 //
 // First, the header file of the \code{PolyLineParametricPath} class must be included.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 
 #include "itkImage.h"
@@ -46,21 +44,22 @@ int main(int argc, char * argv [] )
     {
     std::cerr << "Missing arguments" << std::endl;
     std::cerr << "Usage: PolyLineParametricPath  inputImageFileName" << std::endl;
-    return -1;
+    return EXIT_FAILURE;
     }
 
   // Software Guide : BeginLatex
-  // 
-  // The path is instantiated over the dimension of the image. In this case 2D. //
-  // Software Guide : EndLatex 
+  //
+  // The path is instantiated over the dimension of the image.
+  // In this example the image and path are two-dimensional.
+  // Software Guide : EndLatex
 
-  // Software Guide : BeginCodeSnippet 
+  // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 2;
 
   typedef itk::Image< unsigned char, Dimension > ImageType;
 
   typedef itk::PolyLineParametricPath< Dimension > PathType;
-  // Software Guide : EndCodeSnippet 
+  // Software Guide : EndCodeSnippet
 
 
   typedef itk::ImageFileReader< ImageType >    ReaderType;
@@ -77,28 +76,19 @@ int main(int argc, char * argv [] )
     {
     std::cout << "Problem reading the input image " << std::endl;
     std::cout << excp << std::endl;
-    return -1;
+    return EXIT_FAILURE;
     }
 
-  // Software Guide : BeginCodeSnippet 
-  
+  // Software Guide : BeginCodeSnippet
   ImageType::ConstPointer image = reader->GetOutput();
-
-
   PathType::Pointer path = PathType::New();
-
-
   path->Initialize();
 
-
   typedef PathType::ContinuousIndexType    ContinuousIndexType;
-
   ContinuousIndexType cindex;
 
   typedef ImageType::PointType             ImagePointType;
-
-  ImagePointType origin = image->GetOrigin(); 
-
+  ImagePointType origin = image->GetOrigin();
 
   ImageType::SpacingType spacing = image->GetSpacing();
   ImageType::SizeType    size    = image->GetBufferedRegion().GetSize();
@@ -107,18 +97,12 @@ int main(int argc, char * argv [] )
 
   point[0] = origin[0] + spacing[0] * size[0];
   point[1] = origin[1] + spacing[1] * size[1];
- 
+
   image->TransformPhysicalPointToContinuousIndex( origin, cindex );
-
   path->AddVertex( cindex );
-
   image->TransformPhysicalPointToContinuousIndex( point, cindex );
-
   path->AddVertex( cindex );
+  // Software Guide : EndCodeSnippet
 
-  
-
-  // Software Guide : EndCodeSnippet 
-
-  return 0;
+  return EXIT_SUCCESS;
 }

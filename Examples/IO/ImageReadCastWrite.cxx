@@ -1,34 +1,28 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: ImageReadCastWrite.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 20:36:50 $
-  Version:   $Revision: 1.15 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
-//  Given that \href{http://www.itk.org}{ITK} is based on the Generic
+//  Given that \href{https://www.itk.org}{ITK} is based on the Generic
 //  Programming paradigm, most of the types are defined at compilation
 //  time. It is sometimes important to anticipate conversion between different
 //  types of images. The following example illustrates the common case of
-//  reading an image of one pixel type and writing it on a different pixel
+//  reading an image of one pixel type and writing it as a different pixel
 //  type. This process not only involves casting but also rescaling the image
 //  intensity since the dynamic range of the input and output pixel types can
 //  be quite different.  The \doxygen{RescaleIntensityImageFilter} is used
@@ -40,7 +34,7 @@
 //  \index{itk::ImageFileWriter!header}
 //  \index{itk::RescaleIntensityImageFilter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkImageFileReader.h"
@@ -71,7 +65,7 @@ int main( int argc, char ** argv )
   //  the image stored in the file.  Instead, it is the type that will be
   //  used to store the image as soon as it is read into memory.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef float               InputPixelType;
@@ -86,7 +80,7 @@ int main( int argc, char ** argv )
   //  Software Guide : BeginLatex
   //
   //  Note that the dimension of the image in memory should match the one of
-  //  the image in file. There are a couple of special cases in which this
+  //  the image in the file. There are a couple of special cases in which this
   //  condition may be relaxed, but in general it is better to ensure that both
   //  dimensions match.
   //
@@ -96,7 +90,7 @@ int main( int argc, char ** argv )
   //  \index{itk::ImageFileReader!Instantiation}
   //  \index{itk::ImageFileWriter!Instantiation}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageFileReader< InputImageType  >  ReaderType;
@@ -105,29 +99,29 @@ int main( int argc, char ** argv )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  Below we instantiate the RescaleIntensityImageFilter class that will
   //  linearly scale the image intensities.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RescaleIntensityImageFilter< 
-                                  InputImageType, 
+  typedef itk::RescaleIntensityImageFilter<
+                                  InputImageType,
                                   OutputImageType >    FilterType;
   // Software Guide : EndCodeSnippet
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  A filter object is constructed and the minimum and maximum values of
-  //  the output are selected using the SetOutputMinimum() and
-  //  SetOutputMaximum() methods.
+  //  the output are selected using the \code{SetOutputMinimum()} and
+  //  \code{SetOutputMaximum()} methods.
   //
   //  \index{itk::RescaleIntensityImageFilter!SetOutputMinimum()}
   //  \index{itk::RescaleIntensityImageFilter!SetOutputMaximum()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   FilterType::Pointer filter = FilterType::New();
@@ -145,7 +139,7 @@ int main( int argc, char ** argv )
   //  \index{itk::ImageFileReader!SmartPointer}
   //  \index{itk::ImageFileWriter!SmartPointer}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   ReaderType::Pointer reader = ReaderType::New();
@@ -166,14 +160,14 @@ int main( int argc, char ** argv )
   //  Software Guide : BeginLatex
   //
   //  The name of the files to be read and written are passed with the
-  //  SetFileName() method. 
+  //  \code{SetFileName()} method.
   //
   //  \index{itk::ImageFileReader!SetFileName()}
   //  \index{itk::ImageFileWriter!SetFileName()}
   //  \index{SetFileName()!itk::ImageFileReader}
   //  \index{SetFileName()!itk::ImageFileWriter}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   reader->SetFileName( inputFilename  );
@@ -183,24 +177,24 @@ int main( int argc, char ** argv )
 
   //  Software Guide : BeginLatex
   //
-  //  Finally we trigger the execution of the pipeline with the Update()
+  //  Finally we trigger the execution of the pipeline with the \code{Update()}
   //  method on the writer. The output image will then be the scaled and cast
   //  version of the input image.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   // Software Guide : BeginCodeSnippet
-  try 
-    { 
-    writer->Update(); 
-    } 
-  catch( itk::ExceptionObject & err ) 
-    { 
-    std::cerr << "ExceptionObject caught !" << std::endl; 
-    std::cerr << err << std::endl; 
+  try
+    {
+    writer->Update();
+    }
+  catch( itk::ExceptionObject & err )
+    {
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
     return EXIT_FAILURE;
-    } 
+    }
   // Software Guide : EndCodeSnippet
 
 

@@ -1,27 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: FFTImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-11-06 09:20:10 $
-  Version:   $Revision: 1.16 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
-
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
@@ -34,33 +27,33 @@
 //  This example illustrates how to use the Fast Fourier Transform filter (FFT)
 //  for processing an image in the spectral domain. Given that FFT computation
 //  can be CPU intensive, there are multiple hardware specific implementations
-//  of FFT. IT is convenient in many cases to delegate the actual computation
+//  of FFT. It is convenient in many cases to delegate the actual computation
 //  of the transform to local available libraries. Particular examples of those
 //  libraries are fftw\footnote{http://www.fftw.org} and the VXL implementation
 //  of FFT. For this reason ITK provides a base abstract class that factorizes
 //  the interface to multiple specific implementations of FFT. This base class
-//  is the \doxygen{FFTRealToComplexConjugateImageFilter}, and two of its
-//  derived classes are \doxygen{VnlFFTRealToComplexConjugateImageFilter} and
+//  is the \doxygen{ForwardFFTImageFilter}, and two of its
+//  derived classes are \doxygen{VnlForwardFFTImageFilter} and
 //  \doxygen{FFTWRealToComplexConjugateImageFilter}.
-//  
-//  
-//  \index{itk::FFT\-Real\-To\-Complex\-Conjugate\-Image\-Filter}
-//  \index{itk::Vnl\-FFT\-Real\-ToComplex\-Conjugate\-Image\-Filter}
-//  \index{itk::FFTW\-Real\-To\-Complex\-Conjugate\-Image\-Filter}
 //
-//  Software Guide : EndLatex 
+//
+//  \index{itk::Forward\-FFT\-Image\-Filter}
+//  \index{itk::Vnl\-Forward\-FFT\-Image\-Filter}
+//  \index{itk::FFTW\-Forward\-FFT\-Image\-Filter}
+//
+//  Software Guide : EndLatex
 
 // Software Guide : BeginLatex
 //
 // A typical application that uses FFT will need to include the following
 // header files.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
 #include "itkImage.h"
-#include "itkVnlFFTRealToComplexConjugateImageFilter.h"
+#include "itkVnlForwardFFTImageFilter.h"
 #include "itkComplexToRealImageFilter.h"
 #include "itkComplexToImaginaryImageFilter.h"
 // Software Guide : EndCodeSnippet
@@ -81,9 +74,9 @@ int main( int argc, char * argv [] )
 // Software Guide : BeginLatex
 //
 // The first decision to make is related to the pixel type and dimension of the
-// images on which we want to compute the Fourier transform. 
+// images on which we want to compute the Fourier transform.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   typedef float  PixelType;
@@ -94,19 +87,16 @@ int main( int argc, char * argv [] )
 
 // Software Guide : BeginLatex
 //
-// We use the same image type in order to instantiate the FFT filter. In this
-// case the \doxygen{VnlFFTRealToComplexConjugateImageFilter}. Note that
-// contrary to most ITK filters, the FFT filter is instantiated using the Pixel
-// type and the image dimension explicitly. Once the filter type is
+// We use the same image type in order to instantiate the FFT filter, in this
+// case the \doxygen{VnlForwardFFTImageFilter}. Once the filter type is
 // instantiated, we can use it for creating one object by invoking the
 // \code{New()} method and assigning the result to a SmartPointer.
-// 
-// Software Guide : EndLatex 
+//
+// Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::VnlFFTRealToComplexConjugateImageFilter< 
-                                      PixelType, Dimension >  FFTFilterType;
+  typedef itk::VnlForwardFFTImageFilter< ImageType >  FFTFilterType;
 
   FFTFilterType::Pointer fftFilter = FFTFilterType::New();
 // Software Guide : EndCodeSnippet
@@ -115,7 +105,7 @@ int main( int argc, char * argv [] )
 //
 // The input to this filter can be taken from a reader, for example.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   typedef itk::ImageFileReader< ImageType >  ReaderType;
@@ -128,10 +118,10 @@ int main( int argc, char * argv [] )
 // Software Guide : BeginLatex
 //
 // The execution of the filter can be triggered by invoking the \code{Update()}
-// method.  Since this invocation can eventually throw and exception, the call
+// method.  Since this invocation can eventually throw an exception, the call
 // must be placed inside a try/catch block.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   try
@@ -154,7 +144,7 @@ int main( int argc, char * argv [] )
 // output image from the FFT filter. We construct one instance of the writer
 // and pass the output of the FFT filter as the input of the writer.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   typedef FFTFilterType::OutputImageType    ComplexImageType;
@@ -169,10 +159,10 @@ int main( int argc, char * argv [] )
 
 // Software Guide : BeginLatex
 //
-// Finally we invoke the \code{Update()} method placing inside a try/catch
+// Finally we invoke the \code{Update()} method placed inside a try/catch
 // block.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   try
@@ -196,17 +186,17 @@ int main( int argc, char * argv [] )
 //
 // We instantiate first the ImageFilter that will help us to extract the real
 // part from the complex image.  The \code{ComplexToRealImageFilter} takes as
-// first template parameter the type of the complex image and as second
+// its first template parameter the type of the complex image and as its second
 // template parameter it takes the type of the output image pixel. We create
 // one instance of this filter and connect as its input the output of the FFT
 // filter.
 //
 // \index{itk::ComplexToRealImageFilter}
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::ComplexToRealImageFilter< 
+  typedef itk::ComplexToRealImageFilter<
                  ComplexImageType, ImageType > RealFilterType;
 
   RealFilterType::Pointer realFilter = RealFilterType::New();
@@ -219,22 +209,21 @@ int main( int argc, char * argv [] )
   typedef itk::Image< WritePixelType, Dimension > WriteImageType;
 
 
-  
 // Software Guide : BeginLatex
 //
 // Since the range of intensities in the Fourier domain can be quite
-// concentrated, it result convenient to rescale the image in order to
-// visualize it. For this purpose we instantiate here a
+// concentrated, it is convenient to rescale the image in order to
+// visualize it. For this purpose we instantiate a
 // \doxygen{RescaleIntensityImageFilter} that will rescale the intensities of
 // the \code{real} image into a range suitable for writing in a file. We also
 // set the minimum and maximum values of the output to the range of the pixel
 // type used for writing.
-// 
-// Software Guide : EndLatex 
+//
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::RescaleIntensityImageFilter< 
-                                ImageType, 
+  typedef itk::RescaleIntensityImageFilter<
+                                ImageType,
                                 WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer intensityRescaler = RescaleFilterType::New();
@@ -273,12 +262,12 @@ int main( int argc, char * argv [] )
 // takes the type of the output image pixel. An instance of the filter is
 // created, and its input is connected to the output of the FFT filter.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   typedef FFTFilterType::OutputImageType    ComplexImageType;
 
-  typedef itk::ComplexToImaginaryImageFilter< 
+  typedef itk::ComplexToImaginaryImageFilter<
                        ComplexImageType, ImageType > ImaginaryFilterType;
 
   ImaginaryFilterType::Pointer imaginaryFilter = ImaginaryFilterType::New();
@@ -292,7 +281,7 @@ int main( int argc, char * argv [] )
 // The Imaginary image can then be rescaled and saved into a file, just as we
 // did with the Real part.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
   intensityRescaler->SetInput( imaginaryFilter->GetOutput() );
   writer->SetFileName( argv[3] );
@@ -315,21 +304,21 @@ int main( int argc, char * argv [] )
 // Complex images, here we instantiate a reader that will load the Complex
 // image that we just saved. Note that nothing special is required in this
 // case. The instantiation is done just the same as for any other type of
-// image. Which once again illustrates the power of Generic Programming.
+// image, which once again illustrates the power of Generic Programming.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
   typedef itk::ImageFileReader< ComplexImageType > ComplexReaderType;
-  
+
   ComplexReaderType::Pointer complexReader = ComplexReaderType::New();
 
   complexReader->SetFileName( argv[4] );
   complexReader->Update();
   // Software Guide : EndCodeSnippet
 
-  
+
   // A way of testing the pixel type of an image in file is to
   // invoke the ImageIO object from the reader and then call
   // \code{GetPixelTypeAsString()}

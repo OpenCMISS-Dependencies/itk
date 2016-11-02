@@ -1,26 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: RelabelComponentImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:44:43 $
-  Version:   $Revision: 1.7 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
@@ -31,10 +25,9 @@
 //
 //  \index{itk::RelabelComponentImageFilter}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
-#include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
@@ -44,7 +37,7 @@
 //
 //  \index{itk::RelabelComponentImageFilter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
@@ -57,8 +50,8 @@ int main( int argc, char * argv[] )
   if( argc < 3 )
     {
     std::cerr << "Usage: " << std::endl;
-    std::cerr << argv[0] << "  inputImageFile   outputImageFile" << std::endl;
-    return 1;
+    std::cerr << argv[0] << " inputImageFile outputImageFile" << std::endl;
+    return EXIT_FAILURE;
     }
 
 
@@ -67,7 +60,7 @@ int main( int argc, char * argv[] )
   //  Then the pixel types for input and output image must be defined and, with
   //  them, the image types can be instantiated.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef   unsigned char  InputPixelType;
@@ -90,13 +83,13 @@ int main( int argc, char * argv[] )
   //  Software Guide : BeginLatex
   //
   //  Using the image types it is now possible to instantiate the filter type
-  //  and create the filter object. 
+  //  and create the filter object.
   //
   //  \index{itk::RelabelComponentImageFilter!instantiation}
   //  \index{itk::RelabelComponentImageFilter!New()}
   //  \index{itk::RelabelComponentImageFilter!Pointer}
-  // 
-  //  Software Guide : EndLatex 
+  //
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RelabelComponentImageFilter<
@@ -116,7 +109,7 @@ int main( int argc, char * argv[] )
   //  \index{itk::RelabelComponentImageFilter!SetInput()}
   //  \index{itk::RelabelComponentImageFilter!GetOutput()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   // Software Guide : BeginCodeSnippet
@@ -131,20 +124,18 @@ int main( int argc, char * argv[] )
   // We can now query the size of each one of the connected components, both in
   // pixel units and in physical units.
   //
-  // Software Guide : EndLatex 
-
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef std::vector< unsigned long > SizesInPixelsType;
-
-  const SizesInPixelsType &  sizesInPixels = relabeler->GetSizeOfObjectsInPixels();
+  typedef std::vector< itk::SizeValueType > SizesInPixelsType;
+  const SizesInPixelsType & sizesInPixels
+                                      = relabeler->GetSizeOfObjectsInPixels();
 
   SizesInPixelsType::const_iterator sizeItr = sizesInPixels.begin();
   SizesInPixelsType::const_iterator sizeEnd = sizesInPixels.end();
-
   std::cout << "Number of pixels per class " << std::endl;
   unsigned int kclass = 0;
-  while( sizeItr != sizeEnd )
+  while (sizeItr != sizeEnd)
     {
     std::cout << "Class " << kclass << " = " << *sizeItr << std::endl;
     ++kclass;
@@ -154,11 +145,13 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef std::vector< float > SizesInPhysicalUnitsType;
+  const SizesInPhysicalUnitsType sizesInUnits
+                               = relabeler->GetSizeOfObjectsInPhysicalUnits();
 
-  const SizesInPhysicalUnitsType  sizesInUnits = relabeler->GetSizeOfObjectsInPhysicalUnits();
-
-  SizesInPhysicalUnitsType::const_iterator physicalSizeItr = sizesInUnits.begin();
-  SizesInPhysicalUnitsType::const_iterator physicalSizeEnd = sizesInUnits.end();
+  SizesInPhysicalUnitsType::const_iterator physicalSizeItr
+                                                       = sizesInUnits.begin();
+  SizesInPhysicalUnitsType::const_iterator physicalSizeEnd
+                                                         = sizesInUnits.end();
 
   std::cout << "Area in Physical Units per class " << std::endl;
   unsigned int jclass = 0;
@@ -170,5 +163,5 @@ int main( int argc, char * argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-  return 0;
+  return EXIT_SUCCESS;
 }

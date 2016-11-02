@@ -1,22 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: MeshCellsIteration.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:11:44 $
-  Version:   $Revision: 1.15 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
@@ -31,13 +29,11 @@
 //  Let's start by assuming a mesh defined with one tetrahedron and all its
 //  boundary faces. That is, four triangles, six edges and four vertices.
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 #include "itkMesh.h"
-#include "itkVertexCell.h"
 #include "itkLineCell.h"
-#include "itkTriangleCell.h"
 #include "itkTetrahedronCell.h"
 
 
@@ -63,10 +59,10 @@ int main(int, char *[])
   MeshType::PointType   point2;
   MeshType::PointType   point3;
 
-  point0[0] = -1; point0[1] = -1; point0[2] = -1; 
-  point1[0] =  1; point1[1] =  1; point1[2] = -1; 
-  point2[0] =  1; point2[1] = -1; point2[2] =  1; 
-  point3[0] = -1; point3[1] =  1; point3[2] =  1; 
+  point0[0] = -1; point0[1] = -1; point0[2] = -1;
+  point1[0] =  1; point1[1] =  1; point1[2] = -1;
+  point2[0] =  1; point2[1] = -1; point2[2] =  1;
+  point3[0] = -1; point3[1] =  1; point3[2] =  1;
 
   mesh->SetPoint( 0, point0 );
   mesh->SetPoint( 1, point1 );
@@ -167,7 +163,7 @@ int main(int, char *[])
 
   std::cout << "# Points= " << mesh->GetNumberOfPoints() << std::endl;
   std::cout << "# Cell  = " << mesh->GetNumberOfCells() << std::endl;
-  
+
 
   //  Software Guide : BeginLatex
   //
@@ -181,15 +177,15 @@ int main(int, char *[])
   // \index{CellsContainer!Begin()}
   // \index{CellsContainer!End()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef MeshType::CellsContainer::ConstIterator  CellIterator;
 
   CellIterator cellIterator = mesh->GetCells()->Begin();
   CellIterator cellEnd      = mesh->GetCells()->End();
-  
-  while( cellIterator != cellEnd ) 
+
+  while( cellIterator != cellEnd )
     {
     CellType * cell = cellIterator.Value();
     std::cout << cell->GetNumberOfPoints() << std::endl;
@@ -224,15 +220,15 @@ int main(int, char *[])
   //  \code{LINE\_CELL}. Only those cells are down-casted to \code{LineType}
   //  cells and a method specific for the \code{LineType} is invoked.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   std::cout << "Visiting the Line cells : " << std::endl;
 
   // Software Guide : BeginCodeSnippet
   cellIterator = mesh->GetCells()->Begin();
   cellEnd      = mesh->GetCells()->End();
-  
-  while( cellIterator != cellEnd ) 
+
+  while( cellIterator != cellEnd )
     {
     CellType * cell = cellIterator.Value();
     if( cell->GetType() == CellType::LINE_CELL )
@@ -246,7 +242,7 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-  
+
   //  Software Guide : BeginLatex
   //
   //  In order to perform different actions on different cell types a
@@ -254,15 +250,15 @@ int main(int, char *[])
   //  The following code illustrates an iteration over the cells and the
   //  invocation of different methods on each cell type.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   std::cout << "Visiting several cell types : " << std::endl;
 
   // Software Guide : BeginCodeSnippet
   cellIterator = mesh->GetCells()->Begin();
   cellEnd      = mesh->GetCells()->End();
-  
-  while( cellIterator != cellEnd ) 
+
+  while( cellIterator != cellEnd )
     {
     CellType * cell = cellIterator.Value();
     switch( cell->GetType() )
@@ -297,11 +293,11 @@ int main(int, char *[])
         std::cout << "dimension = " << cell->GetDimension()      << std::endl;
         std::cout << "# points  = " << cell->GetNumberOfPoints() << std::endl;
         break;
-        } 
+        }
       }
     ++cellIterator;
     }
   // Software Guide : EndCodeSnippet
 
-  return 0;
+  return EXIT_SUCCESS;
 }

@@ -1,31 +1,25 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: SigmoidImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2005-08-31 13:55:22 $
-  Version:   $Revision: 1.27 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
-//    OUTPUTS: {SigmoidImageFilterOutput.png} 
-//    10 240 10 170
+//    INPUTS:  {BrainProtonDensitySlice.png}
+//    OUTPUTS: {SigmoidImageFilterOutput.png}
+//    ARGUMENTS:    10 240 10 170
 //  Software Guide : EndCommandLineArgs
 
 //  Software Guide : BeginLatex
@@ -44,7 +38,7 @@
 //  \begin{equation}
 //  I' = (Max-Min)\cdot \frac{1}{\left(1+e^{-\left(\frac{ I - \beta }{\alpha } \right)} \right)} + Min
 //  \end{equation}
-//  
+//
 //  In the equation above, $I$ is the intensity of the input pixel, $I'$ the
 //  intensity of the output pixel, $Min,Max$ are the minimum and maximum values
 //  of the output image, $\alpha$ defines the width of the input intensity
@@ -53,25 +47,24 @@
 //  of each parameter.
 //
 // \begin{figure} \center
-// \includegraphics[width=0.44\textwidth]{SigmoidParameterAlpha.eps}
-// \includegraphics[width=0.44\textwidth]{SigmoidParameterBeta.eps}
+// \includegraphics[width=0.44\textwidth]{SigmoidParameterAlpha}
+// \includegraphics[width=0.44\textwidth]{SigmoidParameterBeta}
 // \itkcaption[Sigmoid Parameters]{Effects of the various parameters in the
 // SigmoidImageFilter.  The alpha parameter defines the width of the intensity
 // window.  The beta parameter defines the center of the intensity window.}
 // \label{fig:SigmoidParameters} \end{figure}
 //
 //  This filter will work on images of any dimension and will take advantage of
-//  multiple processors when available. 
+//  multiple processors when available.
 //
 //  \index{itk::SigmoidImageFilter }
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 
 //  Software Guide : BeginLatex
@@ -80,7 +73,7 @@
 //
 //  \index{itk::SigmoidImageFilter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
@@ -103,7 +96,7 @@ int main( int argc, char * argv[] )
   //  Then pixel and image types for the filter input and output must be
   //  defined.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef   unsigned char  InputPixelType;
@@ -126,13 +119,13 @@ int main( int argc, char * argv[] )
   //  Software Guide : BeginLatex
   //
   //  Using the image types, we instantiate the filter type
-  //  and create the filter object. 
+  //  and create the filter object.
   //
   //  \index{itk::SigmoidImageFilter!instantiation}
   //  \index{itk::SigmoidImageFilter!New()}
   //  \index{itk::SigmoidImageFilter!Pointer}
-  // 
-  //  Software Guide : EndLatex 
+  //
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::SigmoidImageFilter<
@@ -144,12 +137,12 @@ int main( int argc, char * argv[] )
   //  Software Guide : BeginLatex
   //
   //  The minimum and maximum values desired in the output are defined using the
-  //  methods \code{SetOutputMinimum()} and \code{SetOutputMaximum()}. 
+  //  methods \code{SetOutputMinimum()} and \code{SetOutputMaximum()}.
   //
   //  \index{itk::SigmoidImageFilter!SetOutputMaximum()}
   //  \index{itk::SigmoidImageFilter!SetOutputMinimum()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   const OutputPixelType outputMinimum = atoi( argv[3] );
   const OutputPixelType outputMaximum = atoi( argv[4] );
@@ -176,7 +169,7 @@ int main( int argc, char * argv[] )
   //  \index{itk::SigmoidImageFilter!SetAlpha()}
   //  \index{itk::SigmoidImageFilter!SetBeta()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   const double  alpha = atof( argv[5] );
   const double  beta  = atof( argv[6] );
@@ -191,13 +184,13 @@ int main( int argc, char * argv[] )
   //
   //  The input to the SigmoidImageFilter can be taken from any other filter,
   //  such as an image file reader, for example. The output can be passed down the
-  //  pipeline to other filters, like an image file writer. An update call on
+  //  pipeline to other filters, like an image file writer. An \code{Update()} call on
   //  any downstream filter will trigger the execution of the Sigmoid filter.
   //
   //  \index{itk::SigmoidImageFilter!SetInput()}
   //  \index{itk::SigmoidImageFilter!GetOutput()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   // Software Guide : BeginCodeSnippet
@@ -208,11 +201,11 @@ int main( int argc, char * argv[] )
 
 
   //  Software Guide : BeginLatex
-  // 
+  //
   // \begin{figure}
   // \center
-  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice.eps}
-  // \includegraphics[width=0.44\textwidth]{SigmoidImageFilterOutput.eps}
+  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
+  // \includegraphics[width=0.44\textwidth]{SigmoidImageFilterOutput}
   // \itkcaption[Effect of the Sigmoid filter.]{Effect of the Sigmoid filter on a
   // slice from a MRI proton density brain image.}
   // \label{fig:SigmoidImageFilterOutput}
@@ -233,7 +226,7 @@ int main( int argc, char * argv[] )
   //  $\beta - 3 \alpha$ and higher than $\beta + 3\alpha$ became progressively
   //  mapped to the minimum and maximum output values. This is the way in which
   //  a Sigmoid can be used for performing smooth intensity windowing.
-  // 
+  //
   //  Note that both $\alpha$ and $\beta$ can be positive and negative. A
   //  negative $\alpha$ will have the effect of \emph{negating} the image. This
   //  is illustrated on the left side of Figure~\ref{fig:SigmoidParameters}. An
@@ -245,9 +238,8 @@ int main( int argc, char * argv[] )
   //  the Gaussian and, therefore, appear naturally as the response to signals
   //  whose distribution is Gaussian.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   return EXIT_SUCCESS;
 }
-

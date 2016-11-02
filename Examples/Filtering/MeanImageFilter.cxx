@@ -1,29 +1,23 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: MeanImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2005-08-31 13:55:21 $
-  Version:   $Revision: 1.22 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
+//    INPUTS:  {BrainProtonDensitySlice.png}
 //    OUTPUTS: {MeanImageFilterOutput.png}
 //  Software Guide : EndCommandLineArgs
 
@@ -38,19 +32,19 @@
 //
 //  \begin{center}
 //  \begin{picture}(200,46)
-//  \put(   5.0,  0.0 ){\framebox(30.0,15.0){25}} 
-//  \put(  35.0,  0.0 ){\framebox(30.0,15.0){30}} 
-//  \put(  65.0,  0.0 ){\framebox(30.0,15.0){32}} 
-//  \put(   5.0, 15.0 ){\framebox(30.0,15.0){27}} 
-//  \put(  35.0, 15.0 ){\framebox(30.0,15.0){25}} 
-//  \put(  65.0, 15.0 ){\framebox(30.0,15.0){29}} 
-//  \put(   5.0, 30.0 ){\framebox(30.0,15.0){28}} 
-//  \put(  35.0, 30.0 ){\framebox(30.0,15.0){26}} 
-//  \put(  65.0, 30.0 ){\framebox(30.0,15.0){50}} 
+//  \put(   5.0,  0.0 ){\framebox(30.0,15.0){25}}
+//  \put(  35.0,  0.0 ){\framebox(30.0,15.0){30}}
+//  \put(  65.0,  0.0 ){\framebox(30.0,15.0){32}}
+//  \put(   5.0, 15.0 ){\framebox(30.0,15.0){27}}
+//  \put(  35.0, 15.0 ){\framebox(30.0,15.0){25}}
+//  \put(  65.0, 15.0 ){\framebox(30.0,15.0){29}}
+//  \put(   5.0, 30.0 ){\framebox(30.0,15.0){28}}
+//  \put(  35.0, 30.0 ){\framebox(30.0,15.0){26}}
+//  \put(  65.0, 30.0 ){\framebox(30.0,15.0){50}}
 //  \put( 100.0, 22.0 ){\vector(1,0){20.0}}
-//  \put( 125.0, 15.0 ){\framebox(34.0,15.0){30.22}} 
+//  \put( 125.0, 15.0 ){\framebox(34.0,15.0){30.22}}
 //  \put( 160.0, 22.0 ){\vector(1,0){20.0}}
-//  \put( 185.0, 15.0 ){\framebox(30.0,15.0){30}} 
+//  \put( 185.0, 15.0 ){\framebox(30.0,15.0){30}}
 //  \end{picture}
 //  \end{center}
 //
@@ -62,13 +56,11 @@
 //
 //  \index{itk::MeanImageFilter}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
-#include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 
 //  Software Guide : BeginLatex
@@ -77,7 +69,7 @@
 //
 //  \index{itk::MeanImageFilter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
@@ -100,7 +92,7 @@ int main( int argc, char * argv[] )
   //  Then the pixel types for input and output image must be defined and, with
   //  them, the image types can be instantiated.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef   unsigned char  InputPixelType;
@@ -123,13 +115,13 @@ int main( int argc, char * argv[] )
   //  Software Guide : BeginLatex
   //
   //  Using the image types it is now possible to instantiate the filter type
-  //  and create the filter object. 
+  //  and create the filter object.
   //
   //  \index{itk::MeanImageFilter!instantiation}
   //  \index{itk::MeanImageFilter!New()}
   //  \index{itk::MeanImageFilter!Pointer}
-  // 
-  //  Software Guide : EndLatex 
+  //
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::MeanImageFilter<
@@ -150,12 +142,12 @@ int main( int argc, char * argv[] )
   //  \index{itk::MeanImageFilter!Radius}
   //  \index{itk::MeanImageFilter!Neighborhood}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   // Software Guide : BeginCodeSnippet
   InputImageType::SizeType indexRadius;
-  
+
   indexRadius[0] = 1; // radius along x
   indexRadius[1] = 1; // radius along y
 
@@ -172,7 +164,7 @@ int main( int argc, char * argv[] )
   //  \index{itk::MeanImageFilter!SetInput()}
   //  \index{itk::MeanImageFilter!GetOutput()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   // Software Guide : BeginCodeSnippet
@@ -183,11 +175,11 @@ int main( int argc, char * argv[] )
 
 
   //  Software Guide : BeginLatex
-  // 
+  //
   // \begin{figure}
   // \center
-  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice.eps}
-  // \includegraphics[width=0.44\textwidth]{MeanImageFilterOutput.eps}
+  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
+  // \includegraphics[width=0.44\textwidth]{MeanImageFilterOutput}
   // \itkcaption[Effect of the MedianImageFilter]{Effect of the MeanImageFilter on a slice
   // from a MRI proton density brain image.}
   // \label{fig:MeanImageFilterOutput}
@@ -199,9 +191,8 @@ int main( int argc, char * argv[] )
   //  It can be seen from this picture that edges are rapidly degraded by the
   //  diffusion of intensity values among neighbors.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   return EXIT_SUCCESS;
 }
-

@@ -1,23 +1,21 @@
 /*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: ShapedNeighborhoodIterators1.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-04-06 00:19:18 $
-  Version:   $Revision: 1.21 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-#include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkNeighborhoodAlgorithm.h"
@@ -38,7 +36,7 @@
 // neighborhood stencil.
 //
 // We need two iterators, a shaped iterator for the input image and a regular
-// image iterator for writing results to the output image. 
+// image iterator for writing results to the output image.
 //
 // Software Guide : EndLatex
 
@@ -56,7 +54,7 @@ int main( int argc, char ** argv )
     std::cerr << argv[0]
               << " inputImageFile outputImageFile element_radius"
               << std::endl;
-    return -1;
+    return EXIT_FAILURE;
     }
 
   // Software Guide : BeginLatex
@@ -71,26 +69,26 @@ int main( int argc, char ** argv )
   typedef unsigned char               PixelType;
   typedef itk::Image< PixelType, 2 >  ImageType;
 
-  typedef itk::ConstShapedNeighborhoodIterator< 
-                                          ImageType 
+  typedef itk::ConstShapedNeighborhoodIterator<
+                                          ImageType
                                             > ShapedNeighborhoodIteratorType;
 
   typedef itk::ImageRegionIterator< ImageType> IteratorType;
   // Software Guide : EndCodeSnippet
-  
+
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-  
+
   try
     {
     reader->Update();
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
-    return -1;
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
 
   ImageType::Pointer output = ImageType::New();
@@ -127,15 +125,15 @@ int main( int argc, char ** argv )
   // Software Guide : BeginCodeSnippet
   typedef itk::NeighborhoodAlgorithm::ImageBoundaryFacesCalculator<
                                                 ImageType > FaceCalculatorType;
-  
+
   FaceCalculatorType faceCalculator;
   FaceCalculatorType::FaceListType faceList;
   FaceCalculatorType::FaceListType::iterator fit;
-  
-  faceList = faceCalculator( reader->GetOutput(), 
-                             output->GetRequestedRegion(), 
+
+  faceList = faceCalculator( reader->GetOutput(),
+                             output->GetRequestedRegion(),
                              radius );
-  // Software Guide : EndCodeSnippet 
+  // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
   //
@@ -146,7 +144,7 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   IteratorType out;
-  
+
   const PixelType background_value = 0;
   const PixelType foreground_value = 255;
   const float rad = static_cast<float>(element_radius);
@@ -176,14 +174,14 @@ int main( int argc, char ** argv )
 
     // Creates a circular structuring element by activating all the pixels less
     // than radius distance from the center of the neighborhood.
-  
+
     for (float y = -rad; y <= rad; y++)
       {
       for (float x = -rad; x <= rad; x++)
         {
         ShapedNeighborhoodIteratorType::OffsetType off;
-        
-        float dis = vcl_sqrt( x*x + y*y );
+
+        float dis = std::sqrt( x*x + y*y );
         if (dis <= rad)
           {
           off[0] = static_cast<int>(x);
@@ -204,9 +202,9 @@ int main( int argc, char ** argv )
     // of the stencil iterator, \code{ci}, in performing this check.
     //
     // Software Guide : EndLatex
-    
+
     // Software Guide : BeginCodeSnippet
-    
+
     // Implements erosion
     for (it.GoToBegin(), out.GoToBegin(); !it.IsAtEnd(); ++it, ++out)
       {
@@ -232,9 +230,9 @@ int main( int argc, char ** argv )
       }
     }
   // Software Guide : EndCodeSnippet
-  
+
   typedef itk::ImageFileWriter< ImageType > WriterType;
-  
+
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
   writer->SetInput( output );
@@ -244,10 +242,10 @@ int main( int argc, char ** argv )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl;
-    std::cout << err << std::endl;
-    return -1;
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
 
-  return 0;
+  return EXIT_SUCCESS;
 }

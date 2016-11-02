@@ -1,29 +1,27 @@
 /*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: NeighborhoodIterators6.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-16 23:38:28 $
-  Version:   $Revision: 1.19 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkNeighborhoodIterator.h"
 #include "itkFastMarchingImageFilter.h"
-#include "itkNumericTraits.h"
 #include "itkRandomImageSource.h"
 #include "itkAddImageFilter.h"
 
@@ -32,7 +30,7 @@
 // Some image processing routines do not need to visit every pixel in an
 // image. Flood-fill and connected-component algorithms, for example, only
 // visit pixels that are locally connected to one another.  Algorithms
-// such as these can be efficiently written using the random access 
+// such as these can be efficiently written using the random access
 // capabilities of the neighborhood iterator.
 //
 // The following example finds local minima.  Given a seed point, we can search
@@ -48,7 +46,7 @@
 // neighborhood iterators, but can be found in the source code of this
 // example. Some noise has been added to the distance transform image for
 // additional interest.
-// 
+//
 // Software Guide : EndLatex
 
 int main( int argc, char ** argv )
@@ -60,7 +58,7 @@ int main( int argc, char ** argv )
     std::cerr << argv[0]
               << " outputImageFile startX startY"
               << std::endl;
-    return -1;
+    return EXIT_FAILURE;
     }
 
   typedef float                                  PixelType;
@@ -75,9 +73,9 @@ int main( int argc, char ** argv )
   typedef FastMarchingFilterType::NodeType       NodeType;
 
   NodeContainer::Pointer seeds = NodeContainer::New();
- 
+
   ImageType::IndexType  seedPosition;
-  
+
   seedPosition[0] = 128;
   seedPosition[1] = 128;
   const double initialDistance = 1.0;
@@ -87,7 +85,7 @@ int main( int argc, char ** argv )
   const double seedValue = - initialDistance;
 
   ImageType::SizeType size = {{256, 256}};
-  
+
   node.SetValue( seedValue );
   node.SetIndex( seedPosition );
   seeds->Initialize();
@@ -106,7 +104,7 @@ int main( int argc, char ** argv )
   noise->SetMax(.8);
   adder->SetInput1(noise->GetOutput());
   adder->SetInput2(fastMarching->GetOutput());
-  
+
   try
     {
     fastMarching->SetOutputSize( size );
@@ -119,6 +117,7 @@ int main( int argc, char ** argv )
     {
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
+    return EXIT_FAILURE;
     }
 
   ImageType::Pointer input = adder->GetOutput();
@@ -128,6 +127,7 @@ int main( int argc, char ** argv )
 // The variable \code{input} is the pointer to the distance transform image.
 // The local minimum algorithm is initialized with a seed point read from the
 // command line.
+//
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
@@ -137,7 +137,9 @@ int main( int argc, char ** argv )
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
+//
 // Next we create the neighborhood iterator and position it at the seed point.
+//
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
@@ -149,7 +151,7 @@ int main( int argc, char ** argv )
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
-// 
+//
 // Searching for the local minimum involves finding the minimum in the current
 // neighborhood, then shifting the neighborhood in the direction of that
 // minimum.  The \code{for} loop below records the \doxygen{Offset} of the
@@ -168,7 +170,7 @@ int main( int argc, char ** argv )
     nextMove.Fill(0);
 
     flag = false;
-    
+
     PixelType min = it.GetCenterPixel();
     for (unsigned i = 0; i < it.Size(); i++)
       {
@@ -184,8 +186,7 @@ int main( int argc, char ** argv )
     }
 // Software Guide : EndCodeSnippet
 
-  
-    
+
 // Software Guide : BeginLatex
 //
 // Figure~\ref{fig:NeighborhoodExample6} shows the results of the algorithm
@@ -194,11 +195,11 @@ int main( int argc, char ** argv )
 // additive noise is visible as the small perturbations in the paths.
 //
 // \begin{figure} \centering
-// \includegraphics[width=0.3\textwidth]{NeighborhoodIterators6a.eps}
-// \includegraphics[width=0.3\textwidth]{NeighborhoodIterators6b.eps}
-// \includegraphics[width=0.3\textwidth]{NeighborhoodIterators6c.eps}
+// \includegraphics[width=0.3\textwidth]{NeighborhoodIterators6a}
+// \includegraphics[width=0.3\textwidth]{NeighborhoodIterators6b}
+// \includegraphics[width=0.3\textwidth]{NeighborhoodIterators6c}
 // \itkcaption[Finding local minima]{Paths traversed by the neighborhood
-// iterator from different seed points to the local minimum. 
+// iterator from different seed points to the local minimum.
 // The true minimum is at the center
 // of the image.  The path of the iterator is shown in white. The effect of
 // noise in the image is seen as small perturbations in each path. }
@@ -209,16 +210,16 @@ int main( int argc, char ** argv )
   typedef unsigned char                          WritePixelType;
   typedef itk::Image< WritePixelType, 2 >        WriteImageType;
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
-  
+
   typedef itk::RescaleIntensityImageFilter< ImageType,
     WriteImageType > RescaleFilterType;
-  
+
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
-  
+
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
   rescaler->SetInput( input );
-  
+
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[1] );
   writer->SetInput( rescaler->GetOutput() );
@@ -228,9 +229,9 @@ int main( int argc, char ** argv )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl;
-    std::cout << err << std::endl;
-    return -1;
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
-  return 0;
+  return EXIT_SUCCESS;
 }

@@ -1,22 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: RGBImage.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:11:44 $
-  Version:   $Revision: 1.20 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 #include "itkImage.h"
 #include "itkImageFileReader.h"
@@ -38,12 +36,11 @@
 //  \index{itk::RGBPixel!Image}
 //  \index{itk::RGBPixel!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkRGBPixel.h"
 // Software Guide : EndCodeSnippet
-
 
 int main( int , char * argv[] )
 {
@@ -55,23 +52,21 @@ int main( int , char * argv[] )
   //
   //  \index{itk::RGBPixel!Instantiation}
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RGBPixel< unsigned char >    PixelType;
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The type is then used as the pixel template parameter of the image.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Image< PixelType, 3 >   ImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -81,26 +76,19 @@ int main( int , char * argv[] )
   //
   // \index{itk::ImageFileReader!RGB Image}
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageFileReader< ImageType >  ReaderType;
   // Software Guide : EndCodeSnippet
 
-
   ReaderType::Pointer reader = ReaderType::New();
-  const char * filename = argv[1];
+  const char * const filename = argv[1];
   reader->SetFileName( filename );
   reader->Update();
 
   ImageType::Pointer image = reader->GetOutput();
-
-  ImageType::IndexType pixelIndex;
-
-  pixelIndex[0] = 25;  
-  pixelIndex[1] = 35;  
-  pixelIndex[2] =  0;  
-
+  const ImageType::IndexType pixelIndex = {{25,35,0}};
 
   // Software Guide : BeginLatex
   //
@@ -112,11 +100,11 @@ int main( int , char * argv[] )
   // \index{itk::RGBPixel!GetGreen()}
   // \index{itk::RGBPixel!GetBlue()}
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   PixelType onePixel = image->GetPixel( pixelIndex );
-  
+
   PixelType::ValueType red   = onePixel.GetRed();
   PixelType::ValueType green = onePixel.GetGreen();
   PixelType::ValueType blue  = onePixel.GetBlue();
@@ -135,10 +123,10 @@ int main( int , char * argv[] )
 
   // Software Guide : BeginLatex
   //
-  // The subindex notation can also be used since the \doxygen{RGBPixel} inherits the
-  // \code{[]} operator from the \doxygen{FixedArray} class.
+  // The subindex notation can also be used since the \doxygen{RGBPixel}
+  // inherits the \code{[]} operator from the \doxygen{FixedArray} class.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   red   = onePixel[0];  // extract Red   component
@@ -163,6 +151,6 @@ int main( int , char * argv[] )
   // implementing interactions with a graphical user interface such as
   // querying pixel value by clicking with the mouse.
   //
- 
-  return 0;
+
+  return EXIT_SUCCESS;
 }

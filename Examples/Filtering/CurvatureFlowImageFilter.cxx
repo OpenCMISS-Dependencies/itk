@@ -1,41 +1,35 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: CurvatureFlowImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-16 21:52:48 $
-  Version:   $Revision: 1.30 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
+//    INPUTS:  {BrainProtonDensitySlice.png}
 //    OUTPUTS: {CurvatureFlowImageFilterOutput.png}
-//    10 0.25
+//    ARGUMENTS:    10 0.25
 //  Software Guide : EndCommandLineArgs
 
 //  Software Guide : BeginLatex
 //
 //  The \doxygen{CurvatureFlowImageFilter} performs edge-preserving smoothing
 //  in a similar fashion to the classical anisotropic diffusion. The filter
-//  uses a level set formulation where the iso-intensity contours in a image
+//  uses a level set formulation where the iso-intensity contours in an image
 //  are viewed as level sets, where pixels of a particular intensity form one
 //  level set. The level set function is then evolved under the control of
-//  a diffusion equation where the speed is proportional to the 
+//  a diffusion equation where the speed is proportional to the
 //  curvature of the contour:
 //
 //  \begin{equation}
@@ -48,14 +42,14 @@
 //  Hence, small jagged noise artifacts will disappear quickly, while large
 //  scale interfaces will be slow to evolve, thereby preserving sharp
 //  boundaries between objects. However, it should be noted that although the
-//  evolution at the boundary is slow, some diffusion still occur. Thus,
+//  evolution at the boundary is slow, some diffusion will still occur. Thus,
 //  continual application of this curvature flow scheme will eventually
-//  result is the removal of information as each contour shrinks to a point
+//  result in the removal of information as each contour shrinks to a point
 //  and disappears.
 //
 //  \index{itk::CurvatureFlowImageFilter}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 #include "itkImage.h"
@@ -69,7 +63,7 @@
 //
 //  \index{itk::CurvatureFlowImageFilter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkCurvatureFlowImageFilter.h"
@@ -78,8 +72,8 @@
 
 int main( int argc, char * argv[] )
 {
-  if( argc < 5 ) 
-    { 
+  if( argc < 5 )
+    {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "  inputImageFile  outputImageFile  numberOfIterations  timeStep" << std::endl;
     return EXIT_FAILURE;
@@ -90,7 +84,7 @@ int main( int argc, char * argv[] )
   //  Types should be selected based on the pixel types required for the
   //  input and output images.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef    float    InputPixelType;
@@ -102,7 +96,7 @@ int main( int argc, char * argv[] )
   //
   //  With them, the input and output image types can be instantiated.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Image< InputPixelType,  2 >   InputImageType;
@@ -120,7 +114,7 @@ int main( int argc, char * argv[] )
   //
   //  \index{itk::CurvatureFlowImageFilter!instantiation}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::CurvatureFlowImageFilter<
@@ -140,7 +134,7 @@ int main( int argc, char * argv[] )
   //  \index{itk::CurvatureFlowImageFilter!New()}
   //  \index{itk::CurvatureFlowImageFilter!Pointer}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   FilterType::Pointer filter = FilterType::New();
@@ -152,7 +146,7 @@ int main( int argc, char * argv[] )
   //  The input image can be obtained from the output of another filter. Here,
   //  an image reader is used as source.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
@@ -165,7 +159,7 @@ int main( int argc, char * argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  The CurvatureFlow filter requires two parameters, the number of
+  //  The CurvatureFlow filter requires two parameters: the number of
   //  iterations to be performed and the time step used in the computation of
   //  the level set evolution. These two parameters are set using the methods
   //  \code{SetNumberOfIterations()} and \code{SetTimeStep()} respectively.
@@ -177,7 +171,7 @@ int main( int argc, char * argv[] )
   //  \index{SetTimeStep()!itk::CurvatureFlowImageFilter}
   //  \index{SetNumberOfIterations()!itk::CurvatureFlowImageFilter}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filter->SetNumberOfIterations( numberOfIterations );
@@ -191,27 +185,27 @@ int main( int argc, char * argv[] )
   //  Typical values for the time step are $0.125$ in $2D$ images and
   //  $0.0625$ in $3D$ images. The number of iterations can be usually around
   //  $10$, more iterations will result in further smoothing and will
-  //  increase linearly the computing time. Edge-preserving behavior is not
-  //  guaranteed by this filter, some degradation will occur on the edges and
+  //  increase the computing time linearly. Edge-preserving behavior is not
+  //  guaranteed by this filter. Some degradation will occur on the edges and
   //  will increase as the number of iterations is increased.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   //  Software Guide : BeginLatex
   //
   //  If the output of this filter has been connected to other filters down
   //  the pipeline, updating any of the downstream filters will
-  //  triggered the execution of this one. For example, a writer filter could
-  //  have been used after the curvature flow filter.
+  //  trigger the execution of this one. For example, a writer filter could
+  //  be used after the curvature flow filter.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   typedef unsigned char WritePixelType;
 
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
 
-  typedef itk::RescaleIntensityImageFilter< 
+  typedef itk::RescaleIntensityImageFilter<
                OutputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
@@ -222,7 +216,7 @@ int main( int argc, char * argv[] )
   typedef itk::ImageFileWriter< WriteImageType >  WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
- 
+
   // Software Guide : BeginCodeSnippet
   rescaler->SetInput( filter->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
@@ -231,11 +225,11 @@ int main( int argc, char * argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   // \begin{figure}
   // \center
-  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice.eps}
-  // \includegraphics[width=0.44\textwidth]{CurvatureFlowImageFilterOutput.eps}
+  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
+  // \includegraphics[width=0.44\textwidth]{CurvatureFlowImageFilterOutput}
   // \itkcaption[CurvatureFlowImageFilter output]{Effect of the
   // CurvatureFlowImageFilter on a slice from a MRI proton density image  of
   // the brain.}
@@ -255,7 +249,7 @@ int main( int argc, char * argv[] )
   //  \item \doxygen{BilateralImageFilter}
   //  \end{itemize}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   return EXIT_SUCCESS;
 }

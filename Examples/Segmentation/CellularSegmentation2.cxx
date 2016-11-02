@@ -1,53 +1,42 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: CellularSegmentation2.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 21:44:42 $
-  Version:   $Revision: 1.3 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 // Software Guide : BeginLatex
 //
 // \index{itk::bio::CellularAggregate}
 //
 // The following example illustrates the use of Cellular Algorithms for performing image segmentation.
-// Cellular algorithms are implemented by combining the following classes 
+// Cellular algorithms are implemented by combining the following classes
 //
 // \subdoxygen{bio}{CellularAggregate}
 // \subdoxygen{bio}{Cell}
 //
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
 #include "itkBioCellularAggregate.h"
-#include "itkBioCell.h"
 // Software Guide : EndCodeSnippet
 
 
-#include "itkImage.h"
 #include "itkImageFileReader.h"
-
-#ifdef ITK_USE_REVIEW
 #include "itkVTKPolyDataWriter.h"
-#endif
 
 
 int main( int argc, char *argv[] )
@@ -57,17 +46,17 @@ int main( int argc, char *argv[] )
     std::cerr << "Missing Parameters " << std::endl;
     std::cerr << "Usage: " << argv[0];
     std::cerr << " inputImage  seedX seedY seedZ lowThreshold highThreshold iterations outputMesh.vtk" << std::endl;
-    return 1;
+    return EXIT_FAILURE;
     }
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  We now define the image type using a pixel type and a particular
   //  dimension. In this case the \code{float} type is used for the pixels due
-  //  to the requirements of the smoothing filter. 
+  //  to the requirements of the smoothing filter.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef   float           InternalPixelType;
@@ -77,11 +66,11 @@ int main( int argc, char *argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  The \subdoxygen{bio}{CellularAggregate} class must be instantiated using
   //  the dimension of the image to be segmented.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::bio::CellularAggregate< Dimension >  CellularAggregateType;
@@ -90,14 +79,15 @@ int main( int argc, char *argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  Then an object of this class can be constructed by invoking the
   //  \code{New} operator and receiving the result in a \code{SmartPointer},
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  CellularAggregateType::Pointer cellularAggregate = CellularAggregateType::New();
+  CellularAggregateType::Pointer cellularAggregate
+                                               = CellularAggregateType::New();
   // Software Guide : EndCodeSnippet
 
   // We instantiate reader and writer types
@@ -115,10 +105,11 @@ int main( int argc, char *argv[] )
     {
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
+    return EXIT_FAILURE;
     }
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  The CellularAggregate considers the image as a chemical substrate in
   //  which the Cells are going to develop.  The intensity values of the image
   //  will influence the behavior of the Cells, in particular they will
@@ -128,7 +119,7 @@ int main( int argc, char *argv[] )
   //  chemical compound. The set of images will describe the chemical
   //  composition of the extra cellular matrix.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   cellularAggregate->AddSubstrate( reader->GetOutput() );
@@ -147,10 +138,10 @@ int main( int argc, char *argv[] )
   //  \index{itk::ConfidenceConnectedImageFilter!SetSeed()}
   //  \index{itk::ConfidenceConnectedImageFilter!SetInitialNeighborhoodRadius()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   ImageType::IndexType  index;
-  
+
   index[0] = atoi( argv[2] );
   index[1] = atoi( argv[3] );
   index[2] = atoi( argv[4] );
@@ -167,12 +158,12 @@ int main( int argc, char *argv[] )
   //  Individual Cell do not derive from the \doxygen{Object} class in order to
   //  avoid the penalties of Mutex operations when passing pointers to them.
   //  The Creation of a new cell is done by invoking the normal \code{new}
-  //  operator. 
-  //  
+  //  operator.
+  //
   //  \index{itk::bio::Cell!Creation}
   //  \index{itk::bio::Cell!pointer}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   CellType * egg = CellType::CreateEgg();
@@ -192,31 +183,30 @@ int main( int argc, char *argv[] )
   //  \code{SetChemoAttractantHighThreshold} and
   //  \code{SetChemoAttractantLowThreshold). These to methods are static and
   //  set the values to be used by all the cells.
-  //  
+  //
   //  \index{itk::bio::Cell!SetChemoAttractantLowThreshold}
   //  \index{itk::bio::Cell!SetChemoAttractantHighThreshold}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   CellType::SetChemoAttractantLowThreshold(  atof( argv[5] ) );
   CellType::SetChemoAttractantHighThreshold( atof( argv[6] ) );
   // Software Guide : EndCodeSnippet
- 
+
 
   //  Software Guide : BeginLatex
   //
   //  The newly created Cell is passed to the \code{CellularAggregate} object
   //  that will take care of controling the development of the cells.
-  //  
+  //
   //  \index{itk::bio::CellularAggregate!SetEgg}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   cellularAggregate->SetEgg( egg, position );
   // Software Guide : EndCodeSnippet
- 
 
 
   //  Software Guide : BeginLatex
@@ -226,18 +216,18 @@ int main( int argc, char *argv[] )
   //  CellularAlgorithms can in principle run forever. It is up to the User to
   //  define an stopping criterion. One of the simplest options is to set a
   //  limit to the number of iterations, by invoking the AdvanceTimeStep()
-  //  method inside a for loop. 
-  //  
+  //  method inside a for loop.
+  //
   //  \index{itk::bio::CellularAggregate!SetEgg}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   unsigned int numberOfIterations = atoi( argv[7] );
 
   std::cout << "numberOfIterations " << numberOfIterations << std::endl;
 
-  for(unsigned int i=0; i<numberOfIterations; i++)
+  for (unsigned int i=0; i<numberOfIterations; ++i)
     {
     cellularAggregate->AdvanceTimeStep();
     }
@@ -246,13 +236,13 @@ int main( int argc, char *argv[] )
 
   std::cout << " Final number of Cells = " << cellularAggregate->GetNumberOfCells() << std::endl;
 
-  #ifdef ITK_USE_REVIEW
+
   //  Write the mesh to a file
   //
   typedef itk::VTKPolyDataWriter< CellularAggregateType::MeshType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
- 
+
   writer->SetInput( cellularAggregate->GetMesh() );
   writer->SetFileName( argv[8] );
 
@@ -264,8 +254,9 @@ int main( int argc, char *argv[] )
     {
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
+    return EXIT_FAILURE;
     }
-  #endif
+
 
   return EXIT_SUCCESS;
   }

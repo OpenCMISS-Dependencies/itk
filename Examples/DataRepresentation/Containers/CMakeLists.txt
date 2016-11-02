@@ -1,7 +1,6 @@
-SET(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
-INCLUDE_REGULAR_EXPRESSION("^.*$")
+set(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
 
-ADD_EXECUTABLE(TreeContainer TreeContainer.cxx )
-TARGET_LINK_LIBRARIES(TreeContainer ITKCommon)
+add_executable(TreeContainer TreeContainer.cxx )
+target_link_libraries(TreeContainer ${ITK_LIBRARIES})
 
 

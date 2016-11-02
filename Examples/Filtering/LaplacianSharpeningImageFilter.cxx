@@ -1,26 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: LaplacianSharpeningImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2005-08-27 01:45:56 $
-  Version:   $Revision: 1.8 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 #include "itkLaplacianSharpeningImageFilter.h"
 #include "itkImageFileReader.h"
@@ -35,22 +29,22 @@ int main(int argc, char* argv[])
     std::cerr << argv[0] << " inputImage outputImage " << std::endl;
     return EXIT_FAILURE;
     }
-   
+
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
 
-  typedef unsigned char    CharPixelType; 
+  typedef unsigned char    CharPixelType;
   const    unsigned int    Dimension = 2;
 
   typedef itk::Image<CharPixelType, Dimension>    CharImageType;
-  
+
   typedef itk::ImageFileReader< CharImageType >  ReaderType;
   typedef itk::ImageFileWriter< CharImageType >  WriterType;
 
   typedef itk::RescaleIntensityImageFilter<CharImageType, CharImageType> RescaleFilter;
 
-  typedef itk::LaplacianSharpeningImageFilter< 
-                              CharImageType, 
+  typedef itk::LaplacianSharpeningImageFilter<
+                              CharImageType,
                               CharImageType >    LaplacianSharpeningFilter;
 
 
@@ -60,9 +54,9 @@ int main(int argc, char* argv[])
   RescaleFilter::Pointer rescale = RescaleFilter::New();
 
   //Setting the ITK pipeline filter
-  
+
   LaplacianSharpeningFilter::Pointer lapFilter = LaplacianSharpeningFilter::New();
-  
+
   reader->SetFileName( inputFilename  );
   writer->SetFileName( outputFilename );
 
@@ -81,11 +75,11 @@ int main(int argc, char* argv[])
     writer->Update();
     }
   catch( itk::ExceptionObject & err )
-    { 
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
+    {
+    std::cout << "ExceptionObject caught !" << std::endl;
+    std::cout << err << std::endl;
     return EXIT_FAILURE;
-    } 
+    }
 
   return EXIT_SUCCESS;
 

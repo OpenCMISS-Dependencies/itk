@@ -1,31 +1,25 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: CurvatureAnisotropicDiffusionImageFilter.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-16 21:52:48 $
-  Version:   $Revision: 1.28 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
+//    INPUTS:  {BrainProtonDensitySlice.png}
 //    OUTPUTS: {CurvatureAnisotropicDiffusionImageFilterOutput.png}
-//    5 0.125 3
+//    ARGUMENTS:    5 0.125 3
 //  Software Guide : EndCommandLineArgs
 //
 //  Software Guide : BeginLatex
@@ -38,7 +32,7 @@
 //  diffusion, which enhances the contrast of edges.  Equations of the form of
 //  MCDE always undergo positive diffusion, with the conductance term only
 //  varying the strength of that diffusion.
-// 
+//
 //  Qualitatively, MCDE compares well with other non-linear diffusion
 //  techniques.  It is less sensitive to contrast than classic Perona-Malik
 //  style diffusion, and preserves finer detailed structures in images.
@@ -46,23 +40,23 @@
 //  itkGradientNDAnisotropicDiffusionFunction.  Each iteration of the
 //  solution takes roughly twice as long.  Fewer iterations, however, may be
 //  required to reach an acceptable solution.
-//  
+//
 //  The MCDE equation is given as:
-// 
+//
 //  \begin{equation}
 //  f_t = \mid \nabla f \mid \nabla \cdot c( \mid \nabla f \mid ) \frac{
-//  \nabla f }{ \mid \nabla f \mid } 
+//  \nabla f }{ \mid \nabla f \mid }
 //  \end{equation}
-// 
+//
 //  where the conductance modified curvature term is
-// 
+//
 //  \begin{equation}
 //  \nabla \cdot \frac{\nabla f}{\mid \nabla f \mid}
 //  \end{equation}
 //
 //  \index{itk::Curvature\-Anisotropic\-Diffusion\-Image\-Filter}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 #include "itkImage.h"
@@ -72,11 +66,11 @@
 
 //  Software Guide : BeginLatex
 //
-//  The first step required for using this filter is to include its header file
+//  The first step required for using this filter is to include its header file.
 //
 //  \index{itk::Curvature\-Anisotropic\-Diffusion\-Image\-Filter!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkCurvatureAnisotropicDiffusionImageFilter.h"
@@ -85,21 +79,21 @@
 
 int main( int argc, char * argv[] )
 {
-  if( argc < 6 ) 
-    { 
+  if( argc < 6 )
+    {
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "  inputImageFile  outputImageFile ";
     std::cerr << "numberOfIterations  timeStep  conductance useImageSpacingon/off" << std::endl;
     return EXIT_FAILURE;
     }
-  
+
   //  Software Guide : BeginLatex
   //
   //  Types should be selected based on the pixel types required for the
   //  input and output images.  The image types are defined using the pixel
   //  type and the dimension.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef    float    InputPixelType;
@@ -123,7 +117,7 @@ int main( int argc, char * argv[] )
   //  \index{itk::Curvature\-Anisotropic\-Diffusion\-Image\-Filter!New()}
   //  \index{itk::Curvature\-Anisotropic\-Diffusion\-Image\-Filter!Pointer}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::CurvatureAnisotropicDiffusionImageFilter<
@@ -141,7 +135,7 @@ int main( int argc, char * argv[] )
   //  The input image can be obtained from the output of another filter. Here,
   //  an image reader is used as source.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
@@ -155,7 +149,7 @@ int main( int argc, char * argv[] )
 
   //  Software Guide : BeginLatex
   //
-  //  This filter requires three parameters, the number of iterations to be
+  //  This filter requires three parameters: the number of iterations to be
   //  performed, the time step used in the computation of the level set
   //  evolution and the value of conductance. These parameters are set using
   //  the methods \code{SetNumberOfIterations()}, \code{SetTimeStep()} and
@@ -170,7 +164,7 @@ int main( int argc, char * argv[] )
   //  \index{SetNumberOfIterations()!itk::Curvature\-Anisotropic\-Diffusion\-Image\-Filter}
   //  \index{SetConductanceParameter()!itk::Curvature\-Anisotropic\-Diffusion\-Image\-Filter}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filter->SetNumberOfIterations( numberOfIterations );
@@ -188,10 +182,10 @@ int main( int argc, char * argv[] )
   //
   //  Typical values for the time step are 0.125 in $2D$ images and 0.0625 in
   //  $3D$ images. The number of iterations can be usually around $5$, more
-  //  iterations will result in further smoothing and will increase linearly
-  //  the computing time. The conductance parameter is usually around $3.0$.
+  //  iterations will result in further smoothing and will increase the
+  //  computing time linearly. The conductance parameter is usually around $3.0$.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
 
   //
@@ -203,13 +197,13 @@ int main( int argc, char * argv[] )
 
   typedef unsigned char                          WritePixelType;
   typedef itk::Image< WritePixelType, 2 >        WriteImageType;
-  typedef itk::RescaleIntensityImageFilter< 
+  typedef itk::RescaleIntensityImageFilter<
                OutputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
-  
+
   typedef itk::ImageFileWriter< WriteImageType >  WriterType;
 
   WriterType::Pointer writer = WriterType::New();
@@ -220,10 +214,10 @@ int main( int argc, char * argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   // \begin{figure} \center
-  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice.eps}
-  // \includegraphics[width=0.44\textwidth]{CurvatureAnisotropicDiffusionImageFilterOutput.eps}
+  // \includegraphics[width=0.44\textwidth]{BrainProtonDensitySlice}
+  // \includegraphics[width=0.44\textwidth]{CurvatureAnisotropicDiffusionImageFilterOutput}
   // \itkcaption[CurvatureAnisotropicDiffusionImageFilter output]{Effect of the
   // CurvatureAnisotropicDiffusionImageFilter on a slice from a MRI Proton
   // Density image  of the brain.}
@@ -243,7 +237,7 @@ int main( int argc, char * argv[] )
   //  \item \doxygen{GradientAnisotropicDiffusionImageFilter}
   //  \end{itemize}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   return EXIT_SUCCESS;
 }

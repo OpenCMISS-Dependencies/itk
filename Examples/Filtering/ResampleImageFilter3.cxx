@@ -1,30 +1,24 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: ResampleImageFilter3.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-04-05 23:52:49 $
-  Version:   $Revision: 1.29 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
-//  Previous examples have described the basic principles behind the 
+//  Previous examples have described the basic principles behind the
 //  \doxygen{ResampleImageFilter}. Now it's time to have some fun with it.
 //
 //  Figure \ref{fig:ResampleImageFilterTransformComposition6} illustrates the
@@ -48,36 +42,36 @@
 //  \ref{fig:ResampleImageFilterOutput9}---the image content appears rotated
 //  30 degrees \emph{counter-clockwise}. Before continuing to read this
 //  section, you may want to meditate a bit on this fact while enjoying a cup
-//  of (Columbian) coffee.
+//  of (Colombian) coffee.
 //
 // \begin{figure}
 // \center
-// \includegraphics[height=6cm]{ResampleImageFilterInput2x3.eps}
-// \includegraphics[height=4cm]{ResampleImageFilterOutput9.eps}
+// \includegraphics[height=6cm]{ResampleImageFilterInput2x3}
+// \includegraphics[height=4cm]{ResampleImageFilterOutput9}
 // \itkcaption[Effect of a rotation on the resampling filter.]{Effect of a
 // rotation on the resampling filter. Input image at left, output image at
-// right.} 
+// right.}
 // \label{fig:ResampleImageFilterOutput9}
 // \end{figure}
 //
 // \begin{figure}
 // \center
-// \includegraphics[width=\textwidth]{ResampleImageFilterTransformComposition6.eps}
+// \includegraphics[width=\textwidth]{ResampleImageFilterTransformComposition6}
 // \itkcaption[Input and output image placed in a common reference
 // system]{Input and output image placed in a common reference system.}
 // \label{fig:ResampleImageFilterTransformComposition6}
 // \end{figure}
 //
 //  The following code implements the conditions illustrated in Figure
-//  \ref{fig:ResampleImageFilterTransformComposition6} with the only
-//  difference of the output spacing being $40$ times smaller and a number of
-//  pixels $40$ times larger in both dimensions. Without these changes, few
-//  detail will be recognizable on the images.  Note that the spacing and
+//  \ref{fig:ResampleImageFilterTransformComposition6} with two differences:
+//  the output spacing is $40$ times smaller and there are $40$ times more
+//  pixels in both dimensions. Without these changes, few
+//  details will be recognizable in the images.  Note that the spacing and
 //  origin of the input image should be prepared in advance by using other
-//  means since this filter cannot alter in any way the actual content of the
-//  input image.
+//  means since this filter cannot alter the actual content of the
+//  input image in any way.
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 #include "itkImage.h"
@@ -93,13 +87,13 @@ int main( int argc, char * argv[] )
   if( argc < 4 )
     {
     std::cerr << "Usage: " << std::endl;
-    std::cerr << argv[0] << "  inputImageFile  outputImageFile"; 
+    std::cerr << argv[0] << "  inputImageFile  outputImageFile";
     std::cerr << "  [exampleAction={0,1}]" << std::endl;
     return EXIT_FAILURE;
     }
 
   int exampleAction = 0;
- 
+
   if( argc >= 4 )
     {
     exampleAction = atoi( argv[3] );
@@ -128,7 +122,7 @@ int main( int argc, char * argv[] )
   typedef itk::AffineTransform< double, Dimension >  TransformType;
   TransformType::Pointer transform = TransformType::New();
 
-  typedef itk::NearestNeighborInterpolateImageFunction< 
+  typedef itk::NearestNeighborInterpolateImageFunction<
                        InputImageType, double >  InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
   filter->SetInterpolator( interpolator );
@@ -137,11 +131,11 @@ int main( int argc, char * argv[] )
   //  Software Guide : BeginLatex
   //
   //  In order to facilitate the interpretation of the transform we set the
-  //  default pixel value to value distinct from the image background.
+  //  default pixel value to value be distinct from the image background.
   //
   //  \index{itk::ResampleImageFilter!SetDefaultPixelValue()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filter->SetDefaultPixelValue( 100 );
@@ -155,7 +149,7 @@ int main( int argc, char * argv[] )
   //
   //  \index{itk::ResampleImageFilter!SetOutputSpacing()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   double spacing[ Dimension ];
@@ -171,7 +165,7 @@ int main( int argc, char * argv[] )
   //
   //  \index{itk::ResampleImageFilter!SetOutputOrigin()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   filter->SetOutputDirection( reader->GetOutput()->GetDirection() );
@@ -186,7 +180,7 @@ int main( int argc, char * argv[] )
   //
   //  \index{itk::ResampleImageFilter!SetOutputOrigin()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   double origin[ Dimension ];
@@ -197,14 +191,14 @@ int main( int argc, char * argv[] )
 
 
   //  Software Guide : BeginLatex
-  //  
+  //
   //  The output image size is defined to be $40$ times the one illustrated
   //  on the Figure \ref{fig:ResampleImageFilterTransformComposition6}.
   //
   //  \index{itk::ResampleImageFilter!SetSize()}
   //
-  //  Software Guide : EndLatex 
-  
+  //  Software Guide : EndLatex
+
   // Software Guide : BeginCodeSnippet
   InputImageType::SizeType   size;
   size[0] = 5 * 40;  // number of pixels along X
@@ -224,12 +218,12 @@ int main( int argc, char * argv[] )
   //  positioning the output image frame as it is shown in Figure
   //  \ref{fig:ResampleImageFilterTransformComposition6} requires three
   //  steps.  First, the image origin must be moved to the origin of the
-  //  coordinate system, this is done by applying a translation equal to the
+  //  coordinate system. This is done by applying a translation equal to the
   //  negative values of the image origin.
   //
   //  \index{itk::AffineTransform!Translate()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   TransformType::OutputVectorType translation1;
@@ -251,11 +245,11 @@ int main( int argc, char * argv[] )
   //
   //  \index{itk::AffineTransform!Rotate2D()}
   //  \index{itk::AffineTransform!Composition}
-  //  
-  //  Software Guide : EndLatex 
-  
+  //
+  //  Software Guide : EndLatex
+
   // Software Guide : BeginCodeSnippet
-  const double degreesToRadians = vcl_atan(1.0) / 45.0;
+  const double degreesToRadians = std::atan(1.0) / 45.0;
   transform->Rotate2D( -30.0 * degreesToRadians, false );
   // Software Guide : EndCodeSnippet
 
@@ -268,8 +262,8 @@ int main( int argc, char * argv[] )
   //
   //  \index{itk::AffineTransform!Translate()}
   //
-  //  Software Guide : EndLatex 
-  
+  //  Software Guide : EndLatex
+
   // Software Guide : BeginCodeSnippet
   TransformType::OutputVectorType translation2;
   translation2[0] =   origin[0];
@@ -278,10 +272,10 @@ int main( int argc, char * argv[] )
   filter->SetTransform( transform );
   // Software Guide : EndCodeSnippet
 
-  
+
   if( exampleAction == 0 )
     {
-    try 
+    try
       {
       writer->Update();
       }
@@ -292,7 +286,7 @@ int main( int argc, char * argv[] )
       }
     }
 
- 
+
   //  Software Guide : BeginLatex
   //
   //  Figure \ref{fig:ResampleImageFilterOutput9} presents the actual input
@@ -303,9 +297,9 @@ int main( int argc, char * argv[] )
   //  \ref{fig:ResampleImageFilterTransformComposition6} and Figure
   //  \ref{fig:ResampleImageFilterOutput9}.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
- 
+
   //  Software Guide : BeginLatex
   //
   //  As a final exercise, let's track the mapping of an individual pixel.
@@ -319,10 +313,10 @@ int main( int argc, char * argv[] )
   //  physical coordinates of this point in the output image reference system
   //  are $P=( 1 \times 40.0 + 50.0, 2 \times 30.0 + 130.0 ) = (90.0,190.0)$
   //  millimeters.
-  //  
+  //
   //  This point $P$ is now mapped through the \doxygen{AffineTransform} into
-  //  the input image space.  The operation requires to subtract the origin,
-  //  apply a $30$ degrees rotation and add the origin back. Let's follow
+  //  the input image space.  The operation subtracts the origin,
+  //  applies a $30$ degrees rotation and adds the origin back. Let's follow
   //  those steps.  Subtracting the origin from $P$ leads to
   //  $P1=(40.0,60.0)$, the rotation maps $P1$ to $P2=( 40.0 \times cos
   //  (30.0) + 60.0 \times sin (30.0), 40.0 \times sin(30.0) - 60.0 \times
@@ -337,15 +331,14 @@ int main( int argc, char * argv[] )
   //  Note that this is a non-grid position since the values are non-integers.
   //  This means that the gray value to be assigned to the output image pixel
   //  $I=(1,2)$ must be computed by interpolation of the input image values.
-  //  
-  //  In this particular code the interpolator used is simply a
+  //
+  //  In this particular code the interpolator used is simply a\newline
   //  \doxygen{NearestNeighborInterpolateImageFunction} which will assign the
   //  value of the closest pixel. This ends up being the pixel of index
   //  $I=(3,3)$ and can be seen from Figure
   //  \ref{fig:ResampleImageFilterTransformComposition6}.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   return EXIT_SUCCESS;
 }
-

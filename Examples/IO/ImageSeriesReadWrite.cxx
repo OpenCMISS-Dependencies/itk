@@ -1,26 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: ImageSeriesReadWrite.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-17 20:36:50 $
-  Version:   $Revision: 1.11 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
@@ -28,10 +22,10 @@
 //  files in order to compose a volume. The class \doxygen{ImageSeriesReader}
 //  is used for this purpose. This class works in combination with a generator
 //  of filenames that will provide a list of files to be read. In this
-//  particular example we use the \doxygen{NumericSeriesFileNames} class as
+//  particular example we use the \doxygen{NumericSeriesFileNames} class as a
 //  filename generator. This generator uses a \code{printf} style of string format
 //  with a ``\code{\%d}'' field that will be successively replaced by a number specified
-//  by the user. Here we will use a format like ``\code{file\%03d.png}'' for reading 
+//  by the user. Here we will use a format like ``\code{file\%03d.png}'' for reading
 //  PNG files named file001.png, file002.png, file003.png... and so on.
 //
 //  This requires the following headers as shown.
@@ -39,7 +33,7 @@
 //  \index{itk::ImageSeriesReader!header}
 //  \index{itk::NumericSeriesFileNames!header}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
 #include "itkImage.h"
@@ -66,7 +60,7 @@ int main( int argc, char ** argv )
   // We start by defining the \code{PixelType} and \code{ImageType}.
   //
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef unsigned char                       PixelType;
@@ -84,7 +78,7 @@ int main( int argc, char ** argv )
   // \index{itk::ImageSeriesReader!Instantiation}
   // \index{itk::ImageFileWriter!Instantiation}
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageSeriesReader< ImageType >  ReaderType;
@@ -103,9 +97,9 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginLatex
   //
-  // Then, we declare the filenames generator type and create one instance of it.
+  // Then, we declare the filename generator type and create one instance of it.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef itk::NumericSeriesFileNames    NameGeneratorType;
@@ -114,14 +108,13 @@ int main( int argc, char ** argv )
   // Software Guide : EndCodeSnippet
 
 
-   
   // Software Guide : BeginLatex
   //
-  // The filenames generator requires us to provide a pattern of text for the
+  // The filename generator requires us to provide a pattern of text for the
   // filenames, and numbers for the initial value, last value and increment to be
   // used for generating the names of the files.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   nameGenerator->SetSeriesFormat( "vwe%03d.png" );
@@ -138,7 +131,7 @@ int main( int argc, char ** argv )
   //  an ImageIO object that is appropriate for the type of files that we want to
   //  read.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   reader->SetImageIO( itk::PNGImageIO::New() );
@@ -146,11 +139,11 @@ int main( int argc, char ** argv )
 
   //  Software Guide : BeginLatex
   //
-  //  The filenames of the input files must be provided to the reader. While the
+  //  The filenames of the input files must be provided to the reader, while the
   //  writer is instructed to write the same volume dataset in a single file.
-  //  
   //
-  //  Software Guide : EndLatex 
+  //
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   reader->SetFileNames( nameGenerator->GetFileNames()  );
@@ -162,34 +155,33 @@ int main( int argc, char ** argv )
   //
   // We connect the output of the reader to the input of the writer.
   //
-  // Software Guide : EndLatex 
+  // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   writer->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-      
 
 
   //  Software Guide : BeginLatex
   //
   //  Finally, execution of the pipeline can be triggered by invoking the
-  //  Update() method in the writer. This call must be placed in a try/catch
-  //  block since exceptions be potentially be thrown in the process of reading
-  //  or writing the images.
+  //  \code{Update()} method in the writer. This call must be placed in a
+  //  \code{try/catch} block since exceptions be potentially be thrown in the
+  //  process of reading or writing the images.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  try 
-    { 
-    writer->Update(); 
-    } 
-  catch( itk::ExceptionObject & err ) 
-    { 
-    std::cerr << "ExceptionObject caught !" << std::endl; 
-    std::cerr << err << std::endl; 
+  try
+    {
+    writer->Update();
+    }
+  catch( itk::ExceptionObject & err )
+    {
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
     return EXIT_FAILURE;
-    } 
+    }
   // Software Guide : EndCodeSnippet
 
   return EXIT_SUCCESS;

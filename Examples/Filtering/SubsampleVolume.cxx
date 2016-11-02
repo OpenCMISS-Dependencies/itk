@@ -1,38 +1,31 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: SubsampleVolume.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-02-20 19:23:32 $
-  Version:   $Revision: 1.14 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
 //  This example illustrates how to perform subsampling of a volume using ITK
 //  classes.  In order to avoid aliasing artifacts, the volume must be
 //  processed by a low-pass filter before resampling.  Here we use the
-//  \doxygen{RecursiveGaussianImageFilter} as low-pass filter. The image is
+//  \doxygen{RecursiveGaussianImageFilter} as a low-pass filter. The image is
 //  then resampled by using three different factors, one per dimension of the
 //  image.
 //
-//  Software Guide : EndLatex 
-
+//  Software Guide : EndLatex
 
 
 #include "itkImage.h"
@@ -40,23 +33,20 @@
 #include "itkImageFileWriter.h"
 
 
-
 // Software Guide : BeginLatex
 //
-// The most important headers to include here are the ones corresponding to the
+// The most important headers to include here are those corresponding to the
 // resampling image filter, the transform, the interpolator and the smoothing
 // filter.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
 #include "itkResampleImageFilter.h"
 #include "itkIdentityTransform.h"
-#include "itkLinearInterpolateImageFunction.h"
 #include "itkRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
-
 
 
 #include "itkCastImageFilter.h"
@@ -67,13 +57,11 @@ int main( int argc, char * argv[] )
   if( argc < 6 )
     {
     std::cerr << "Usage: " << std::endl;
-    std::cerr << argv[0] 
-      << "  inputImageFile  outputImageFile factorX factorY factorZ" 
-      << std::endl; 
+    std::cerr << argv[0]
+      << "  inputImageFile  outputImageFile factorX factorY factorZ"
+      << std::endl;
     return EXIT_FAILURE;
     }
-
-
 
 
 // Software Guide : BeginLatex
@@ -81,7 +69,7 @@ int main( int argc, char * argv[] )
 // We explicitly instantiate the pixel type and dimension of the input image,
 // and the images that will be used internally for computing the resampling.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   const     unsigned int    Dimension = 3;
@@ -97,7 +85,6 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-
   typedef itk::ImageFileReader< InputImageType  >  ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -105,13 +92,12 @@ int main( int argc, char * argv[] )
   reader->SetFileName( argv[1] );
 
 
-
 // Software Guide : BeginLatex
 //
 // In this particular case we take the factors for resampling directly from the
 // command line arguments.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   const double factorX = atof( argv[3] );
@@ -120,7 +106,7 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-  try 
+  try
     {
     reader->Update();
     }
@@ -134,14 +120,12 @@ int main( int argc, char * argv[] )
   InputImageType::ConstPointer inputImage = reader->GetOutput();
 
 
-
-
 // Software Guide : BeginLatex
 //
 // A casting filter is instantiated in order to convert the pixel type of the
 // input image into the pixel type desired for computing the resampling.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   typedef itk::CastImageFilter< InputImageType,
@@ -153,18 +137,16 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-
-
 // Software Guide : BeginLatex
 //
 // The smoothing filter of choice is the \code{RecursiveGaussianImageFilter}.
 // We create three of them in order to have the freedom of performing smoothing
-// with different Sigma values along each dimension.
+// with different sigma values along each dimension.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::RecursiveGaussianImageFilter< 
+  typedef itk::RecursiveGaussianImageFilter<
                                   InternalImageType,
                                   InternalImageType > GaussianFilterType;
 
@@ -178,7 +160,7 @@ int main( int argc, char * argv[] )
 //
 // The smoothing filters are connected in a cascade in the pipeline.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   smootherX->SetInput( caster->GetOutput() );
@@ -187,14 +169,12 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-
-
 // Software Guide : BeginLatex
 //
-// The Sigma values to use in the smoothing filters is computed based on the
-// pixel spacings of the input image and the factors provided as arguments. 
+// The sigma values to use in the smoothing filters are computed based on the
+// pixel spacing of the input image and the factors provided as arguments.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   const InputImageType::SpacingType& inputSpacing = inputImage->GetSpacing();
@@ -209,16 +189,14 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-
-
 // Software Guide : BeginLatex
 //
 // We instruct each one of the smoothing filters to act along a particular
 // direction of the image, and set them to use normalization across scale space
-// in order to prevent for the reduction of intensity that accompanies the
+// in order to account for the reduction of intensity that accompanies the
 // diffusion process associated with the Gaussian smoothing.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   smootherX->SetDirection( 0 );
@@ -231,14 +209,12 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-
-
 // Software Guide : BeginLatex
 //
 // The type of the resampling filter is instantiated using the internal image
 // type and the output image type.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   typedef itk::ResampleImageFilter<
@@ -248,15 +224,13 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-
-
 // Software Guide : BeginLatex
 //
 // Since the resampling is performed in the same physical extent of the input
 // image, we select the IdentityTransform as the one to be used by the resampling
 // filter.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   typedef itk::IdentityTransform< double, Dimension >  TransformType;
@@ -267,23 +241,20 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-
 // Software Guide : BeginLatex
 //
-// The Linear interpolator is selected given that it provides a good run-time
+// The Linear interpolator is selected because it provides a good run-time
 // performance.  For applications that require better precision you may want to
 // replace this interpolator with the \doxygen{BSplineInterpolateImageFunction}
 // interpolator or with the \doxygen{WindowedSincInterpolateImageFunction}
 // interpolator.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::LinearInterpolateImageFunction< 
-                                   InternalImageType, double >  InterpolatorType;
-
+  typedef itk::LinearInterpolateImageFunction<
+                           InternalImageType, double > InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
-
   resampler->SetInterpolator( interpolator );
 // Software Guide : EndCodeSnippet
 
@@ -295,7 +266,7 @@ int main( int argc, char * argv[] )
 // the input image spacing and the factors provided in the command line
 // arguments.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   OutputImageType::SpacingType spacing;
@@ -308,20 +279,17 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-
-
 // Software Guide : BeginLatex
 //
-// The origin and direction of the input image is preserved and passed to the
-// output image.
+// The origin and direction of the input image are both preserved and passed to
+// the output image.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   resampler->SetOutputOrigin( inputImage->GetOrigin() );
   resampler->SetOutputDirection( inputImage->GetDirection() );
 // Software Guide : EndCodeSnippet
-
 
 
 // Software Guide : BeginLatex
@@ -330,10 +298,10 @@ int main( int argc, char * argv[] )
 // resampled image is computed using the number of pixels in the input image
 // and the sampling factors.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  InputImageType::SizeType   inputSize = 
+  InputImageType::SizeType   inputSize =
               inputImage->GetLargestPossibleRegion().GetSize();
 
   typedef InputImageType::SizeType::SizeValueType SizeValueType;
@@ -348,30 +316,27 @@ int main( int argc, char * argv[] )
 // Software Guide : EndCodeSnippet
 
 
-
-
 // Software Guide : BeginLatex
 //
 // Finally, the input to the resampler is taken from the output of the
 // smoothing filter.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
   resampler->SetInput( smootherZ->GetOutput() );
 // Software Guide : EndCodeSnippet
 
 
-
 // Software Guide : BeginLatex
 //
 // At this point we can trigger the execution of the resampling by calling the
-// \code{Update()} method, or we can chose to pass the output of the resampling
+// \code{Update()} method, or we can choose to pass the output of the resampling
 // filter to another section of pipeline, for example, an image writer.
 //
-// Software Guide : EndLatex 
+// Software Guide : EndLatex
 
- 
+
   typedef itk::ImageFileWriter< OutputImageType >  WriterType;
 
   WriterType::Pointer writer = WriterType::New();
@@ -380,7 +345,7 @@ int main( int argc, char * argv[] )
 
   writer->SetFileName( argv[2] );
 
-  try 
+  try
     {
     writer->Update();
     }
@@ -395,4 +360,3 @@ int main( int argc, char * argv[] )
 
   return EXIT_SUCCESS;
 }
-

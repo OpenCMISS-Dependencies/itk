@@ -2,7 +2,7 @@
 # 1 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/msme_tomo.ppg"
 ;****************************************************************
 ;
-; $Source: /cvsroot/Insight/Insight/Testing/Data/Input/DCB120604.t61/11/pulseprogram,v $
+; Source
 ;
 ; Copyright (c) 1995-2000
 ; BRUKER MEDICAL GMBH
@@ -121,13 +121,13 @@
 
 
 
-;$Id: pulseprogram,v 1.1 2008-06-18 22:42:15 ibanez Exp $
+;Id
 # 15 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/msme_tomo.ppg" 2
 
 # 1 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/DBX.include" 1
 ;****************************************************************
 ;
-; $Source: /cvsroot/Insight/Insight/Testing/Data/Input/DCB120604.t61/11/pulseprogram,v $
+; Source
 ;
 ; Copyright (c) 1996
 ; Bruker Medizintechnik GmbH
@@ -234,7 +234,7 @@ if(IMND_evolution_trigger)
 # 1 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/trigger" 1
 ;****************************************************************
 ;
-; $Source: /cvsroot/Insight/Insight/Testing/Data/Input/DCB120604.t61/11/pulseprogram,v $
+; Source
 ;
 ; Copyright (c) 1996
 ; Bruker Medizintechnik GmbH
@@ -245,11 +245,7 @@ if(IMND_evolution_trigger)
 ;
 ; $Locker:  $
 ; $State: Exp $
-; $Log: pulseprogram,v $
-; Revision 1.1  2008-06-18 22:42:15  ibanez
-; ENH: Adding Testing input data provided by Don Bigler.
-;      This data is now used for testing the Bruker and Philips PAR/REC formats.
-;
+; Log: trigger
 ; Revision 3.4.2.2  2002/08/13 12:04:31  pfre
 ; Bugfix: 3229 replace setnmr by macros
 ;
@@ -315,7 +311,7 @@ if (ACQ_trigger_enable)
 # 1 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/trigger" 1
 ;****************************************************************
 ;
-; $Source: /cvsroot/Insight/Insight/Testing/Data/Input/DCB120604.t61/11/pulseprogram,v $
+; Source
 ;
 ; Copyright (c) 1996
 ; Bruker Medizintechnik GmbH
@@ -326,11 +322,7 @@ if (ACQ_trigger_enable)
 ;
 ; $Locker:  $
 ; $State: Exp $
-; $Log: pulseprogram,v $
-; Revision 1.1  2008-06-18 22:42:15  ibanez
-; ENH: Adding Testing input data provided by Don Bigler.
-;      This data is now used for testing the Bruker and Philips PAR/REC formats.
-;
+; Log: trigger
 ; Revision 3.4.2.2  2002/08/13 12:04:31  pfre
 ; Bugfix: 3229 replace setnmr by macros
 ;
@@ -369,7 +361,7 @@ if(IMND_mtcflag)
 {
 # 1 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/mtc" 1
 ;****************************************************************
-; $Source: /cvsroot/Insight/Insight/Testing/Data/Input/DCB120604.t61/11/pulseprogram,v $
+; Source
 ;
 ; Copyright (c) 1996
 ; Bruker Medizintechnik GmbH
@@ -380,11 +372,7 @@ if(IMND_mtcflag)
 ;
 ; $Locker:  $
 ; $State: Exp $
-; $Log: pulseprogram,v $
-; Revision 1.1  2008-06-18 22:42:15  ibanez
-; ENH: Adding Testing input data provided by Don Bigler.
-;      This data is now used for testing the Bruker and Philips PAR/REC formats.
-;
+; Log: mtc
 ; Revision 3.4  2002/01/22 13:27:28  mah
 ; AvUnify:  Unified Pulseprograms for AV
 ;
@@ -412,7 +400,7 @@ if(IMND_suppression)
 # 1 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/watersup" 1
 ;****************************************************************
 ;
-; $Source: /cvsroot/Insight/Insight/Testing/Data/Input/DCB120604.t61/11/pulseprogram,v $
+; Source
 ;
 ; Copyright (c) 1995-2000
 ; BRUKER MEDICAL GMBH
@@ -462,7 +450,7 @@ if(IMND_invflag )
 # 1 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/inversion" 1
 ;****************************************************************
 ;
-; $Source: /cvsroot/Insight/Insight/Testing/Data/Input/DCB120604.t61/11/pulseprogram,v $
+; Source
 ;
 ; Copyright (c) 1995-2000
 ; BRUKER MEDICAL GMBH
@@ -504,7 +492,7 @@ if(IMND_FovSat_flag)
 # 1 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/fovsat" 1
 ;****************************************************************
 ;
-; $Source: /cvsroot/Insight/Insight/Testing/Data/Input/DCB120604.t61/11/pulseprogram,v $
+; Source
 ;
 ; Copyright (c) 1995-2000
 ; BRUKER MEDICAL GMBH
@@ -536,7 +524,7 @@ if(IMND_InflowSat_flag)
 # 1 "/opt/Pv3.0.1/exp/stan/nmr/lists/pp/inflowsat" 1
 ;****************************************************************
 ;
-; $Source: /cvsroot/Insight/Insight/Testing/Data/Input/DCB120604.t61/11/pulseprogram,v $
+; Source
 ;
 ; Copyright (c) 1995-2000
 ; BRUKER MEDICAL GMBH

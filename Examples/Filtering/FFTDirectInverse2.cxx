@@ -1,26 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: FFTDirectInverse2.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-16 21:52:48 $
-  Version:   $Revision: 1.6 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 #include "itkConfigure.h"
 
@@ -43,13 +37,13 @@
 #include "itkImageFileWriter.h"
 #include "itkResampleImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
-#include "itkFFTWRealToComplexConjugateImageFilter.h"
-#include "itkFFTWComplexConjugateToRealImageFilter.h"
+#include "itkFFTWForwardFFTImageFilter.h"
+#include "itkFFTWInverseFFTImageFilter.h"
 #include "itkFlipImageFilter.h"
 
-#if !defined(USE_FFTWF)
+#if !defined(ITK_USE_FFTWF)
 //#error "This example only works when single precision FFTW is used
-//Changing WorkPixeltype to double and changing this conditional to USE_FFTWD
+//Changing WorkPixeltype to double and changing this conditional to ITK_USE_FFTWD
 //will also work.
 #endif
 
@@ -92,10 +86,7 @@ int main( int argc, char * argv[] )
   inputreader->Update();
 
 // Forward FFT filter
-  typedef itk::FFTWRealToComplexConjugateImageFilter <
-                                              WorkPixelType,
-                                              Dimension
-                                                      > FFTFilterType;
+  typedef itk::FFTWForwardFFTImageFilter < InputImageType > FFTFilterType;
 
   FFTFilterType::Pointer fftinput = FFTFilterType::New();
   fftinput->SetInput( inputreader->GetOutput() );
@@ -105,9 +96,7 @@ int main( int argc, char * argv[] )
   typedef FFTFilterType::OutputImageType ComplexImageType;
 
 // Do the inverse transform = forward transform + flip all axes
-  typedef itk::FFTWComplexConjugateToRealImageFilter <
-                                              WorkPixelType,
-                                              Dimension > invFFTFilterType;
+  typedef itk::FFTWInverseFFTImageFilter < ComplexImageType > invFFTFilterType;
 
   invFFTFilterType::Pointer fftoutput = invFFTFilterType::New();
   fftoutput->SetInput(fftinput->GetOutput()); // try to recover the input image

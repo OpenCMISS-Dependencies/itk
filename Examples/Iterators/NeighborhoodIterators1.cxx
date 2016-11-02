@@ -1,24 +1,23 @@
 /*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: NeighborhoodIterators1.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-03-16 23:38:26 $
-  Version:   $Revision: 1.22 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainT1Slice.png}
+//    INPUTS:  {BrainT1Slice.png}
 //    OUTPUTS: {NeighborhoodIterators1a.png}
 //  Software Guide : EndCommandLineArgs
 
@@ -31,7 +30,7 @@
 // cannot be written back to the input image without affecting later
 // calculations, they are written instead to a second, output image.  Most
 // neighborhood processing algorithms follow this read-only model on their
-// inputs. 
+// inputs.
 //
 // We begin by including the proper header files.  The
 // \doxygen{ImageRegionIterator} will be used to write the results of
@@ -40,7 +39,6 @@
 //
 // Software Guide : EndLatex
 
-#include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
@@ -59,7 +57,7 @@ int main( int argc, char ** argv )
     std::cerr << argv[0]
               << " inputImageFile outputImageFile"
               << std::endl;
-    return -1;
+    return EXIT_FAILURE;
     }
 
   // Software Guide : BeginLatex
@@ -70,7 +68,7 @@ int main( int argc, char ** argv )
   // automatically cast fixed-point data to \code{float}.
   //
   // We declare the iterator types using the image type as
-  // the template parameter. The second template parameter of the 
+  // the template parameter. The second template parameter of the
   // neighborhood iterator, which specifies
   // the boundary condition, has been omitted because the default condition is
   // appropriate for this algorithm.
@@ -81,7 +79,7 @@ int main( int argc, char ** argv )
   typedef float                             PixelType;
   typedef itk::Image< PixelType, 2 >        ImageType;
   typedef itk::ImageFileReader< ImageType > ReaderType;
-  
+
   typedef itk::ConstNeighborhoodIterator< ImageType > NeighborhoodIteratorType;
   typedef itk::ImageRegionIterator< ImageType>        IteratorType;
   // Software Guide : EndCodeSnippet
@@ -89,7 +87,7 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginLatex
   //
-  // The following code creates and executes the ITK image reader. 
+  // The following code creates and executes the ITK image reader.
   // The \code{Update}
   // call on the reader object is surrounded by the standard \code{try/catch}
   // blocks to handle any exceptions that may be thrown by the reader.
@@ -105,9 +103,9 @@ int main( int argc, char ** argv )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
-    return -1;
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
 
@@ -129,9 +127,9 @@ int main( int argc, char ** argv )
   // Software Guide : BeginLatex
   //
   // The following code creates an output image and iterator.
-  //   
+  //
   // Software Guide : EndLatex
-  
+
   // Software Guide : BeginCodeSnippet
   ImageType::Pointer output = ImageType::New();
   output->SetRegions(reader->GetOutput()->GetRequestedRegion());
@@ -150,9 +148,9 @@ int main( int argc, char ** argv )
   // derivative image biased toward maximally vertical edges.
   //
   // The finite differences are computed from pixels at six locations in the
-  // neighborhood.  In this example, we use the iterator \code{GetPixel()} 
-  // method to query the values from their offsets in the neighborhood.  
-  // The example in Section~\ref{sec:NeighborhoodExample2} uses convolution 
+  // neighborhood.  In this example, we use the iterator \code{GetPixel()}
+  // method to query the values from their offsets in the neighborhood.
+  // The example in Section~\ref{sec:NeighborhoodExample2} uses convolution
   // with a Sobel kernel instead.
   //
   // Six positions in the neighborhood are necessary for the finite difference
@@ -173,7 +171,7 @@ int main( int argc, char ** argv )
   // Software Guide : BeginLatex
   //
   // It is equivalent to use the six corresponding integer array indices instead.
-  // For example, the offsets \code{(-1,-1)} and \code{(1, -1)} are 
+  // For example, the offsets \code{(-1,-1)} and \code{(1, -1)} are
   // equivalent to the integer indices \code{0} and \code{2}, respectively.
   //
   // The calculations are done in a \code{for} loop that moves the input and
@@ -192,7 +190,7 @@ int main( int argc, char ** argv )
     out.Set(sum);
     }
   // Software Guide : EndCodeSnippet
-  
+
   // Software Guide : BeginLatex
   //
   // The last step is to write the output buffer to an image file.  Writing is
@@ -200,14 +198,14 @@ int main( int argc, char ** argv )
   // is rescaled to intensity range $[0, 255]$ and cast to unsigned char so that
   // it can be saved and visualized as a PNG image.
   //
-  // Software Guide : EndLatex  
-  
+  // Software Guide : EndLatex
+
   // Software Guide : BeginCodeSnippet
   typedef unsigned char                          WritePixelType;
   typedef itk::Image< WritePixelType, 2 >        WriteImageType;
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
-  
-  typedef itk::RescaleIntensityImageFilter< 
+
+  typedef itk::RescaleIntensityImageFilter<
                ImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
@@ -215,7 +213,7 @@ int main( int argc, char ** argv )
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
   rescaler->SetInput(output);
-  
+
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
   writer->SetInput(rescaler->GetOutput());
@@ -225,9 +223,9 @@ int main( int argc, char ** argv )
     }
   catch ( itk::ExceptionObject &err)
     {
-    std::cout << "ExceptionObject caught !" << std::endl; 
-    std::cout << err << std::endl; 
-    return -1;   
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
 
@@ -239,9 +237,9 @@ int main( int argc, char ** argv )
   // \code{Examples/Data/BrainT1Slice.png}.
   //
   // \begin{figure} \centering
-  // \includegraphics[width=0.3\textwidth]{BrainT1Slice.eps}
-  // \includegraphics[width=0.3\textwidth]{NeighborhoodIterators1a.eps}
-  // \includegraphics[width=0.3\textwidth]{NeighborhoodIterators1b.eps}
+  // \includegraphics[width=0.3\textwidth]{BrainT1Slice}
+  // \includegraphics[width=0.3\textwidth]{NeighborhoodIterators1a}
+  // \includegraphics[width=0.3\textwidth]{NeighborhoodIterators1b}
   // \itkcaption[Sobel edge detection results]{Applying the Sobel operator in
   // different orientations to an MRI image (left) produces $x$ (center) and $y$
   // (right) derivative images.}
@@ -250,6 +248,6 @@ int main( int argc, char ** argv )
   //
   // Software Guide : EndLatex
 
-  
-  return 0;
+
+  return EXIT_SUCCESS;
 }

@@ -1,27 +1,20 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: VisibleHumanStreamReadWrite.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-06-25 14:06:14 $
-  Version:   $Revision: 1.3 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
-
-#ifdef __BORLANDC__
-#define ITK_LEAN_AND_MEAN
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 #include "itkRawImageIO.h"
 #include "itkNumericSeriesFileNames.h"
@@ -29,7 +22,7 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 #include "itkShrinkImageFilter.h"
-#include "itkComposeRGBImageFilter.h"
+#include "itkComposeImageFilter.h"
 #include "itkExtractImageFilter.h"
 #include "itkShrinkImageFilter.h"
 #include "itkMeanImageFilter.h"
@@ -45,14 +38,14 @@
 // appropriate size to demonstrate streaming. The following are two
 // examples of streaming which shows all three IO classes capable of
 // streaming along with the two types of streaming supported by the
-// writer. 
+// writer.
 //
 // A coronal slice is a classic view of the Visible Male. The
 // following is an example that reads the entire raw dataset and
-// generates that classic image: 
+// generates that classic image:
 
-int main(int argc, char *argv[])   
-{    
+int main(int argc, char *argv[])
+{
   if ( argc < 3 )
     {
     std::cerr << "Missing Parameters " << std::endl;
@@ -65,12 +58,11 @@ int main(int argc, char *argv[])
   std::string outputImageFile = argv[2];
 
   typedef itk::RGBPixel<unsigned char> RGBPixelType;
-  typedef unsigned char PixelType;
-  typedef itk::Image<PixelType, 3> ImageType;
-  typedef itk::Image<RGBPixelType, 3> RGB3DImageType;
-  typedef itk::Image<RGBPixelType, 2> RGB2DImageType;
+  typedef unsigned char                PixelType;
+  typedef itk::Image<PixelType, 3>     ImageType;
+  typedef itk::Image<RGBPixelType, 3>  RGB3DImageType;
+  typedef itk::Image<RGBPixelType, 2>  RGB2DImageType;
 
- 
   // genderate the names of the decompressed Visible Male images
   typedef itk::NumericSeriesFileNames    NameGeneratorType;
   NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
@@ -96,7 +88,7 @@ int main(int argc, char *argv[])
   gimageio->SetSpacing( 0, .33 );
   gimageio->SetSpacing( 1, .33 );
   gimageio->SetHeaderSize(gimageio->GetImageSizeInPixels()*1);
-    
+
 
 // create a ImageIO for the blue channel
   ImageIOType::Pointer bimageio = ImageIOType::New();
@@ -105,7 +97,7 @@ int main(int argc, char *argv[])
   bimageio->SetSpacing( 0, .33 );
   bimageio->SetSpacing( 1, .33 );
   bimageio->SetHeaderSize(bimageio->GetImageSizeInPixels()*2);
-           
+
   typedef itk::ImageSeriesReader< ImageType > SeriesReaderType;
   SeriesReaderType::Pointer rreader = SeriesReaderType::New();
   rreader->SetFileNames ( nameGenerator->GetFileNames() );
@@ -119,13 +111,13 @@ int main(int argc, char *argv[])
   SeriesReaderType::Pointer breader = SeriesReaderType::New();
   breader->SetFileNames ( nameGenerator->GetFileNames() );
   breader->SetImageIO( bimageio );
-    
-  typedef itk::ComposeRGBImageFilter< ImageType, RGB3DImageType > ComposeRGBFilterType;
+
+  typedef itk::ComposeImageFilter< ImageType, RGB3DImageType > ComposeRGBFilterType;
   ComposeRGBFilterType::Pointer composeRGB = ComposeRGBFilterType::New();
   composeRGB->SetInput1( rreader->GetOutput() );
   composeRGB->SetInput2( greader->GetOutput() );
   composeRGB->SetInput3( breader->GetOutput() );
-    
+
 // this filter is needed if square pixels are needed
 //   const int xyShrinkFactor = 3;
 //   typedef itk::ShrinkImageFilter<  RGB3DImageType, RGB3DImageType > ShrinkImageFilterType;
@@ -144,11 +136,15 @@ int main(int argc, char *argv[])
 // another interesting view
 //   RGB3DImageType::RegionType sagittalSlice = shrinker->GetOutput()->GetLargestPossibleRegion();
 //   sagittalSlice.SetIndex( 0, 1024 );
-//   sagittalSlice.SetSize( 0, 0 );    
+//   sagittalSlice.SetSize( 0, 0 );
 
 // create a 2D coronal slice from the volume
   typedef itk::ExtractImageFilter< RGB3DImageType, RGB2DImageType > ExtractFilterType;
   ExtractFilterType::Pointer extract = ExtractFilterType::New();
+  // Note on direction cosines: Because our plane is in the xz-plane,
+  // the default submatrix would be invalid, so we must use the identity
+  extract->SetDirectionCollapseToIdentity();
+  extract->InPlaceOn();
   extract->SetInput( composeRGB->GetOutput() );
   extract->SetExtractionRegion(coronalSlice);
 
@@ -161,31 +157,31 @@ int main(int argc, char *argv[])
 // the image will be broken into
   writer->SetNumberOfStreamDivisions( 200 );
   writer->SetInput( extract->GetOutput() );
-    
+
   itk::SimpleFilterWatcher watcher1(writer, "stream writing");
 
 
-  try 
+  try
     {
 // update by streaming
     writer->Update();
-    } 
-  catch( itk::ExceptionObject & err ) 
-    { 
-    std::cerr << "ExceptionObject caught !" << std::endl; 
-    std::cerr << err << std::endl; 
+    }
+  catch( itk::ExceptionObject & err )
+    {
+    std::cerr << "ExceptionObject caught !" << std::endl;
+    std::cerr << err << std::endl;
     return EXIT_FAILURE;
-    } 
+    }
 
 // This example creates a RawImageIO and ImageSeriesReader for each
 // color channel in the data. Notice that there are no special methods
 // that are needed to enable streaming; it will just respond correctly
-// to requests from the pipeline. In the ComposeRGBImageFilter, the
+// to requests from the pipeline. In the ComposeImageFilter, the
 // channels are composited into a single color image. Then the
 // information is updated to initialize the coronal slice region to be
 // extracted. The final filter, ImageFileWriter, writes out the file
-// as a Meta Image type, which fully supports IO streaming. 
-// 
+// as a Meta Image type, which fully supports IO streaming.
+//
 // The most interesting aspect of this example is not the filters
 // used, but how ITK’s pipeline manages its execution. The final
 // output image is 2048 by 1878 pixels. The ImageFileWriter breaks
@@ -198,10 +194,8 @@ int main(int argc, char *argv[])
 // entire slice, but only copies the requested sub-region to its
 // output. This pipeline is so efficient because very little data is
 // actually processed at any one stage of the pipeline due to
-// streaming IO. 
+// streaming IO.
 
 
   return EXIT_SUCCESS;
 }
-
-

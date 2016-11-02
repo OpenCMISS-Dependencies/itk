@@ -1,26 +1,24 @@
 /*=========================================================================
-
-  Program:   Insight Segmentation & Registration Toolkit
-  Module:    $RCSfile: Mesh3.cxx,v $
-  Language:  C++
-  Date:      $Date: 2009-04-07 13:28:33 $
-  Version:   $Revision: 1.16 $
-
-  Copyright (c) Insight Software Consortium. All rights reserved.
-  See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-     PURPOSE.  See the above copyright notices for more information.
-
-=========================================================================*/
-#if defined(_MSC_VER)
-#pragma warning ( disable : 4786 )
-#endif
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
 //  Software Guide : BeginLatex
 //
-//  In the same way that custom data can be associated with points in the mesh,
+//  Just as custom data can be associated with points in the mesh,
 //  it is also possible to associate custom data with cells. The type of the
 //  data associated with the cells can be different from the data type
 //  associated with points. By default, however, these two types are the same.
@@ -29,7 +27,7 @@
 //
 //  \index{itk::Mesh!Cell data}
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 //  Software Guide : BeginLatex
@@ -38,7 +36,7 @@
 //  associated with each line. The mesh and cell header files should be
 //  included first.
 //
-//  Software Guide : EndLatex 
+//  Software Guide : EndLatex
 
 
 // Software Guide : BeginCodeSnippet
@@ -50,13 +48,14 @@
 int main(int, char *[])
 {
   //  Software Guide : BeginLatex
-  //  
-  //  Then the PixelType is defined and the mesh type is instantiated with it. 
+  //
+  //  Then the \code{PixelType} is defined and the mesh type is
+  //  instantiated with it.
   //
   //  \index{itk::Mesh!Instantiation}
   //  \index{itk::Mesh!PixelType}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef float                             PixelType;
@@ -67,11 +66,11 @@ int main(int, char *[])
   //  Software Guide : BeginLatex
   //
   //  The \doxygen{LineCell} type can now be instantiated using the traits
-  //  taken from the Mesh.  
+  //  taken from the Mesh.
   //
   //  \index{itk::LineCell!Instantiation}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef MeshType::CellType                CellType;
@@ -83,14 +82,18 @@ int main(int, char *[])
   //
   //  Let's now create a Mesh and insert some points into it. Note that the
   //  dimension of the points matches the dimension of the Mesh. Here we insert
-  //  a sequence of points that look like a plot of the $\log()$ function.
+  //  a sequence of points that look like a plot of the $\log()$ function.  We
+  //  add the \code{vnl\_math::eps} value in order to avoid numerical errors when
+  //  the point id is zero. The value of \code{vnl\_math::eps} is the difference
+  //  between 1.0 and the least value greater than 1.0 that is representable in
+  //  this computer.
   //
   //  \index{itk::Mesh!New()}
   //  \index{itk::Mesh!SetPoint()}
   //  \index{itk::Mesh!PointType}
   //  \index{itk::Mesh!Pointer}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   MeshType::Pointer  mesh = MeshType::New();
@@ -99,10 +102,10 @@ int main(int, char *[])
   PointType point;
 
   const unsigned int numberOfPoints = 10;
-  for(unsigned int id=0; id<numberOfPoints; id++) 
+  for(unsigned int id=0; id<numberOfPoints; id++)
     {
     point[0] = static_cast<PointType::ValueType>( id ); // x
-    point[1] = vcl_log( static_cast<double>( id ) );    // y
+    point[1] = std::log( static_cast<double>( id ) + itk::Math::eps );    // y
     mesh->SetPoint( id, point );
     }
   // Software Guide : EndCodeSnippet
@@ -120,7 +123,7 @@ int main(int, char *[])
   //  \index{CellType!creation}
   //  \index{itk::Mesh!SetCell()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   CellType::CellAutoPointer line;
@@ -128,9 +131,9 @@ int main(int, char *[])
   for(unsigned int cellId=0; cellId<numberOfCells; cellId++)
     {
     line.TakeOwnership(  new LineType  );
-    line->SetPointId( 0, cellId   ); // first point 
+    line->SetPointId( 0, cellId   ); // first point
     line->SetPointId( 1, cellId+1 ); // second point
-    mesh->SetCell( cellId, line );   // insert the cell 
+    mesh->SetCell( cellId, line );   // insert the cell
     }
   // Software Guide : EndCodeSnippet
 
@@ -148,12 +151,12 @@ int main(int, char *[])
   //  identifier is used as cell data. Note the use of \code{static\_cast} to
   //  \code{PixelType} in the assignment.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   for(unsigned int cellId=0; cellId<numberOfCells; cellId++)
     {
-    mesh->SetCellData( cellId, static_cast<PixelType>( cellId * cellId ) );  
+    mesh->SetCellData( cellId, static_cast<PixelType>( cellId * cellId ) );
     }
 
   // Software Guide : EndCodeSnippet
@@ -169,10 +172,10 @@ int main(int, char *[])
   //
   //  \index{itk::Mesh!GetCellData()}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  for(unsigned int cellId=0; cellId<numberOfCells; cellId++)
+  for(unsigned int cellId=0; cellId<numberOfCells; ++cellId)
     {
     PixelType value = static_cast<PixelType>(0.0);
     mesh->GetCellData( cellId, &value );
@@ -187,7 +190,7 @@ int main(int, char *[])
   //  to access cell data. More efficient access to cell data can be achieved
   //  by using the Iterators built into the \code{CellDataContainer}.
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
   typedef MeshType::CellDataContainer::ConstIterator CellDataIterator;
@@ -200,7 +203,7 @@ int main(int, char *[])
   //  going to be read.  This approach is exactly the same already illustrated
   //  for getting access to point data. The iterator to the first cell data
   //  item can be obtained with the \code{Begin()} method of the
-  //  CellDataContainer. The past-end iterator is returned by the \code{End()}
+  //  \code{CellDataContainer}. The past-end iterator is returned by the \code{End()}
   //  method. The cell data container itself can be obtained from the mesh with
   //  the method \code{GetCellData()}.
   //
@@ -211,28 +214,28 @@ int main(int, char *[])
   //  \index{CellDataContainer!Iterator}
   //  \index{CellDataContainer!ConstIterator}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  CellDataIterator cellDataIterator  = mesh->GetCellData()->Begin();  
-  CellDataIterator end               = mesh->GetCellData()->End();  
+  CellDataIterator cellDataIterator  = mesh->GetCellData()->Begin();
+  CellDataIterator end               = mesh->GetCellData()->End();
   // Software Guide : EndCodeSnippet
 
 
   //  Software Guide : BeginLatex
   //
-  //  Finally a standard loop is used to iterate over all the cell data
-  //  entries. Note the use of the \code{Value()} method used to get the actual
-  //  value of the data entry. \code{PixelType} elements are copied into the
+  //  Finally, a standard loop is used to iterate over all the cell data
+  //  entries. Note the use of the \code{Value()} method to get the
+  //  value associated with the data entry. \code{PixelType} elements are copied into the
   //  local variable \code{cellValue}.
   //
   //  \index{CellDataIterator!Value()}
   //  \index{CellDataIterator!increment}
   //
-  //  Software Guide : EndLatex 
+  //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  while( cellDataIterator != end ) 
+  while( cellDataIterator != end )
     {
     PixelType cellValue = cellDataIterator.Value();
     std::cout << cellValue << std::endl;
@@ -240,5 +243,5 @@ int main(int, char *[])
     }
   // Software Guide : EndCodeSnippet
 
-  return 0;
+  return EXIT_SUCCESS;
 }
