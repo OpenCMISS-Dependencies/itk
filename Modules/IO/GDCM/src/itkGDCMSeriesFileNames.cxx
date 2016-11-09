@@ -157,27 +157,9 @@ const GDCMSeriesFileNames::FileNamesContainerType & GDCMSeriesFileNames::GetFile
     for ( it = flist->begin();
           it != flist->end(); ++it )
       {
-#if GDCM_MAJOR_VERSION < 2
-      gdcm::File *header = *it;
-      if ( !header )
-        {
-        itkWarningMacro(<< "GDCMSeriesFileNames got ITK_NULLPTR header, "
-                           "this is a serious bug");
-        continue;
-        }
-      if ( !header->IsReadable() )
-        {
-        itkWarningMacro( << "GDCMSeriesFileNames got a non DICOM file:"
-                         << header->GetFileName() );
-        continue;
-        }
-      m_InputFileNames.push_back( header->GetFileName() );
-      progress.CompletedPixel();
-#else
       gdcm::FileWithName *header = *it;
       m_InputFileNames.push_back(header->filename);
       progress.CompletedPixel();
-#endif
       }
     }
   else

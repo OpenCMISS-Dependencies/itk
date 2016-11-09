@@ -6,5 +6,5 @@ if(ITK_USE_SYSTEM_GDCM)
   # Avoid UseGDCM.cmake calling include(${VTK_USE_FILE}), which include's
   # VTK's include paths before ITK and causes a MetaIO conflict.
   set(GDCM_USE_VTK FALSE)
-  include(${GDCM_USE_FILE})
+  include(/home/alan/cmiss_git/install/release/cmake/gdcm-abi-config.cmake)
 endif()
