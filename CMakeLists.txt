@@ -52,10 +52,10 @@ if(NOT EXISTS "${ITK_SOURCE_DIR}/.ExternalData/README.rst")
   # data objects needed for testing.  Turn off tests by default
   # since enabling them requires network access or manual data
   # store configuration.
-  option(BUILD_TESTING "Build the testing tree." OFF)
+  option(ITK_BUILD_TESTING "Build the testing tree." OFF)
 endif()
 include(CTest)
-mark_as_advanced(CLEAR BUILD_TESTING)
+mark_as_advanced(CLEAR ITK_BUILD_TESTING)
 
 set(ITK_CMAKE_DIR ${ITK_SOURCE_DIR}/CMake)
 set(CMAKE_MODULE_PATH ${ITK_CMAKE_DIR} ${CMAKE_MODULE_PATH})
@@ -215,7 +215,7 @@ include(${ITK_SOURCE_DIR}/Utilities/KWStyle/KWStyle.cmake)
 
 #-----------------------------------------------------------------------------
 # Build the Examples that are illustrated in the Software Guide.
-option(BUILD_EXAMPLES "Build the examples from the ITK Software Guide." OFF)
+option(ITK_BUILD_EXAMPLES "Build the examples from the ITK Software Guide." OFF)
 
 #-----------------------------------------------------------------------------
 # Enable GPU support. Requires OpenCL to be installed
@@ -382,7 +382,7 @@ endif()
 
 install(FILES "LICENSE" "NOTICE" "README.txt" DESTINATION ${ITK_INSTALL_DOC_DIR} COMPONENT Runtime)
 
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
   add_subdirectory(Utilities/InstallTest)
 endif()
 
@@ -397,7 +397,7 @@ if(ITK_WRAPPING)
   add_subdirectory(Wrapping)
 endif()
 
-if(BUILD_EXAMPLES)
+if(ITK_BUILD_EXAMPLES)
   add_subdirectory(Examples)
 endif()
 
