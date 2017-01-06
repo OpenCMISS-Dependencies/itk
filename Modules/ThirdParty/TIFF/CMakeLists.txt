@@ -12,7 +12,7 @@ if(ITK_USE_SYSTEM_TIFF)
   set(ITKTIFF_SYSTEM_INCLUDE_DIRS
     ${TIFF_INCLUDE_DIR}
     )
-  set(ITKTIFF_LIBRARIES "${TIFF_LIBRARIES}")
+  set(ITKTIFF_LIBRARIES "${TIFF_LIBRARIES}" tiff)
   set(ITKTIFF_NO_SRC 1)
 
   # Check availability of different methods to access TIFF's field
