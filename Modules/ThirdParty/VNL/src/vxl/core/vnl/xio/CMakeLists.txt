@@ -15,6 +15,6 @@ vxl_add_library(LIBRARY_NAME ${VXL_LIB_PREFIX}vnl_xio
   HEADER_INSTALL_DIR vnl/xio)
 target_link_libraries(${VXL_LIB_PREFIX}vnl_xio ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vsl)
 
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
   add_subdirectory(tests)
 endif()

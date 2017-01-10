@@ -170,8 +170,8 @@ ENDIF()
 # Enable testing if building standalone.
 IF(KWSYS_STANDALONE)
   INCLUDE(Dart)
-  MARK_AS_ADVANCED(BUILD_TESTING DART_ROOT TCL_TCLSH)
-  IF(BUILD_TESTING)
+  MARK_AS_ADVANCED(ITK_BUILD_TESTING DART_ROOT TCL_TCLSH)
+  IF(ITK_BUILD_TESTING)
     ENABLE_TESTING()
   ENDIF()
 ENDIF()
@@ -873,7 +873,7 @@ ENDIF()
 #-----------------------------------------------------------------------------
 # Setup testing if not being built as part of another project.
 IF(KWSYS_STANDALONE OR CMake_SOURCE_DIR)
-  IF(BUILD_TESTING)
+  IF(ITK_BUILD_TESTING)
     # Compute the location of executables.
     SET(EXEC_DIR "${CMAKE_CURRENT_BINARY_DIR}")
     IF(EXECUTABLE_OUTPUT_PATH)

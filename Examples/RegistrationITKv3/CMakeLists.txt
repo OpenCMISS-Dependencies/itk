@@ -164,6 +164,6 @@ target_link_libraries(ITKv3IterativeClosestPoint2 ${ITK_LIBRARIES})
 add_executable(ITKv3IterativeClosestPoint3   IterativeClosestPoint3.cxx )
 target_link_libraries(ITKv3IterativeClosestPoint3 ${ITK_LIBRARIES})
 
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
   add_subdirectory(test)
 endif()

@@ -52,6 +52,6 @@ add_executable(ImageToPointSet ImageToPointSet.cxx )
 target_link_libraries(ImageToPointSet ${ITK_LIBRARIES})
 
 
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
   add_subdirectory(test)
 endif()

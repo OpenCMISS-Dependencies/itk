@@ -60,7 +60,7 @@ foreach(exe j2k_to_image image_to_j2k j2k_dump)
   )
 endforeach()
 
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
 # Do testing here, once we know the examples are being built:
 file(GLOB_RECURSE OPENJPEG_DATA_IMAGES_GLOB
   "${JPEG2000_CONFORMANCE_DATA_ROOT}/*.j2k"

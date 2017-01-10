@@ -4,10 +4,10 @@
 #   project(MyProject)
 #   ...
 #   include(CTest)
-# The module automatically creates a BUILD_TESTING option that selects
+# The module automatically creates a ITK_BUILD_TESTING option that selects
 # whether to enable testing support (ON by default).  After including
 # the module, use code like
-#   if(BUILD_TESTING)
+#   if(ITK_BUILD_TESTING)
 #     # ... CMake code to create tests ...
 #   endif()
 # to creating tests when testing is enabled.
@@ -58,7 +58,7 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-OPTION(BUILD_TESTING "Build the testing tree." ON)
+OPTION(ITK_BUILD_TESTING "Build the testing tree." ON)
 
 # function to turn generator name into a version string
 # like vs7 vs71 vs8 vs9 
@@ -72,7 +72,7 @@ FUNCTION(GET_VS_VERSION_STRING generator var)
   SET(${var} ${ver_string} PARENT_SCOPE)
 ENDFUNCTION(GET_VS_VERSION_STRING)
 
-IF(BUILD_TESTING)
+IF(ITK_BUILD_TESTING)
   # Setup some auxilary macros
   MACRO(SET_IF_NOT_SET var val)
     IF(NOT DEFINED "${var}")
@@ -286,4 +286,4 @@ IF(BUILD_TESTING)
     INCLUDE(CTestTargets)
     SET(RUN_FROM_CTEST_OR_DART)
   ENDIF(NOT RUN_FROM_DART)
-ENDIF(BUILD_TESTING)
+ENDIF(ITK_BUILD_TESTING)

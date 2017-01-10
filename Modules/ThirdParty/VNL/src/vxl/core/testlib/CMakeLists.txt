@@ -33,6 +33,6 @@ vxl_add_library(LIBRARY_NAME ${VXL_LIB_PREFIX}testlib
   HEADER_INSTALL_DIR core/testlib)
 target_link_libraries(${VXL_LIB_PREFIX}testlib ${VXL_LIB_PREFIX}vcl)
 
-if( BUILD_TESTING )
+if( ITK_BUILD_TESTING )
   add_subdirectory(tests)
 endif()

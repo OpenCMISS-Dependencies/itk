@@ -32,9 +32,9 @@ list( APPEND DOXYGEN_TEST_DIRS "\"${ITK_SOURCE_DIR}\" \\\n")
 list( APPEND DOXYGEN_TEST_DIRS " \"${ITK_SOURCE_DIR}/Modules/Remote\"\n")
 
 # By definition DOXYGEN_TEST_DIRS can not be empty. In the worst case if
-# BUILD_TESTING is turned OFF, there is only ${ITK_SOURCE_DIR}/Examples;
+# ITK_BUILD_TESTING is turned OFF, there is only ${ITK_SOURCE_DIR}/Examples;
 # thus we don't need to do any replacement in the string.
-if( BUILD_TESTING )
+if( ITK_BUILD_TESTING )
   # replace ";" in the string by space+backslash+newline
   string( REPLACE ";" " \\\\n" DOXYGEN_TEST_DIRS ${DOXYGEN_TEST_DIRS} )
 endif()

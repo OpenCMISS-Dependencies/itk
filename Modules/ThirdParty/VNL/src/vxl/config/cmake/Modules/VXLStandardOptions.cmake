@@ -4,7 +4,7 @@
 # several vxl-standard testing and build options to the project:
 #
 #  VXL_BUILD_SHARED_LIBS
-#  BUILD_TESTING
+#  ITK_BUILD_TESTING
 #  BUILD_EXAMPLES
 #  WARN_DEPRECATED
 #  WARN_DEPRECATED_ONCE

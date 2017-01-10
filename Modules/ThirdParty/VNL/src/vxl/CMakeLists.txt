@@ -193,7 +193,7 @@ option( BUILD_CORE_UTILITIES "Build VXL's utility libraries" ON )
 option( BUILD_CORE_IMAGING "Build VXL's imaging libraries" ON )
 
 # By default, build examples when building tests. Examples require most of the core libraries
-CMAKE_DEPENDENT_OPTION( BUILD_EXAMPLES "Should the examples be built?" ${BUILD_TESTING}
+CMAKE_DEPENDENT_OPTION( BUILD_EXAMPLES "Should the examples be built?" ${ITK_BUILD_TESTING}
                       "BUILD_CORE_GEOMETRY;BUILD_CORE_NUMERICS;BUILD_CORE_UTILITIES;BUILD_CORE_SERIALISATION;BUILD_CORE_IMAGING" OFF)
 
 # Option to specify whether this is a build for the dashboard.  Each

@@ -14,11 +14,11 @@
 #
 # Globally the ITK.kws.xml file is used to configure the expected
 #style.
-option(ITK_USE_KWSTYLE "Enable the use of KWStyle for checking coding style." ${BUILD_TESTING})
+option(ITK_USE_KWSTYLE "Enable the use of KWStyle for checking coding style." ${ITK_BUILD_TESTING})
 mark_as_advanced(ITK_USE_KWSTYLE)
 find_package(KWStyle 1.0.1 QUIET)
 
-if(NOT KWSTYLE_FOUND AND BUILD_TESTING AND ITK_USE_KWSTYLE AND NOT CMAKE_CROSSCOMPILING)
+if(NOT KWSTYLE_FOUND AND ITK_BUILD_TESTING AND ITK_USE_KWSTYLE AND NOT CMAKE_CROSSCOMPILING)
   include(${ITK_CMAKE_DIR}/../Utilities/KWStyle/BuildKWStyle.cmake)
 elseif(NOT KWSTYLE_FOUND)
   set(ITK_USE_KWSTYLE OFF)

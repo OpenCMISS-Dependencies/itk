@@ -276,7 +276,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vnl_export.h
     PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
     COMPONENT Development )
 
-if( BUILD_TESTING )
+if( ITK_BUILD_TESTING )
   add_subdirectory(tests)
 endif()
 

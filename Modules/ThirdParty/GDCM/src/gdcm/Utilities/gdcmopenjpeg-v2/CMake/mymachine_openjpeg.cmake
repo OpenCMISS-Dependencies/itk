@@ -15,7 +15,7 @@ set( ENV{CFLAGS} "-Wall" ) # just for fun...
 #  wget http://www.crc.ricoh.com/~gormish/jpeg2000conformance/j2kp4files_v1_5.zip
 #  unzip j2kp4files_v1_5.zip
 set( CACHE_CONTENTS "
-BUILD_TESTING:BOOL=TRUE
+ITK_BUILD_TESTING:BOOL=TRUE
 JPEG2000_CONFORMANCE_DATA_ROOT:PATH=${CTEST_SOURCE_DIRECTORY}/J2KP4files" )
 # End User inputs:
 

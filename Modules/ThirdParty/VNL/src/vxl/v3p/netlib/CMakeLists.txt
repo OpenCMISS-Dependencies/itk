@@ -441,7 +441,7 @@ if(UNIX)
   target_link_libraries(${VXL_LIB_PREFIX}v3p_netlib m)
 endif()
 
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 

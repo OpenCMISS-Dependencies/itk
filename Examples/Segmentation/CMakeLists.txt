@@ -67,6 +67,6 @@ target_link_libraries(LaplacianSegmentationLevelSetImageFilter ${ITK_LIBRARIES})
 add_executable(ThresholdSegmentationLevelSetImageFilter ThresholdSegmentationLevelSetImageFilter.cxx )
 target_link_libraries(ThresholdSegmentationLevelSetImageFilter ${ITK_LIBRARIES})
 
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
   add_subdirectory(test)
 endif()

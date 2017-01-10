@@ -619,19 +619,19 @@ ENDIF (HDF5_ALLOW_EXTERNAL_SUPPORT MATCHES "SVN" OR HDF5_ALLOW_EXTERNAL_SUPPORT 
 #-----------------------------------------------------------------------------
 # Build utility to copy and strip X lines of file
 #-----------------------------------------------------------------------------
-IF (HDF5_BUILD_TOOLS AND BUILD_TESTING)
+IF (HDF5_BUILD_TOOLS AND ITK_BUILD_TESTING)
   SET (XLATE_UTILITY "xlatefile")
   ADD_EXECUTABLE(${XLATE_UTILITY} ${HDF5_RESOURCES_DIR}/xlatefile.c)
-ENDIF (HDF5_BUILD_TOOLS AND BUILD_TESTING)
+ENDIF (HDF5_BUILD_TOOLS AND ITK_BUILD_TESTING)
 
 #-----------------------------------------------------------------------------
 # Dashboard and Testing Settings
 #-----------------------------------------------------------------------------
-SET(BUILD_TESTING OFF) # this distribution has no test directories
+SET(ITK_BUILD_TESTING OFF) # this distribution has no test directories
 IF(0)
-OPTION (BUILD_TESTING "Build HDF5 Unit Testing" OFF)
+OPTION (ITK_BUILD_TESTING "Build HDF5 Unit Testing" OFF)
 ENDIF(0)
-IF (BUILD_TESTING)
+IF (ITK_BUILD_TESTING)
   SET (DART_TESTING_TIMEOUT 1200
       CACHE INTEGER
       "Timeout in seconds for each test (default 1200=20minutes)"
@@ -662,7 +662,7 @@ IF (BUILD_TESTING)
 
   INCLUDE (${HDF5_SOURCE_DIR}/CTestConfig.cmake)
   CONFIGURE_FILE (${HDF5_RESOURCES_DIR}/CTestCustom.cmake ${HDF5_BINARY_DIR}/CTestCustom.ctest @ONLY)
-ENDIF (BUILD_TESTING)
+ENDIF (ITK_BUILD_TESTING)
 
 #-----------------------------------------------------------------------------
 # Option to build Fortran bindings/tests/examples

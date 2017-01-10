@@ -42,7 +42,7 @@ if(NOT ITK_USE_SYSTEM_HDF5)
 endif()
 set(HDF5_LIBRARY ${ITKHDF5_LIBRARIES})
 
-set(BUILD_TESTING OFF)
+set(ITK_BUILD_TESTING OFF)
 add_subdirectory(libminc)
 
 itk_module_target(${MINC_LIBRARY_NAME} NO_INSTALL)

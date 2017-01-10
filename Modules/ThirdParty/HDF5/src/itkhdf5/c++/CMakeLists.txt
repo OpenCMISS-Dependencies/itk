@@ -42,6 +42,6 @@ ENDIF (HDF5_BUILD_EXAMPLES)
 #-----------------------------------------------------------------------------
 # Build the CPP unit tests
 #-----------------------------------------------------------------------------
-IF (BUILD_TESTING)
+IF (ITK_BUILD_TESTING)
   ADD_SUBDIRECTORY (${HDF5_CPP_SOURCE_DIR}/test ${HDF5_CPP_BINARY_DIR}/test)
-ENDIF (BUILD_TESTING)
+ENDIF (ITK_BUILD_TESTING)
