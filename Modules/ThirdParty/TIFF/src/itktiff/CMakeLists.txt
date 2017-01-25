@@ -136,8 +136,9 @@ else()
 endif()
 
 add_library(itktiff ${common_SRCS})
+find_package(ZLIB REQUIRED)
+find_package(JPEG REQUIRED)
 target_link_libraries(itktiff ${ITKZLIB_LIBRARIES} ${ITKJPEG_LIBRARIES})
-
 if(UNIX)
   target_link_libraries(itktiff -lm)
 endif(UNIX)

@@ -189,7 +189,6 @@ SET (HDF5_PACKAGE_BUGREPORT "help@hdfgroup.org")
 #-----------------------------------------------------------------------------
 INCLUDE (${HDF5_RESOURCES_DIR}/HDFMacros.cmake)
 INCLUDE (${HDF5_RESOURCES_DIR}/HDF5Macros.cmake)
-
 #-----------------------------------------------------------------------------
 # Setup output Directories
 #-----------------------------------------------------------------------------
@@ -468,7 +467,7 @@ HDF5_SETUP_FILTERS (NBIT)
 HDF5_SETUP_FILTERS (SCALEOFFSET)
 
 INCLUDE (ExternalProject)
-OPTION (HDF5_ALLOW_EXTERNAL_SUPPORT "Allow External Library Building" "NO")
+OPTION (HDF5_ALLOW_EXTERNAL_SUPPORT "Allow External Library Building" OFF)
 OPTION (ITK_USE_SYSTEM_ZLIB "Use system ZLIB. If OFF, ZLIB is built as an external project." OFF)
 OPTION (ITK_USE_SYSTEM_SZIP "Use system SZIP. If OFF, SZIP is built as an external project." OFF)
 MARK_AS_ADVANCED(ITK_USE_SYSTEM_ZLIB)

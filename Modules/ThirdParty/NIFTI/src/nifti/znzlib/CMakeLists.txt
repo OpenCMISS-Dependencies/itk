@@ -6,7 +6,11 @@ include_regular_expression("^.*$")
 set(NIFTI_ZNZLIB_NAME ${PACKAGE_PREFIX}znz)
 
 add_library(${NIFTI_ZNZLIB_NAME} ${ZNZLIB_SRC} )
-target_link_libraries( ${NIFTI_ZNZLIB_NAME} ${NIFTI_ZLIB_LIBRARIES} )
+find_package(ZLIB REQUIRED)
+if (TARGET zlib)
+  set(NIFTI_ZLIB_LIBRARIES zlib)
+endif ()
+target_link_libraries( ${NIFTI_ZNZLIB_NAME} PRIVATE ${NIFTI_ZLIB_LIBRARIES} )
 
 # Set library version if building shared libs.
 if(BUILD_SHARED_LIBS AND NIFTI_LIBRARY_PROPERTIES)
