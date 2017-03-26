@@ -320,12 +320,32 @@ include(ITKModuleEnablement)
 # Generate ITKConfig.cmake for the build tree.
 set(ITK_CONFIG_CODE "
 set(ITK_MODULES_DIR \"${ITK_MODULES_DIR}\")")
+set(ITK_DEPENDENCIES_CODE "include(CMakeFindDependencyMacro)
+set(${PROJECT_NAME}_IMPORT_PREFIX \${_IMPORT_PREFIX})")
+if (ITK_USE_SYSTEM_ZLIB)
+    set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+find_dependency(ZLIB)")
+endif ()
+if (ITK_USE_SYSTEM_GDCM)
+    set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+find_dependency(GDCM)")
+endif ()
+if (ITK_USE_SYSTEM_JPEG)
+    set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+find_dependency(JPEG)")
+endif ()
+if (ITK_USE_SYSTEM_HDF5)
+    set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+find_dependency(HDF5)")
+endif ()
+set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+set(_IMPORT_PREFIX \${${PROJECT_NAME}_IMPORT_PREFIX})")
 set(ITK_CONFIG_CMAKE_DIR "${ITK_SOURCE_DIR}/CMake")
 set(ITK_USE_FILE "${ITK_CONFIG_CMAKE_DIR}/UseITK.cmake")
 set(ITK_CONFIG_TARGETS_CONDITION " AND NOT ITK_BINARY_DIR")
 set(ITK_CONFIG_TARGETS_FILE "${ITK_BINARY_DIR}/ITKTargets.cmake")
 set(ITK_CONFIG_MODULE_API_FILE "${ITK_SOURCE_DIR}/CMake/ITKModuleAPI.cmake")
-configure_file(CMake/ITKConfig.cmake.in ITKConfig.cmake @ONLY)
+configure_file("${ITK_SOURCE_DIR}/CMake/ITKConfig.cmake.in" "${ITK_BINARY_DIR}/ITKConfig.cmake" @ONLY)
 
 # Generate ITKConfig.cmake for the install tree.
 set(ITK_CONFIG_CODE "
@@ -350,7 +370,7 @@ if(NOT ITK_USE_SYSTEM_FFTW)
   set(FFTW_LIBDIR "\${ITK_INSTALL_PREFIX}/lib/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}")
   set(FFTW_INCLUDE_PATH "\${ITK_INSTALL_PREFIX}/include/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}/Algorithms")
 endif()
-configure_file(CMake/ITKConfig.cmake.in CMakeFiles/ITKConfig.cmake @ONLY)
+configure_file("${ITK_SOURCE_DIR}/CMake/ITKConfig.cmake.in" "${ITK_BINARY_DIR}/CMakeFiles/ITKConfig.cmake" @ONLY)
 
 #----------------------------------------------------------------------------
 # Configure maintenance scripts
