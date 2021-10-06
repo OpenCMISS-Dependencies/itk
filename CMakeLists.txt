@@ -309,7 +309,7 @@ option(ITK_USE_FLOAT_SPACE_PRECISION "Use single precision for origin/spacing/di
 mark_as_advanced(ITK_USE_FLOAT_SPACE_PRECISION)
 
 if (ITK_USE_SYSTEM_ZLIB)
-  find_package(zlib)
+  find_package(ZLIB)
 endif()
 
 #----------------------------------------------------------------------
