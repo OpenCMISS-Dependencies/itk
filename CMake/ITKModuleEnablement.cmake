@@ -12,7 +12,7 @@ foreach(f ${meta})
   get_filename_component(${itk-module}_BASE ${f} PATH)
   set(${itk-module}_SOURCE_DIR ${ITK_SOURCE_DIR}/${${itk-module}_BASE})
   set(${itk-module}_BINARY_DIR ${ITK_BINARY_DIR}/${${itk-module}_BASE})
-  if(BUILD_TESTING AND EXISTS ${${itk-module}_SOURCE_DIR}/test)
+  if(ITK_BUILD_TESTING AND EXISTS ${${itk-module}_SOURCE_DIR}/test)
     list(APPEND ITK_MODULES_ALL ${itk-module-test})
     set(${itk-module-test}_SOURCE_DIR ${${itk-module}_SOURCE_DIR}/test)
     set(${itk-module-test}_BINARY_DIR ${${itk-module}_BINARY_DIR}/test)
@@ -78,7 +78,7 @@ option(ITK_BUILD_DEFAULT_MODULES "Build the default ITK modules." ON)
 
 #----------------------------------------------------------------------
 # Provide an option to build the tests of dependencies of a module when
-# BUILD_TESTING is ON.
+# ITK_BUILD_TESTING is ON.
 option(ITK_BUILD_ALL_MODULES_FOR_TESTS "Build the tests of module dependencies." OFF)
 mark_as_advanced(ITK_BUILD_ALL_MODULES_FOR_TESTS)
 

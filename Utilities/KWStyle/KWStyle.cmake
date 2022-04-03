@@ -65,7 +65,7 @@ if(ITK_USE_KWSTYLE)
     COMMENT "Examples Style Checker"
     WORKING_DIRECTORY ${ITK_SOURCE_DIR} # the paths in kwstyle_itk_configuration_file are relative
     )
-  if(BUILD_TESTING)
+  if(ITK_BUILD_TESTING)
     set(itk-module KWStyle)
     itk_add_test(NAME KWStyleExamplesTest
       COMMAND ${KWSTYLE_EXECUTABLE}
@@ -74,6 +74,6 @@ if(ITK_USE_KWSTYLE)
         -gcc
       WORKING_DIRECTORY ${ITK_SOURCE_DIR}
       )
-  endif(BUILD_TESTING)
+  endif(ITK_BUILD_TESTING)
 
 endif(ITK_USE_KWSTYLE)

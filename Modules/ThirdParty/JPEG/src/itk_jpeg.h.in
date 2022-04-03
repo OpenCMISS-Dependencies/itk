@@ -32,8 +32,14 @@
 /* Use the jpeg library configured for ITK.  */
 #cmakedefine  ITK_USE_SYSTEM_JPEG
 #ifdef ITK_USE_SYSTEM_JPEG
+#ifdef __cplusplus
+extern "C" {
+#endif
 # include <jpeglib.h>
 # include <jerror.h>
+#ifdef __cplusplus
+}
+#endif
 #else
 # include <itkjpeg/jpeglib.h>
 # include <itkjpeg/jerror.h>

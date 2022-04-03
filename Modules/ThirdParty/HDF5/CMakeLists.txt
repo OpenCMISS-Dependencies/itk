@@ -11,16 +11,36 @@ if(ITK_USE_SYSTEM_HDF5)
   else()
     list(APPEND ITKHDF5_LIBRARIES ${HDF5_C_STATIC_LIBRARY} ${HDF5_CXX_STATIC_LIBRARY})
   endif()
-
   set(ITKHDF5_INCLUDE_DIRS
     ${ITKHDF5_BINARY_DIR}/src # itk_hdf5.h and itk_H5Cpp.h
   )
-  set(ITKHDF5_SYSTEM_INCLUDE_DIRS
-    ${HDF5_INCLUDE_DIR}
-    ${HDF5_INCLUDE_DIR_CPP}
-    ${HDF5_INCLUDE_DIRS}
-    ${HDF5_INCLUDE_DIR_CPP}
+  find_package(HDF5 REQUIRED)
+  if (NOT "${HDF5_LIBRARIES}")
+    if (BUILD_SHARED_LIBS)
+      if (TARGET hdf5)
+        set(HDF5_LIBRARIES hdf5_cpp hdf5)
+      endif ()
+    else ()
+      if (TARGET hdf5-static)
+        set(HDF5_LIBRARIES hdf5_cpp-static hdf5-static)
+      endif ()
+    endif ()
+    if (NOT "${HDF5_LIBRARIES}")
+      set(ITKHDF5_SYSTEM_INCLUDE_DIRS
+        ${HDF5_INCLUDE_DIR}
+        ${HDF5_INCLUDE_DIR_CPP}
+        ${HDF5_INCLUDE_DIRS}
+        ${HDF5_INCLUDE_DIR_CPP}
+      )
+    endif ()
+  else ()
+    set(ITKHDF5_SYSTEM_INCLUDE_DIRS
+      ${HDF5_INCLUDE_DIR}
+      ${HDF5_INCLUDE_DIR_CPP}
+      ${HDF5_INCLUDE_DIRS}
+      ${HDF5_INCLUDE_DIR_CPP}
     )
+  endif ()
   list(APPEND ITKHDF5_LIBRARIES
     ${HDF5_LIBRARIES}
     )

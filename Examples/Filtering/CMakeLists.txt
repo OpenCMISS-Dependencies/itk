@@ -151,6 +151,6 @@ target_link_libraries(DigitallyReconstructedRadiograph1  ${ITK_LIBRARIES})
 add_executable(ResampleImageFilter7 ResampleImageFilter7.cxx )
 target_link_libraries(ResampleImageFilter7  ${ITK_LIBRARIES})
 
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
   add_subdirectory(test)
 endif()

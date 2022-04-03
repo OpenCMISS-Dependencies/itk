@@ -108,6 +108,6 @@ if(UNIX)
   target_link_libraries(${VXL_LIB_PREFIX}vcl m)
 endif()
 
-if( BUILD_TESTING)
+if( ITK_BUILD_TESTING)
   add_subdirectory(tests)
 endif()

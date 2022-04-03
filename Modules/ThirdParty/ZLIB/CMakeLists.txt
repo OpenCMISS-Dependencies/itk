@@ -6,13 +6,19 @@ mark_as_advanced(ITK_USE_SYSTEM_ZLIB)
 
 if(ITK_USE_SYSTEM_ZLIB)
   find_package(ZLIB REQUIRED)
+  if (NOT "${ZLIB_LIBRARIES}" AND TARGET zlib)
+    set(ZLIB_LIBRARIES zlib)
+  else ()
+    set(ITKZLIB_SYSTEM_INCLUDE_DIRS
+      ${ZLIB_INCLUDE_DIRS}
+    )
+  endif ()
   set(ITKZLIB_INCLUDE_DIRS
     ${ITKZLIB_BINARY_DIR}/src
-    )
-  set(ITKZLIB_SYSTEM_INCLUDE_DIRS
-    ${ZLIB_INCLUDE_DIRS}
-    )
+  )
+  
   set(ITKZLIB_LIBRARIES "${ZLIB_LIBRARIES}")
+  #set(ITKZLIB_LIBRARIES z)
   set(ITKZLIB_NO_SRC 1)
 else()
   set(ITKZLIB_INCLUDE_DIRS

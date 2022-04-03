@@ -1,4 +1,4 @@
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
   # test
   add_executable( netlib_lbfgs_example lbfgs-example.c )
   add_test( NAME netlib_test_lbfgs COMMAND $<TARGET_FILE:netlib_lbfgs_example> )

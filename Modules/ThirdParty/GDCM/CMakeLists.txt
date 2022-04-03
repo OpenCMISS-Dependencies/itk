@@ -10,14 +10,14 @@ if(ITK_USE_SYSTEM_GDCM)
   # When this module is loaded by an app, load GDCM too.
   set(ITKGDCM_EXPORT_CODE_INSTALL "
 set(GDCM_DIR \"${GDCM_DIR}\")
-find_package(GDCM REQUIRED)
+find_package(GDCM-ABI REQUIRED CONFIG)
 ")
   set(ITKGDCM_EXPORT_CODE_BUILD "
 if(NOT ITK_BINARY_DIR)
   set(CMAKE_MODULE_PATH \"${CMAKE_CURRENT_SOURCE_DIR}/CMake\" \${CMAKE_MODULE_PATH})
 
   set(GDCM_DIR \"${GDCM_DIR}\")
-  find_package(GDCM REQUIRED)
+  find_package(GDCM-ABI REQUIRED CONFIG)
 endif()
 ")
 

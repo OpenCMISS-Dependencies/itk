@@ -6,6 +6,13 @@ mark_as_advanced(ITK_USE_SYSTEM_JPEG)
 
 if(ITK_USE_SYSTEM_JPEG)
   find_package(JPEG REQUIRED)
+  if (NOT ${JPEG_LIBRARIES})
+    if (TARGET jpeg)
+        set(JPEG_LIBRARIES jpeg)
+    endif ()
+    message(STATUS "JPEG_INCLUDE_DIR: ${JPEG_INCLUDE_DIR}")
+    message(STATUS "JPEG_INCLUDE_DIRS: ${JPEG_INCLUDE_DIRS}")
+  endif ()
   set(ITKJPEG_INCLUDE_DIRS
     ${ITKJPEG_BINARY_DIR}/src
     )

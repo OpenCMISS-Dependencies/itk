@@ -6,6 +6,9 @@
 # to load ITK's settings for an external project.
 @ITK_CONFIG_CODE@
 
+# Load in any system dependencies.
+@ITK_DEPENDENCIES_CODE@
+
 # The C and C++ flags added by ITK to the cmake-configured flags.
 set(ITK_REQUIRED_C_FLAGS "@ITK_REQUIRED_C_FLAGS@")
 set(ITK_REQUIRED_CXX_FLAGS "@ITK_REQUIRED_CXX_FLAGS@")

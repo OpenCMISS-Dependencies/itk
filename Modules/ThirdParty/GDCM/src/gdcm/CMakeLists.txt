@@ -443,14 +443,14 @@ endif()
 # Add the testing directories
 if(GDCM_STANDALONE)
   option(GDCM_BUILD_TESTING "Build testing." ${GDCM_BUILD_TESTING_DEFAULT})
-  set(BUILD_TESTING ${GDCM_BUILD_TESTING}) # CACHE BOOL "" FORCE)
+  set(ITK_BUILD_TESTING ${GDCM_BUILD_TESTING}) # CACHE BOOL "" FORCE)
 else()
   set(GDCM_BUILD_TESTING OFF)
-  set(BUILD_TESTING OFF)
+  set(ITK_BUILD_TESTING OFF)
 endif()
-# Hide BUILD_TESTING as user tend to always turn all options on and then complains when something
+# Hide ITK_BUILD_TESTING as user tend to always turn all options on and then complains when something
 # does not work 'by default'
-mark_as_advanced(BUILD_TESTING) # GDCM_BUILD_TESTING)
+mark_as_advanced(ITK_BUILD_TESTING) # GDCM_BUILD_TESTING)
 
 #-----------------------------------------------------------------------------
 if(GDCM_TESTING_USE_LC_NUMERIC)
@@ -570,17 +570,17 @@ endif()
 #-----------------------------------------------------------------------------
 # Special CMake Module required when doing Python Testing
 if(GDCM_STANDALONE)
-  if(BUILD_TESTING AND GDCM_WRAP_PYTHON)
+  if(ITK_BUILD_TESTING AND GDCM_WRAP_PYTHON)
     include(${GDCM_SOURCE_DIR}/CMake/UsePythonTest.cmake)
   endif()
 
 # Special CMake Module required when doing C# Testing
-  if(BUILD_TESTING AND GDCM_WRAP_CSHARP)
+  if(ITK_BUILD_TESTING AND GDCM_WRAP_CSHARP)
     include(${GDCM_SOURCE_DIR}/CMake/UseCSharpTest.cmake)
   endif()
 
 # Special CMake Module required when doing Java Testing
-  if(BUILD_TESTING AND GDCM_WRAP_JAVA)
+  if(ITK_BUILD_TESTING AND GDCM_WRAP_JAVA)
     include(${GDCM_SOURCE_DIR}/CMake/UseJavaTest.cmake)
   endif()
 endif()
@@ -595,7 +595,7 @@ if(GDCM_STANDALONE)
 endif()
 
 if(GDCM_STANDALONE)
-  if(BUILD_TESTING)
+  if(ITK_BUILD_TESTING)
     configure_file(${GDCM_SOURCE_DIR}/CMake/CTestCustom.ctest.in
         ${GDCM_BINARY_DIR}/CMake/CTestCustom.ctest @ONLY)
     file(WRITE ${GDCM_BINARY_DIR}/CTestCustom.cmake

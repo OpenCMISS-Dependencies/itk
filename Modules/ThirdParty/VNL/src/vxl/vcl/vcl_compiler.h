@@ -75,6 +75,61 @@
 #  else
 #   define VCL_GCC_60
 #  endif
+# elif (__GNUC__==7)
+#  define VCL_GCC_7
+#  if (__GNUC_MINOR__ > 2 )
+#   define VCL_GCC_73
+#  elif (__GNUC_MINOR__ > 1 )
+#   define VCL_GCC_72
+#  elif (__GNUC_MINOR__ > 0 )
+#   define VCL_GCC_71
+#  else
+#   define VCL_GCC_70
+#  endif
+# elif (__GNUC__==8)
+#  define VCL_GCC_8
+#  if (__GNUC_MINOR__ > 2 )
+#   define VCL_GCC_83
+#  elif (__GNUC_MINOR__ > 1 )
+#   define VCL_GCC_82
+#  elif (__GNUC_MINOR__ > 0 )
+#   define VCL_GCC_81
+#  else
+#   define VCL_GCC_80
+#  endif
+# elif (__GNUC__==9)
+#  define VCL_GCC_9
+#  if (__GNUC_MINOR__ > 2 )
+#   define VCL_GCC_93
+#  elif (__GNUC_MINOR__ > 1 )
+#   define VCL_GCC_92
+#  elif (__GNUC_MINOR__ > 0 )
+#   define VCL_GCC_91
+#  else
+#   define VCL_GCC_90
+#  endif
+# elif (__GNUC__==10)
+#  define VCL_GCC_10
+#  if (__GNUC_MINOR__ > 2 )
+#   define VCL_GCC_103
+#  elif (__GNUC_MINOR__ > 1 )
+#   define VCL_GCC_102
+#  elif (__GNUC_MINOR__ > 0 )
+#   define VCL_GCC_101
+#  else
+#   define VCL_GCC_100
+#  endif
+# elif (__GNUC__==11)
+#  define VCL_GCC_11
+#  if (__GNUC_MINOR__ > 2 )
+#   define VCL_GCC_113
+#  elif (__GNUC_MINOR__ > 1 )
+#   define VCL_GCC_112
+#  elif (__GNUC_MINOR__ > 0 )
+#   define VCL_GCC_111
+#  else
+#   define VCL_GCC_110
+#  endif
 # else
 #  error "Dunno about this gcc"
 # endif

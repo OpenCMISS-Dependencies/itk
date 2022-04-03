@@ -113,7 +113,7 @@ if(NETLIB_FOUND)
       PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
       COMPONENT Development )
 
-  if( BUILD_TESTING )
+  if( ITK_BUILD_TESTING )
     add_subdirectory(tests)
   endif()
 endif()

@@ -27,20 +27,20 @@ if( CMAKE_HOST_WIN32 )
 
   string( LENGTH "${CMAKE_CURRENT_SOURCE_DIR}" n )
   if( n GREATER 50 )
-    message(
-      FATAL_ERROR
-      "ITK source code directory path length is too long (${n} > 50)."
-      "Please move the ITK source code directory to a directory with a shorter path."
-      )
+#    message(
+#      FATAL_ERROR
+#      "ITK source code directory path length is too long (${n} > 50)."
+#      "Please move the ITK source code directory to a directory with a shorter path."
+#      )
   endif()
 
   string( LENGTH "${CMAKE_CURRENT_BINARY_DIR}" n )
   if( n GREATER 50 )
-    message(
-      FATAL_ERROR
-      "ITK build directory path length is too long (${n} > 50)."
-      "Please set the ITK build directory to a directory with a shorter path."
-      )
+#    message(
+#      FATAL_ERROR
+#      "ITK build directory path length is too long (${n} > 50)."
+#      "Please set the ITK build directory to a directory with a shorter path."
+#      )
   endif()
 
 endif()
@@ -52,10 +52,10 @@ if(NOT EXISTS "${ITK_SOURCE_DIR}/.ExternalData/README.rst")
   # data objects needed for testing.  Turn off tests by default
   # since enabling them requires network access or manual data
   # store configuration.
-  option(BUILD_TESTING "Build the testing tree." OFF)
+  option(ITK_BUILD_TESTING "Build the testing tree." OFF)
 endif()
 include(CTest)
-mark_as_advanced(CLEAR BUILD_TESTING)
+mark_as_advanced(CLEAR ITK_BUILD_TESTING)
 
 set(ITK_CMAKE_DIR ${ITK_SOURCE_DIR}/CMake)
 set(CMAKE_MODULE_PATH ${ITK_CMAKE_DIR} ${CMAKE_MODULE_PATH})
@@ -215,7 +215,7 @@ include(${ITK_SOURCE_DIR}/Utilities/KWStyle/KWStyle.cmake)
 
 #-----------------------------------------------------------------------------
 # Build the Examples that are illustrated in the Software Guide.
-option(BUILD_EXAMPLES "Build the examples from the ITK Software Guide." OFF)
+option(ITK_BUILD_EXAMPLES "Build the examples from the ITK Software Guide." OFF)
 
 #-----------------------------------------------------------------------------
 # Enable GPU support. Requires OpenCL to be installed
@@ -308,6 +308,10 @@ mark_as_advanced(ITK_COMPUTER_MEMORY_SIZE)
 option(ITK_USE_FLOAT_SPACE_PRECISION "Use single precision for origin/spacing/directions in itk::Image" OFF)
 mark_as_advanced(ITK_USE_FLOAT_SPACE_PRECISION)
 
+if (ITK_USE_SYSTEM_ZLIB)
+  find_package(ZLIB)
+endif()
+
 #----------------------------------------------------------------------
 # Make sure remote modules are downloaded before sorting out the module
 # dependencies.
@@ -320,12 +324,32 @@ include(ITKModuleEnablement)
 # Generate ITKConfig.cmake for the build tree.
 set(ITK_CONFIG_CODE "
 set(ITK_MODULES_DIR \"${ITK_MODULES_DIR}\")")
+set(ITK_DEPENDENCIES_CODE "include(CMakeFindDependencyMacro)
+set(${PROJECT_NAME}_IMPORT_PREFIX \${_IMPORT_PREFIX})")
+if (ITK_USE_SYSTEM_ZLIB)
+    set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+set(ZLIB_FIND_SYSTEM ${ZLIB_FIND_SYSTEM})\r\nfind_dependency(ZLIB)")
+endif ()
+if (ITK_USE_SYSTEM_GDCM)
+    set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+set(GDCM-ABI_FIND_SYSTEM ${GDCM-ABI_FIND_SYSTEM})\r\nfind_dependency(GDCM-ABI)")
+endif ()
+if (ITK_USE_SYSTEM_JPEG)
+    set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+set(JPEG_FIND_SYSTEM ${JPEG_FIND_SYSTEM})\r\nfind_dependency(JPEG)")
+endif ()
+if (ITK_USE_SYSTEM_HDF5)
+    set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+set(HDF5_FIND_SYSTEM ${HDF5_FIND_SYSTEM})\r\nfind_dependency(HDF5)")
+endif ()
+set(ITK_DEPENDENCIES_CODE "${ITK_DEPENDENCIES_CODE}
+set(_IMPORT_PREFIX \${${PROJECT_NAME}_IMPORT_PREFIX})")
 set(ITK_CONFIG_CMAKE_DIR "${ITK_SOURCE_DIR}/CMake")
 set(ITK_USE_FILE "${ITK_CONFIG_CMAKE_DIR}/UseITK.cmake")
 set(ITK_CONFIG_TARGETS_CONDITION " AND NOT ITK_BINARY_DIR")
 set(ITK_CONFIG_TARGETS_FILE "${ITK_BINARY_DIR}/ITKTargets.cmake")
 set(ITK_CONFIG_MODULE_API_FILE "${ITK_SOURCE_DIR}/CMake/ITKModuleAPI.cmake")
-configure_file(CMake/ITKConfig.cmake.in ITKConfig.cmake @ONLY)
+configure_file("${ITK_SOURCE_DIR}/CMake/ITKConfig.cmake.in" "${ITK_BINARY_DIR}/ITKConfig.cmake" @ONLY)
 
 # Generate ITKConfig.cmake for the install tree.
 set(ITK_CONFIG_CODE "
@@ -350,7 +374,7 @@ if(NOT ITK_USE_SYSTEM_FFTW)
   set(FFTW_LIBDIR "\${ITK_INSTALL_PREFIX}/lib/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}")
   set(FFTW_INCLUDE_PATH "\${ITK_INSTALL_PREFIX}/include/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}/Algorithms")
 endif()
-configure_file(CMake/ITKConfig.cmake.in CMakeFiles/ITKConfig.cmake @ONLY)
+configure_file("${ITK_SOURCE_DIR}/CMake/ITKConfig.cmake.in" "${ITK_BINARY_DIR}/CMakeFiles/ITKConfig.cmake" @ONLY)
 
 #----------------------------------------------------------------------------
 # Configure maintenance scripts
@@ -382,7 +406,7 @@ endif()
 
 install(FILES "LICENSE" "NOTICE" "README.txt" DESTINATION ${ITK_INSTALL_DOC_DIR} COMPONENT Runtime)
 
-if(BUILD_TESTING)
+if(ITK_BUILD_TESTING)
   add_subdirectory(Utilities/InstallTest)
 endif()
 
@@ -397,7 +421,7 @@ if(ITK_WRAPPING)
   add_subdirectory(Wrapping)
 endif()
 
-if(BUILD_EXAMPLES)
+if(ITK_BUILD_EXAMPLES)
   add_subdirectory(Examples)
 endif()
 

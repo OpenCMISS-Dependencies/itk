@@ -16,6 +16,6 @@ ENDIF (HDF5_BUILD_EXAMPLES)
 # Add in the unit tests for the packet table c++ wrapper
 # --------------------------------------------------------------------
 
-IF (BUILD_TESTING)
+IF (ITK_BUILD_TESTING)
   ADD_SUBDIRECTORY (${HDF5_HL_CPP_SOURCE_DIR}/test ${HDF5_HL_CPP_BINARY_DIR}/test)
-ENDIF (BUILD_TESTING)
+ENDIF (ITK_BUILD_TESTING)
