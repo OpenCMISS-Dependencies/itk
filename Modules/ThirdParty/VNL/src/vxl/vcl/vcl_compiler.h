@@ -108,6 +108,28 @@
 #  else
 #   define VCL_GCC_90
 #  endif
+# elif (__GNUC__==10)
+#  define VCL_GCC_10
+#  if (__GNUC_MINOR__ > 2 )
+#   define VCL_GCC_103
+#  elif (__GNUC_MINOR__ > 1 )
+#   define VCL_GCC_102
+#  elif (__GNUC_MINOR__ > 0 )
+#   define VCL_GCC_101
+#  else
+#   define VCL_GCC_100
+#  endif
+# elif (__GNUC__==11)
+#  define VCL_GCC_11
+#  if (__GNUC_MINOR__ > 2 )
+#   define VCL_GCC_113
+#  elif (__GNUC_MINOR__ > 1 )
+#   define VCL_GCC_112
+#  elif (__GNUC_MINOR__ > 0 )
+#   define VCL_GCC_111
+#  else
+#   define VCL_GCC_110
+#  endif
 # else
 #  error "Dunno about this gcc"
 # endif
