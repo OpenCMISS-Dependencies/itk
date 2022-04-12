@@ -92,7 +92,12 @@ set(MessageExchangeDefinition_SRCS
   )
 
 add_library(gdcmMEXD ${MessageExchangeDefinition_SRCS})
-target_link_libraries(gdcmMEXD gdcmMSFF gdcmDICT gdcmDSED gdcmIOD)
+if(CMAKE_COMPILER_IS_GNUCXX)
+  target_link_libraries(gdcmMEXD -Wl,--start-group gdcmMSFF gdcmDICT gdcmDSED gdcmIOD -Wl,--end-group)
+else()
+  target_link_libraries(gdcmMEXD gdcmMSFF gdcmDICT gdcmDSED gdcmIOD)
+endif()
+
 if(GDCM_USE_SYSTEM_SOCKETXX)
   target_link_libraries(gdcmMEXD socket++)
 else()
