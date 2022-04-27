@@ -197,11 +197,7 @@ if(GDCM_USE_PVRG)
 endif()
 
 # main libs:
-if(CMAKE_COMPILER_IS_GNUCXX)
-  target_link_libraries(gdcmMSFF -Wl,--start-group gdcmIOD gdcmDSED gdcmDICT -Wl,--end-group ${GDCM_LJPEG_LIBRARIES} ${GDCM_OPENJPEG_LIBRARIES})
-else()
-  target_link_libraries(gdcmMSFF gdcmIOD gdcmDSED gdcmDICT ${GDCM_LJPEG_LIBRARIES} ${GDCM_OPENJPEG_LIBRARIES})
-endif()
+target_link_libraries(gdcmMSFF gdcmIOD gdcmDSED gdcmDICT ${GDCM_LJPEG_LIBRARIES} ${GDCM_OPENJPEG_LIBRARIES})
 if(GDCM_USE_JPEGLS)
   target_link_libraries(gdcmMSFF ${GDCM_CHARLS_LIBRARIES})
 endif()
